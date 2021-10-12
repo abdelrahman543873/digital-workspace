@@ -1,14 +1,18 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AppModule } from '../src/app.module';
 
 export let app: INestApplication;
 
-beforeAll(async () => {
-  const moduleRef = await Test.createTestingModule({
+export const moduleRef = async (): Promise<TestingModule> => {
+  return await Test.createTestingModule({
     imports: [AppModule],
   }).compile();
-  app = moduleRef.createNestApplication();
+};
+
+beforeAll(async () => {
+  const module = await moduleRef();
+  app = module.createNestApplication();
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   await app.init();
 });

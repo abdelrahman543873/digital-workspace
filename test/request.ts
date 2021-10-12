@@ -1,7 +1,7 @@
-import { BaseHttpException } from './../src/shared/exceptions/base-http-exception';
 import request from 'supertest';
 import { app } from './before-test-run';
 import { HTTP_METHODS_ENUM } from './request.methods.enum';
+import { BaseHttpException } from './../src/shared/exceptions/base-http-exception';
 
 // done to allow random ordering when entering test request values and eliminate the need to enter num values
 interface testRequestInput {
