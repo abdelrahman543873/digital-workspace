@@ -1,1 +1,1 @@
-export const GET_WEATHER = 'weather';
+export const GET_WEATHER = '/weather';
