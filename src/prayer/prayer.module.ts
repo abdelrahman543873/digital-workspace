@@ -4,6 +4,7 @@ import { PrayerService } from './prayer.service';
 import { PrayerController } from './prayer.controller';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+import { PrayerRepository } from './prayer.repository';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { ConfigService } from '@nestjs/config';
       inject: [ConfigService],
     }),
   ],
-  providers: [PrayerService],
+  providers: [PrayerService, PrayerRepository],
   controllers: [PrayerController],
 })
 export class PrayerModule {}

@@ -8,7 +8,7 @@ export class PrayerController {
   constructor(private prayerService: PrayerService) {}
 
   @ApiTags('prayer')
-  @Get('times')
+  @Get('times/:city')
   async getPrayerTimes(@Param() input: GetPrayerTimesInput) {
     return await this.prayerService.getPrayerTimes(input);
   }
