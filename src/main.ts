@@ -33,6 +33,7 @@ async function bootstrap() {
     .setDescription('social media API description')
     .setVersion('1.0')
     .addTag('post', 'post routes')
+    .addTag('weather', 'weather api routes')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
