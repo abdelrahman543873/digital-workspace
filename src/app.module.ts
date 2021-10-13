@@ -4,6 +4,7 @@ import { PostModule } from './post/post.module';
 import { WeatherModule } from './weather/weather.module';
 import { DataBaseModule } from './shared/database/database.module';
 import { PrayerModule } from './prayer/prayer.module';
+import { CurrencyModule } from './currency/currency.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { PrayerModule } from './prayer/prayer.module';
     PostModule,
     WeatherModule,
     PrayerModule,
+    CurrencyModule,
   ],
 })
 export class AppModule {}

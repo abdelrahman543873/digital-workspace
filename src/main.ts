@@ -35,6 +35,7 @@ async function bootstrap() {
     .addTag('post', 'post routes')
     .addTag('weather', 'weather api routes')
     .addTag('prayer', 'prayer api routes')
+    .addTag('currency', 'currency api routes')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
