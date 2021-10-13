@@ -2,6 +2,12 @@
 # yarn lockfile v1
 
 
+"'@nestjs/axios":
+  version "0.0.2"
+  resolved "https://codeload.github.com/nestjs/axios/tar.gz/22fe896ad260f5b3283c1659e173f2f486ddc7e3"
+  dependencies:
+    axios "0.21.4"
+
 "@angular-devkit/core@12.0.5":
   version "12.0.5"
   resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-12.0.5.tgz#3d02abd97684434f6e1ffee470b7a9c63987ae51"

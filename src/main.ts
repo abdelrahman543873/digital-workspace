@@ -1,5 +1,5 @@
 import 'winston-mongodb';
-import { NestFactory } from '@nestjs/core';
+import { ContextIdFactory, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { utilities, WinstonModule } from 'nest-winston';
 import { format, transports } from 'winston';

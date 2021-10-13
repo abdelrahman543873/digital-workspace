@@ -7,6 +7,7 @@ describe('get weather suite case', () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_WEATHER}/Cairo`,
     });
-    console.log(res.body);
+    expect(res.body).toHaveProperty('coord');
+    expect(res.body).toHaveProperty('weather');
   });
 });

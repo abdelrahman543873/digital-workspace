@@ -6,7 +6,7 @@ import { WeatherModule } from './weather/weather.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(
       // done this way to be able to connect in case of testing
       // docker and real runtime without docker
