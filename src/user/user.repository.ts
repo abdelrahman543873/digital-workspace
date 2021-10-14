@@ -13,9 +13,11 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   async addUser(input: AddUserInput) {
-    return await this.userSchema.create({
-      ...input,
-      password: await hashPass(input.password),
-    });
+    return (
+      await this.userSchema.create({
+        ...input,
+        password: await hashPass(input.password),
+      })
+    ).toJSON();
   }
 }
