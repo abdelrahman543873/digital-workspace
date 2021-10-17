@@ -1,9 +1,10 @@
 import 'winston-mongodb';
-import { ContextIdFactory, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { utilities, WinstonModule } from 'nest-winston';
 import { format, transports } from 'winston';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -38,6 +39,7 @@ async function bootstrap() {
     .addTag('currency', 'currency api routes')
     .build();
   const document = SwaggerModule.createDocument(app, options);
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   SwaggerModule.setup('api', app, document);
   await app.listen(3000);
 }
