@@ -1,9 +1,9 @@
-import { Body, Controller, Post, Put, UseGuards, Param } from '@nestjs/common';
 import { PostService } from './post.service';
 import { AddPostInput } from './inputs/add-post.input';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { LikePostInput } from './inputs/like-post.input';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, Put, UseGuards, Param } from '@nestjs/common';
 
 @Controller('post')
 export class PostController {

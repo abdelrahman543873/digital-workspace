@@ -9,10 +9,10 @@ export class User {
 
   token?: string;
 
-  @Prop({ unique: true })
+  @Prop({ unique: true, required: true })
   email: string;
 
-  @Prop({ unique: true })
+  @Prop({ unique: true, required: true })
   password: string;
 }
 

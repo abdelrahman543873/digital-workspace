@@ -7,6 +7,7 @@ import { PrayerModule } from './prayer/prayer.module';
 import { CurrencyModule } from './currency/currency.module';
 import { UserModule } from './user/user.module';
 import { HelperModule } from './shared/helper/helper.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { HelperModule } from './shared/helper/helper.module';
     PrayerModule,
     CurrencyModule,
     UserModule,
+    CommentModule,
   ],
 })
 export class AppModule {}

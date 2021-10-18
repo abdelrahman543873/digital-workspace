@@ -38,6 +38,7 @@ async function bootstrap() {
     .addTag('prayer', 'prayer api routes')
     .addTag('currency', 'currency api routes')
     .addTag('user', 'user api routes')
+    .addTag('comment', 'comment routes')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
