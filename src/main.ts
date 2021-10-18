@@ -30,13 +30,14 @@ async function bootstrap() {
     }),
   });
   const options = new DocumentBuilder()
-    .setTitle('🚀social-media')
-    .setDescription('social media API description')
+    .setTitle('🚀digital work space🚀')
+    .setDescription('digital workspace API description')
     .setVersion('1.0')
     .addTag('post', 'post routes')
     .addTag('weather', 'weather api routes')
     .addTag('prayer', 'prayer api routes')
     .addTag('currency', 'currency api routes')
+    .addTag('user', 'user api routes')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));

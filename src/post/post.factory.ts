@@ -7,12 +7,14 @@ import { userFactory } from '../user/user.factory';
 interface PostType {
   userId?: ObjectId;
   content?: string;
+  likes?: ObjectId[];
 }
 
 export const buildPostParams = async (obj: PostType = {}): Promise<Post> => {
   return {
     content: obj.content || faker.random.word(),
     userId: obj.userId || (await userFactory())._id,
+    likes: obj.likes || [(await userFactory())._id],
   };
 };
 
@@ -27,7 +29,7 @@ export const postsFactory = async (
   return (await PostRepo()).addMany(posts);
 };
 
-export const faqFactory = async (obj: PostType = {}): Promise<Post> => {
+export const postFactory = async (obj: PostType = {}): Promise<Post> => {
   const params: Post = await buildPostParams(obj);
   return (await PostRepo()).add(params);
 };
