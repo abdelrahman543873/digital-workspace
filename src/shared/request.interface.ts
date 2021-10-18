@@ -1,8 +1,9 @@
 import { LangEnum } from './../app.const';
-import { Request } from 'express';
+import { User } from '../user/schema/user.schema';
+import { IncomingHttpHeaders } from 'http';
 export interface RequestContext {
-  currentUser?: Record<any, any>;
-  appContext: Request;
+  currentUser?: User;
+  appContext: IncomingHttpHeaders;
   lang: LangEnum | string;
   long?: number;
   lat?: number;

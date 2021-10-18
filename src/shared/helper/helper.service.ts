@@ -5,8 +5,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ConfigService } from '@nestjs/config';
 import { User, UserDocument } from '../../user/schema/user.schema';
-import { Request } from 'express';
 import { ENV_VARIABLE_NAMES } from '../../app.const';
+import { IncomingHttpHeaders } from 'http';
 
 export interface TokenPayload {
   _id: string;
@@ -17,7 +17,7 @@ export class HelperService {
     @InjectModel(User.name) private userSchema: Model<UserDocument>,
     private configService: ConfigService,
   ) {}
-  async getCurrentUser(req: Request): Promise<User> {
+  async getCurrentUser(req: IncomingHttpHeaders): Promise<User> {
     const token = getAuthToken(req);
     if (!token) return null;
     const { _id } = <TokenPayload>(

@@ -1,11 +1,11 @@
-import { Request } from 'express';
 import { sign } from 'jsonwebtoken';
+import { IncomingHttpHeaders } from 'http';
 
-export const getAuthToken = (req: Request): string => {
-  if (req?.headers?.authorization || req?.headers?.Authorization) {
+export const getAuthToken = (req: IncomingHttpHeaders): string => {
+  if (req?.authorization || req?.Authorization) {
     let auth: string;
-    if (req.headers.authorization) auth = req.headers.authorization;
-    if (req.headers.Authorization) auth = <string>req.headers.Authorization;
+    if (req.authorization) auth = req.authorization;
+    if (req.Authorization) auth = <string>req.Authorization;
     return auth.split(' ')[1];
   }
   return null;

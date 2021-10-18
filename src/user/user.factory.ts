@@ -1,3 +1,4 @@
+import { generateAuthToken } from './../shared/utils/token-utils';
 import * as faker from 'faker';
 import { User } from './schema/user.schema';
 import { UserRepo } from '../../test/user/user-test-repo';
@@ -27,5 +28,7 @@ export const usersFactory = async (
 
 export const userFactory = async (obj: UserType = {}): Promise<User> => {
   const params: User = buildUserParams(obj);
-  return (await UserRepo()).add(params);
+  const user = await (await UserRepo()).add(params);
+  user.token = generateAuthToken(user._id);
+  return user;
 };
