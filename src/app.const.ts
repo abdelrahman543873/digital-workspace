@@ -4,4 +4,10 @@ export enum ENV_VARIABLE_NAMES {
   WEATHER_API_KEY = 'WEATHER_API_KEY',
   PRAYER_API = 'PRAYER_API',
   CURRENCY_API = 'CURRENCY_API',
+  JWT_SECRET = 'JWT_SECRET',
+}
+
+export enum LangEnum {
+  EN = 'EN',
+  AR = 'AR',
 }

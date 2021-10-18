@@ -6,11 +6,13 @@ import { DataBaseModule } from './shared/database/database.module';
 import { PrayerModule } from './prayer/prayer.module';
 import { CurrencyModule } from './currency/currency.module';
 import { UserModule } from './user/user.module';
+import { HelperModule } from './shared/helper/helper.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     DataBaseModule,
+    HelperModule,
     PostModule,
     WeatherModule,
     PrayerModule,
