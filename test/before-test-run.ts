@@ -8,7 +8,6 @@ export let app: INestApplication;
 const seedUsersServices = {
   onApplicationBootstrap: jest.fn(async () => {
     //mocking purposes
-    console.log('mocked');
   }),
 };
 
