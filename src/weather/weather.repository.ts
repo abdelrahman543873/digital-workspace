@@ -10,9 +10,14 @@ export class WeatherRepository {
   async getCityWeather(input: GetWeatherInput) {
     const response = await firstValueFrom(
       this.httpService.get(
-        `/weather?q=${input.city}&appid=${process.env.WEATHER_API_KEY}`,
+        `/onecall?lat=${input.lat}&lon=${input.long}&exclude=current,minutely,hourly,alerts&appid=${process.env.WEATHER_API_KEY}&units=metric`,
       ),
     );
-    return response.data;
+    return response.data.daily.map((forecast) => {
+      return {
+        temperature: forecast.temp.max,
+        windSpeed: forecast.wind_speed,
+      };
+    });
   }
 }

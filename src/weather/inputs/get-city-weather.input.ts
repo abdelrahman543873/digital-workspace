@@ -1,5 +1,8 @@
-import { IsString } from 'class-validator';
+import { IsLatitude, IsLongitude } from 'class-validator';
 export class GetWeatherInput {
-  @IsString()
-  city: string;
+  @IsLatitude()
+  lat: number;
+
+  @IsLongitude()
+  long: number;
 }

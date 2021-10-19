@@ -7,7 +7,7 @@ import { GetWeatherInput } from './inputs/get-city-weather.input';
 export class WeatherController {
   constructor(private weatherService: WeatherService) {}
   @ApiTags('weather')
-  @Get(':city')
+  @Get(':lat/:long')
   async getCityWeather(@Param() input: GetWeatherInput) {
     return await this.weatherService.getWeatherByCity(input);
   }
