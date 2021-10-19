@@ -11,3 +11,5 @@ export enum LangEnum {
   EN = 'EN',
   AR = 'AR',
 }
+
+export const GENDER = ['M', 'F'];

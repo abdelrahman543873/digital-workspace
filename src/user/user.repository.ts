@@ -5,7 +5,8 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from './schema/user.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { AddUserInput } from './inputs/add-user.input';
-
+import { hashPassSync } from '../shared/utils/bcryptHelper';
+import { buildUserParams } from './user.seed';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(@InjectModel(User.name) private userSchema: Model<UserDocument>) {
@@ -19,5 +20,14 @@ export class UserRepository extends BaseRepository<User> {
         password: await hashPass(input.password),
       })
     ).toJSON();
+  }
+
+  async seedUsers() {
+    const users: User[] = [];
+    for (let i = 0; i < 10; i++) {
+      const params = buildUserParams();
+      users.push({ ...params, password: hashPassSync(params.password) });
+    }
+    return await this.userSchema.insertMany(users);
   }
 }

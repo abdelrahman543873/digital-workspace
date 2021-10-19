@@ -1,4 +1,3 @@
-import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { WeatherRepository } from './weather.repository';
 import { GetWeatherInput } from './inputs/get-city-weather.input';

@@ -8,6 +8,7 @@ import { CurrencyModule } from './currency/currency.module';
 import { UserModule } from './user/user.module';
 import { HelperModule } from './shared/helper/helper.module';
 import { CommentModule } from './comment/comment.module';
+import { ServicesModule } from './shared/services/services.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CommentModule } from './comment/comment.module';
     CurrencyModule,
     UserModule,
     CommentModule,
+    ServicesModule,
   ],
 })
 export class AppModule {}

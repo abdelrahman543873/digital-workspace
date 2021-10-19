@@ -1,19 +1,8 @@
+import { hashPass } from './../shared/utils/bcryptHelper';
 import { generateAuthToken } from './../shared/utils/token-utils';
-import * as faker from 'faker';
 import { User } from './schema/user.schema';
 import { UserRepo } from '../../test/user/user-test-repo';
-
-interface UserType {
-  email?: string;
-  password?: string;
-}
-
-export const buildUserParams = (obj: UserType = {}): User => {
-  return {
-    email: obj.email || faker.internet.email(),
-    password: obj.password || faker.internet.password(),
-  };
-};
+import { buildUserParams, UserType } from './user.seed';
 
 export const usersFactory = async (
   count = 10,
@@ -28,7 +17,9 @@ export const usersFactory = async (
 
 export const userFactory = async (obj: UserType = {}): Promise<User> => {
   const params: User = buildUserParams(obj);
-  const user = await (await UserRepo()).add(params);
+  const user = await (
+    await UserRepo()
+  ).add({ ...params, password: await hashPass(params.password) });
   user.token = generateAuthToken(user._id);
   return user;
 };

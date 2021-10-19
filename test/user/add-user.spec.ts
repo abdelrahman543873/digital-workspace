@@ -1,7 +1,7 @@
+import { buildUserParams } from './../../src/user/user.seed';
 import { testRequest } from '../request';
 import { HTTP_METHODS_ENUM } from '../request.methods.enum';
 import { ADD_USER } from '../endpoints/user.endpoints';
-import { buildUserParams } from '../../src/user/user.factory';
 describe('register user suite case', () => {
   it('should register user and return a token', async () => {
     const params = buildUserParams();
