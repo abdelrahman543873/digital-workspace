@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, ObjectId, Types } from 'mongoose';
 import { GENDER } from '../../app.const';
+
 export type UserDocument = User & Document;
 
 @Schema({ versionKey: false, timestamps: true })
