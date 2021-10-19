@@ -26,6 +26,10 @@ export class UserRepository extends BaseRepository<User> {
     ).toJSON();
   }
 
+  async getTestUsers() {
+    return await this.testUserSchema.find();
+  }
+
   async seedUsers() {
     const users: User[] = [];
     for (let i = 0; i < 10; i++) {
