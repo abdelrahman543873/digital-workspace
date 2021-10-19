@@ -32,6 +32,8 @@ export class UserRepository extends BaseRepository<User> {
       const params = buildUserParams();
       users.push(params);
     }
+    await this.testUserSchema.deleteMany({})
+    await this.userSchema.deleteMany({})
     await this.testUserSchema.insertMany(users.map((user) => {
       return { email: user.email, password: user.password }
     }));
