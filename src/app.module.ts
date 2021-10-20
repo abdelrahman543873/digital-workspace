@@ -10,10 +10,18 @@ import { HelperModule } from './shared/helper/helper.module';
 import { CommentModule } from './comment/comment.module';
 import { ServicesModule } from './shared/services/services.module';
 import { AuthModule } from './shared/auth/auth.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ServeStaticModule.forRoot({
+      rootPath: './client',
+    }),
+    MulterModule.register({
+      dest: './client',
+    }),
     DataBaseModule,
     HelperModule,
     PostModule,
