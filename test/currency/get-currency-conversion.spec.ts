@@ -7,6 +7,6 @@ describe('get currency suite case', () => {
       method: HTTP_METHODS_ENUM.GET,
       url: GET_CURRENCY,
     });
-    expect(res.body).toHaveProperty('base');
+    expect(res.body.length).toBeGreaterThan(10);
   });
 });

@@ -12,6 +12,11 @@ export class CurrencyRepository {
         `/latest?access_key=${process.env.CURRENCY_API_KEY}`,
       ),
     );
-    return await response.data;
+    return await Object.keys(response.data.rates).map((currency) => {
+      return {
+        country: currency,
+        conversionRate: response.data.rates[currency],
+      };
+    });
   }
 }
