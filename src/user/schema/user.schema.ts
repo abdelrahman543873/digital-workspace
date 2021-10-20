@@ -10,7 +10,7 @@ export class User {
 
   token?: string;
 
-  @Prop({ unique: true, required: true })
+  @Prop({ unique: true, required: true, trim: true, lowercase: true })
   email: string;
 
   @Prop({ required: true, select: false })

@@ -1,7 +1,9 @@
+import { Transform } from 'class-transformer';
 import { IsEmail, IsOptional, MaxLength, MinLength } from 'class-validator';
 
 export class LoginInput {
   @IsEmail()
+  @Transform(({ value }) => value.toLowerCase())
   email: string;
 
   @IsOptional()
