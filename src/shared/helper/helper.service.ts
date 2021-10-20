@@ -1,3 +1,4 @@
+import { GetExistingUserInput } from './inputs/get-existing-user.input';
 import * as jwt from 'jsonwebtoken';
 import { Injectable } from '@nestjs/common';
 import { getAuthToken } from '../utils/token-utils';
@@ -27,5 +28,29 @@ export class HelperService {
       )
     );
     return await this.userSchema.findById(_id);
+  }
+
+  async getExistingUser(input: GetExistingUserInput): Promise<User> {
+    return await this.userSchema.findOne(
+      {
+        ...(input._id && { _id: input._id }),
+        ...(input.email && { email: input.email }),
+        ...(input.mobile && { mobile: input.mobile }),
+      },
+      {},
+      { lean: true },
+    );
+  }
+
+  async getExistingUserEncryptedPassword(
+    input: GetExistingUserInput,
+  ): Promise<User> {
+    return await this.userSchema
+      .findOne({
+        ...(input._id && { _id: input._id }),
+        ...(input.email && { email: input.email }),
+        ...(input.mobile && { mobile: input.mobile }),
+      })
+      .select('password');
   }
 }

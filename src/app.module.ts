@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { HelperModule } from './shared/helper/helper.module';
 import { CommentModule } from './comment/comment.module';
 import { ServicesModule } from './shared/services/services.module';
+import { AuthModule } from './shared/auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ServicesModule } from './shared/services/services.module';
     UserModule,
     CommentModule,
     ServicesModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

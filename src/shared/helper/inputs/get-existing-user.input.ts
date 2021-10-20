@@ -21,14 +21,6 @@ export class GetExistingUserInput {
   email?: string;
 
   @IsOptional()
-  @IsString()
-  socialMediaId?: string;
-
-  @IsOptional()
   @IsPhoneNumber()
   mobile?: string;
-
-  @IsOptional()
-  @IsBoolean()
-  password?: boolean;
 }

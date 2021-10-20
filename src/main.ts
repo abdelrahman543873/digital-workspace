@@ -40,10 +40,13 @@ async function bootstrap() {
     .addTag('currency', 'currency api routes')
     .addTag('user', 'user api routes')
     .addTag('comment', 'comment routes')
+    .addTag('authentication', 'authentication routes')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({ transform: true, forbidUnknownValues: true }),
+  );
   app.useGlobalFilters(new HttpExceptionFilter());
   SwaggerModule.setup('api', app, document);
   await app.listen(3000);
