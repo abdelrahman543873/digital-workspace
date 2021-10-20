@@ -13,11 +13,15 @@ export class WeatherRepository {
         `/onecall?lat=${input.lat}&lon=${input.long}&exclude=current,minutely,hourly,alerts&appid=${process.env.WEATHER_API_KEY}&units=metric`,
       ),
     );
+    const date = new Date();
     return response.data.daily.map((forecast) => {
-      return {
+      const formattedForecast = {
+        date: date,
         temperature: forecast.temp.max,
         windSpeed: forecast.wind_speed,
       };
+      date.setDate(date.getDate() + 1);
+      return formattedForecast;
     });
   }
 }
