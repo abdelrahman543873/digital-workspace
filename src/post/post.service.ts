@@ -12,9 +12,10 @@ export class PostService {
     @Inject(REQUEST) private readonly request: RequestContext,
   ) {}
 
-  async addPost(input: AddPostInput) {
+  async addPost(input: AddPostInput, attachments: Array<Express.Multer.File>) {
     return await this.postRepository.addPost(
       this.request.currentUser._id,
+      attachments,
       input,
     );
   }

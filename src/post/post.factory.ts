@@ -8,6 +8,7 @@ interface PostType {
   userId?: ObjectId;
   content?: string;
   likes?: ObjectId[];
+  attachments?: string[];
 }
 
 export const buildPostParams = async (obj: PostType = {}): Promise<Post> => {
@@ -15,6 +16,7 @@ export const buildPostParams = async (obj: PostType = {}): Promise<Post> => {
     content: obj.content || faker.random.word(),
     userId: obj.userId || (await userFactory())._id,
     likes: obj.likes || [(await userFactory())._id],
+    attachments: obj.attachments || ['http://localhost:3000/download.jpg'],
   };
 };
 

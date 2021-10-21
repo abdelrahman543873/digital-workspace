@@ -2,8 +2,19 @@ import { PostService } from './post.service';
 import { AddPostInput } from './inputs/add-post.input';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { LikePostInput } from './inputs/like-post.input';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Post, Put, UseGuards, Param } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Post,
+  Put,
+  UseGuards,
+  Param,
+  UseInterceptors,
+  UploadedFiles,
+} from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { AddPostSwagger } from './swagger/add-post.swagger';
 
 @Controller('post')
 export class PostController {
@@ -11,10 +22,16 @@ export class PostController {
 
   @ApiBearerAuth()
   @ApiTags('post')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody(AddPostSwagger)
   @UseGuards(AuthGuard)
+  @UseInterceptors(FilesInterceptor('attachments'))
   @Post()
-  async addPost(@Body() input: AddPostInput) {
-    return await this.postService.addPost(input);
+  async addPost(
+    @Body() input: AddPostInput,
+    @UploadedFiles() attachments: Array<Express.Multer.File>,
+  ) {
+    return await this.postService.addPost(input, attachments);
   }
 
   @ApiBearerAuth()

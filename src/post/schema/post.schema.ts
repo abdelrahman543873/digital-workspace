@@ -15,6 +15,9 @@ export class Post {
 
   @Prop({ type: [Types.ObjectId] })
   likes: ObjectId[];
+
+  @Prop([String])
+  attachments: string[];
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
