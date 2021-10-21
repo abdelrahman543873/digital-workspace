@@ -14,3 +14,4 @@ export enum LangEnum {
 }
 
 export const GENDER = ['M', 'F'];
+export const DAY_NAMES = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];

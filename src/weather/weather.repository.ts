@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { GetWeatherInput } from './inputs/get-city-weather.input';
+import { DAY_NAMES } from '../app.const';
 
 @Injectable()
 export class WeatherRepository {
@@ -17,7 +18,7 @@ export class WeatherRepository {
       const date = new Date();
       date.setDate(date.getDate() + index);
       const formattedForecast = {
-        date,
+        day: DAY_NAMES[date.getUTCDay()],
         temperature: forecast.temp.max,
         windSpeed: forecast.wind_speed,
       };
