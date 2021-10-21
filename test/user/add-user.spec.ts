@@ -11,6 +11,6 @@ describe('register user suite case', () => {
       variables: params,
     });
     expect(res.body.token).toBeTruthy();
-    expect(res.body.email).toBe(params.email);
+    expect(res.body.email).toBe(params.email.toLowerCase());
   });
 });
