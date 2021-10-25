@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  digital-workspace:
+    env_file: .env
+    build: ./
+    restart: always
+    volumes:
+      - ./client:/app/client
+    ports:
+      - '80:3000'
+    depends_on:
+      - digital-workspace-db
+  digital-workspace-db:
+    image: 'mongo'
+    ports:
+      - 27017:27017
+    volumes:
+      - db:/data/db
+
+volumes:
+  db:

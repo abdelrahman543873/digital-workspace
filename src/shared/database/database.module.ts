@@ -9,6 +9,7 @@ import { ENV_VARIABLE_NAMES } from '../../app.const';
         // done this way to be able to connect in case of testing
         // docker and real runtime without docker
         uri:
+          configService.get<string>(ENV_VARIABLE_NAMES.MONGO_DB) ||
           configService.get<string>(ENV_VARIABLE_NAMES.LOCAL_MONGO_DB) ||
           global['__MONGO_URI__'],
         connectionFactory: (connection) => {
