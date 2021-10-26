@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrencyService } from './currency.service';
+import { GetCurrencyInput } from './inputs/get-currency.input';
 
 @Controller('currency')
 export class CurrencyController {
@@ -8,7 +9,7 @@ export class CurrencyController {
 
   @ApiTags('currency')
   @Get('conversions')
-  async getConversions() {
-    return await this.currencyService.getConversions();
+  async getConversions(@Query() input: GetCurrencyInput) {
+    return await this.currencyService.getConversions(input);
   }
 }
