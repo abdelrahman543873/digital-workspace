@@ -11,14 +11,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger({
       transports: [
-        new transports.MongoDB({
-          level: 'warn',
-          db: 'mongodb://localhost:27017/logs',
-          options: {
-            useUnifiedTopology: true,
-          },
-          name: 'mongoLog',
-        }),
+        // new transports.MongoDB({
+        //   level: 'warn',
+        //   db: 'mongodb://localhost:27017/logs',
+        //   options: {
+        //     useUnifiedTopology: true,
+        //   },
+        //   name: 'mongoLog',
+        // }),
         new transports.Console({
           level: 'info',
           format: format.combine(
