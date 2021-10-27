@@ -11,4 +11,8 @@ export const LocalizedErrorMessages: IErrorMessage = {
     EN: 'wrong password',
     AR: 'wrong password',
   },
+  604: {
+    EN: 'invalid currency code',
+    AR: 'invalid currency code',
+  },
 };

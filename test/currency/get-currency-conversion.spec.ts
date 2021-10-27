@@ -10,4 +10,12 @@ describe('get currency suite case', () => {
     expect(res.body.length).toBeGreaterThan(10);
     expect(res.body[0].conversionRate).toBe(10);
   });
+
+  it("shouldn't base invalid currencies", async () => {
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CURRENCY}?base=something&amount=10`,
+    });
+    expect(res.body.statusCode).toBe(604);
+  });
 });
