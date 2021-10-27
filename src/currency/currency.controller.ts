@@ -12,4 +12,10 @@ export class CurrencyController {
   async getConversions(@Query() input: GetCurrencyInput) {
     return await this.currencyService.getConversions(input);
   }
+
+  @ApiTags('currency')
+  @Get('currencies')
+  async getCurrencies() {
+    return await this.currencyService.getCurrencies();
+  }
 }

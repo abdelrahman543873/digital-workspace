@@ -17,4 +17,8 @@ export class CurrencyService {
       throw new BaseHttpException(this.request.lang, 604);
     return await this.currencyRepo.getConversions(input);
   }
+
+  async getCurrencies() {
+    return await this.currencyRepo.getCurrencies();
+  }
 }
