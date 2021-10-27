@@ -1,7 +1,7 @@
 import { User } from './schema/user.schema';
 import { ObjectId } from 'mongoose';
-import { date, image, internet, name, phone, random } from 'faker';
-import { GENDER } from '../app.const';
+import { date, internet, name, phone, random } from 'faker';
+import { GENDER, WIDGETS } from '../app.const';
 
 export interface UserType {
   email?: string;
@@ -15,6 +15,7 @@ export interface UserType {
   gender?: string;
   birthDate?: Date;
   directManagerId?: ObjectId;
+  widgets?: string[];
 }
 
 export const buildUserParams = (obj: UserType = {}): User => {
@@ -30,5 +31,6 @@ export const buildUserParams = (obj: UserType = {}): User => {
     gender: obj.gender || random.arrayElement(GENDER),
     birthDate: obj.birthDate || date.past(),
     directManagerId: obj.directManagerId || null,
+    widgets: obj.widgets || random.arrayElements(WIDGETS),
   };
 };

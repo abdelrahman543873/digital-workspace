@@ -37,6 +37,9 @@ export class User {
   @Prop({ enum: GENDER })
   gender: string;
 
+  @Prop({ type: [String] })
+  widgets: string[];
+
   @Prop({ type: Date })
   birthDate: Date;
 
