@@ -1,11 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { AddUserInput } from './inputs/add-user.input';
 import { generateAuthToken } from '../shared/utils/token-utils';
+import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
+import { REQUEST } from '@nestjs/core';
+import { RequestContext } from 'src/shared/request.interface';
 
 @Injectable()
 export class UserService {
-  constructor(private userRepo: UserRepository) {}
+  constructor(
+    private userRepo: UserRepository,
+    @Inject(REQUEST) private readonly request: RequestContext,
+  ) {}
   async addUser(input: AddUserInput) {
     const user = await this.userRepo.addUser(input);
     user.token = generateAuthToken(user._id);
@@ -13,5 +19,12 @@ export class UserService {
   }
   async getTestUsers() {
     return await this.userRepo.getTestUsers();
+  }
+
+  async addFavWidget(input: AddFavWidgetInput) {
+    return await this.userRepo.addFavWidget(
+      this.request.currentUser._id,
+      input,
+    );
   }
 }

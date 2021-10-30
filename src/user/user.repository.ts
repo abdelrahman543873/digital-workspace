@@ -1,13 +1,14 @@
 import { hashPass } from './../shared/utils/bcryptHelper';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { User, UserDocument } from './schema/user.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { AddUserInput } from './inputs/add-user.input';
 import { hashPassSync } from '../shared/utils/bcryptHelper';
 import { buildUserParams } from './user.seed';
 import { TestUser, TestUserDocument } from './schema/test-user.schema';
+import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -49,6 +50,14 @@ export class UserRepository extends BaseRepository<User> {
       users.map((user) => {
         return { ...user, password: hashPassSync(user.password) };
       }),
+    );
+  }
+
+  async addFavWidget(userId: ObjectId, input: AddFavWidgetInput) {
+    return await this.userSchema.findOneAndUpdate(
+      { _id: userId },
+      { $addToSet: { widgets: { $each: input.widgets } } },
+      { new: true },
     );
   }
 }
