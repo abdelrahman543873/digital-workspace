@@ -20,6 +20,11 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
+  "config": {
+    "mongodbMemoryServer": {
+      "arch": "x64"
+    }
+  },
   "dependencies": {
     "'": "nestjs/axios",
     "@nestjs/axios": "^0.0.2",
@@ -43,7 +48,9 @@
     "class-validator": "^0.13.1",
     "express": "^4.17.1",
     "faker": "^5.5.3",
+    "jest-environment-node": "^27.3.1",
     "jsonwebtoken": "^8.5.1",
+    "mongodb-memory-server": "^7.5.1",
     "mongoose": "^6.0.10",
     "mongoose-aggregate-paginate-v2": "^1.0.5",
     "nest-winston": "^1.6.1",
@@ -78,7 +85,6 @@
     "typescript": "^4.3.5"
   },
   "jest": {
-    "testEnvironment": "node",
     "testRegex": ".*\\.spec\\.ts$",
     "coverageDirectory": "../coverage",
     "collectCoverageFrom": [
@@ -98,6 +104,9 @@
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/test/before-test-run.ts"
-    ]
+    ],
+    "globalSetup": "<rootDir>/test/setup.ts",
+    "globalTeardown": "<rootDir>/test/teardown.ts",
+    "testEnvironment": "<rootDir>/test/mongo-environment.ts"
   }
 }

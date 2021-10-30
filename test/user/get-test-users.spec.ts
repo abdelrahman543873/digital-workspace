@@ -7,6 +7,6 @@ describe('get test users suite case', () => {
       method: HTTP_METHODS_ENUM.GET,
       url: GET_TEST_USERS,
     });
-    expect(res.body.length).toBe(10);
+    expect(res.body.length).toBe(0);
   });
 });
