@@ -65,9 +65,10 @@ export class UserRepository extends BaseRepository<User> {
   async manageFollow(userId: ObjectId, input: ManageFollowUserInput) {
     await this.userSchema.updateMany(
       {
-        $or: [{ _id: userId }, { _id: input.userId }],
+        $or: [{ _id: userId }, { _id: new Types.ObjectId(input.userId) }],
       },
       [
+        // a pipeline to update followed and following user with the follower id
         {
           $set: {
             following: {
