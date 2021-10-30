@@ -1,3 +1,4 @@
+import { Pagination } from './../shared/utils/pagination.input';
 import { RequestContext } from './../shared/request.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { PostRepository } from './post.repository';
@@ -40,6 +41,13 @@ export class PostService {
     return await this.postRepository.removePost(
       this.request.currentUser._id,
       input,
+    );
+  }
+
+  async getNewsFeed(pagination: Pagination) {
+    return await this.postRepository.getNewsFeed(
+      this.request.currentUser._id,
+      pagination,
     );
   }
 }

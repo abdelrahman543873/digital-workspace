@@ -1,3 +1,4 @@
+import { Pagination } from './../shared/utils/pagination.input';
 import { PostService } from './post.service';
 import { AddPostInput } from './inputs/add-post.input';
 import { AuthGuard } from '../shared/guards/auth.guard';
@@ -13,6 +14,8 @@ import {
   UseInterceptors,
   UploadedFiles,
   Delete,
+  Get,
+  Query,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AddPostSwagger } from './swagger/add-post.swagger';
@@ -59,5 +62,13 @@ export class PostController {
   @Delete('remove/:postId')
   async removePost(@Param() input: RemovePostInput) {
     return await this.postService.removePost(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('post')
+  @UseGuards(AuthGuard)
+  @Get('newsFeed')
+  async getNewsFeed(@Query() pagination: Pagination) {
+    return await this.postService.getNewsFeed(pagination);
   }
 }

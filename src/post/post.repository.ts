@@ -1,6 +1,8 @@
+import { Pagination } from './../shared/utils/pagination.input';
+import { LookupSchemasEnum } from './../app.const';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from 'mongoose';
+import { ObjectId, AggregatePaginateModel } from 'mongoose';
 import { Post, PostDocument } from './schema/post.schema';
 import { AddPostInput } from './inputs/add-post.input';
 import { BaseRepository } from '../shared/generics/repository.abstract';
@@ -9,7 +11,10 @@ import { RemovePostInput } from './inputs/remove-post.input';
 import { ReportPostInput } from './inputs/report-post.input';
 @Injectable()
 export class PostRepository extends BaseRepository<Post> {
-  constructor(@InjectModel(Post.name) private postSchema: Model<PostDocument>) {
+  constructor(
+    @InjectModel(Post.name)
+    private postSchema: AggregatePaginateModel<PostDocument>,
+  ) {
     super(postSchema);
   }
 
@@ -61,5 +66,41 @@ export class PostRepository extends BaseRepository<Post> {
       { $push: { reports: { userId, reason: input.reason } } },
       { new: true },
     );
+  }
+
+  async getNewsFeed(userId: ObjectId, pagination: Pagination) {
+    const aggregation = this.postSchema.aggregate([
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          as: 'user',
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$_id', userId],
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $unwind: '$user',
+      },
+      {
+        $match: {
+          $expr: { $in: ['$userId', '$user.following'] },
+        },
+      },
+      {
+        $project: { user: 0 },
+      },
+    ]);
+    return await this.postSchema.aggregatePaginate(aggregation, {
+      sort: { createdAt: 1 },
+      offset: pagination.offset * pagination.limit,
+      limit: pagination.limit,
+    });
   }
 }

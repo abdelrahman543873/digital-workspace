@@ -3,7 +3,7 @@ import { Document, ObjectId, Types } from 'mongoose';
 
 export type PostDocument = Post & Document;
 
-@Schema({ versionKey: false, _id: false })
+@Schema({ versionKey: false, _id: false, timestamps: true })
 export class Report {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   userId: ObjectId;
@@ -14,7 +14,7 @@ export class Report {
 
 const ReportSchema = SchemaFactory.createForClass(Report);
 
-@Schema({ versionKey: false })
+@Schema({ versionKey: false, timestamps: true })
 export class Post {
   _id?: ObjectId;
 
