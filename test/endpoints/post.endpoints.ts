@@ -1,2 +1,2 @@
 export const ADD_POST = '/post';
-export const LIKE_POST = '/post/like';
+export const LIKE_POST = '/post/manageLike';

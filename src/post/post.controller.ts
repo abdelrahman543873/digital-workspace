@@ -37,8 +37,8 @@ export class PostController {
   @ApiBearerAuth()
   @ApiTags('post')
   @UseGuards(AuthGuard)
-  @Put('like/:postId')
-  async likePost(@Param() input: LikePostInput) {
-    return await this.postService.likePost(input);
+  @Put('manageLike/:postId')
+  async manageLike(@Param() input: LikePostInput) {
+    return await this.postService.manageLike(input);
   }
 }

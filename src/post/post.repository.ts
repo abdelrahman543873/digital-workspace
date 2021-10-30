@@ -26,11 +26,26 @@ export class PostRepository extends BaseRepository<Post> {
     });
   }
 
-  async likePost(userId: ObjectId, input: LikePostInput) {
-    return await this.postSchema.findOneAndUpdate(
-      { _id: input.postId },
-      { $addToSet: { likes: userId } },
-      { lean: true, new: true },
-    );
+  async manageLike(userId: ObjectId, input: LikePostInput) {
+    await this.postSchema.updateOne({ _id: input.postId }, [
+      {
+        $set: {
+          likes: {
+            $cond: [
+              {
+                $in: [userId, '$likes'],
+              },
+              {
+                $setDifference: ['$likes', [userId]],
+              },
+              {
+                $concatArrays: ['$likes', [userId]],
+              },
+            ],
+          },
+        },
+      },
+    ]);
+    return await this.postSchema.findOne({ _id: input.postId });
   }
 }

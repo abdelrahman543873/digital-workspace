@@ -20,8 +20,8 @@ export class PostService {
     );
   }
 
-  async likePost(input: LikePostInput) {
-    return await this.postRepository.likePost(
+  async manageLike(input: LikePostInput) {
+    return await this.postRepository.manageLike(
       this.request.currentUser._id,
       input,
     );

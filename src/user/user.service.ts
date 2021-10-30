@@ -5,7 +5,7 @@ import { generateAuthToken } from '../shared/utils/token-utils';
 
 @Injectable()
 export class UserService {
-  constructor(private userRepo: UserRepository) { }
+  constructor(private userRepo: UserRepository) {}
   async addUser(input: AddUserInput) {
     const user = await this.userRepo.addUser(input);
     user.token = generateAuthToken(user._id);

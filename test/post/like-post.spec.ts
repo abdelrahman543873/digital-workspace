@@ -17,7 +17,7 @@ describe('like post suite case', () => {
     expect(res.body.likes.length).toBe(2);
   });
 
-  it("shouldn't duplicate likes", async () => {
+  it('should remove like if duplicated', async () => {
     const user = await userFactory();
     const post = await postFactory({
       userId: user._id,
@@ -28,6 +28,6 @@ describe('like post suite case', () => {
       url: `${LIKE_POST}/${post._id.toString()}`,
       token: user.token,
     });
-    expect(res.body.likes.length).toBe(1);
+    expect(res.body.likes.length).toBe(0);
   });
 });
