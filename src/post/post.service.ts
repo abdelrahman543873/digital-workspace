@@ -5,6 +5,7 @@ import { AddPostInput } from './inputs/add-post.input';
 import { REQUEST } from '@nestjs/core';
 import { LikePostInput } from './inputs/like-post.input';
 import { RemovePostInput } from './inputs/remove-post.input';
+import { ReportPostInput } from './inputs/report-post.input';
 
 @Injectable()
 export class PostService {
@@ -27,6 +28,14 @@ export class PostService {
       input,
     );
   }
+
+  async reportPost(input: ReportPostInput) {
+    return await this.postRepository.reportPost(
+      this.request.currentUser._id,
+      input,
+    );
+  }
+
   async removePost(input: RemovePostInput) {
     return await this.postRepository.removePost(
       this.request.currentUser._id,

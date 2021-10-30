@@ -17,6 +17,7 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AddPostSwagger } from './swagger/add-post.swagger';
 import { RemovePostInput } from './inputs/remove-post.input';
+import { ReportPostInput } from './inputs/report-post.input';
 
 @Controller('post')
 export class PostController {
@@ -42,6 +43,14 @@ export class PostController {
   @Put('manageLike/:postId')
   async manageLike(@Param() input: LikePostInput) {
     return await this.postService.manageLike(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('post')
+  @UseGuards(AuthGuard)
+  @Put('report')
+  async reportPost(@Body() input: ReportPostInput) {
+    return await this.postService.reportPost(input);
   }
 
   @ApiBearerAuth()

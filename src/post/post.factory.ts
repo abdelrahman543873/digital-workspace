@@ -1,5 +1,5 @@
 import * as faker from 'faker';
-import { Post } from './schema/post.schema';
+import { Post, Report } from './schema/post.schema';
 import { PostRepo } from '../../test/post/post-test-repo';
 import { ObjectId } from 'mongoose';
 import { userFactory } from '../user/user.factory';
@@ -9,14 +9,19 @@ interface PostType {
   content?: string;
   likes?: ObjectId[];
   attachments?: string[];
+  reports?: Report[];
 }
 
 export const buildPostParams = async (obj: PostType = {}): Promise<Post> => {
+  const userId = (await userFactory())._id;
   return {
     content: obj.content || faker.random.word(),
-    userId: obj.userId || (await userFactory())._id,
-    likes: obj.likes || [(await userFactory())._id],
+    userId: obj.userId || userId,
+    likes: obj.likes || [userId],
     attachments: obj.attachments || ['http://localhost:3000/download.jpg'],
+    reports: obj.reports || [
+      { userId, reason: faker.commerce.productDescription() },
+    ],
   };
 };
 
