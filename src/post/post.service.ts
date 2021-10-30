@@ -4,6 +4,7 @@ import { PostRepository } from './post.repository';
 import { AddPostInput } from './inputs/add-post.input';
 import { REQUEST } from '@nestjs/core';
 import { LikePostInput } from './inputs/like-post.input';
+import { RemovePostInput } from './inputs/remove-post.input';
 
 @Injectable()
 export class PostService {
@@ -22,6 +23,12 @@ export class PostService {
 
   async manageLike(input: LikePostInput) {
     return await this.postRepository.manageLike(
+      this.request.currentUser._id,
+      input,
+    );
+  }
+  async removePost(input: RemovePostInput) {
+    return await this.postRepository.removePost(
       this.request.currentUser._id,
       input,
     );

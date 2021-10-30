@@ -5,6 +5,7 @@ import { Post, PostDocument } from './schema/post.schema';
 import { AddPostInput } from './inputs/add-post.input';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { LikePostInput } from './inputs/like-post.input';
+import { RemovePostInput } from './inputs/remove-post.input';
 @Injectable()
 export class PostRepository extends BaseRepository<Post> {
   constructor(@InjectModel(Post.name) private postSchema: Model<PostDocument>) {
@@ -47,5 +48,9 @@ export class PostRepository extends BaseRepository<Post> {
       },
     ]);
     return await this.postSchema.findOne({ _id: input.postId });
+  }
+
+  async removePost(userId: ObjectId, input: RemovePostInput) {
+    return await this.postSchema.deleteOne({ userId, id: input.postId });
   }
 }

@@ -12,9 +12,11 @@ import {
   Param,
   UseInterceptors,
   UploadedFiles,
+  Delete,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AddPostSwagger } from './swagger/add-post.swagger';
+import { RemovePostInput } from './inputs/remove-post.input';
 
 @Controller('post')
 export class PostController {
@@ -40,5 +42,13 @@ export class PostController {
   @Put('manageLike/:postId')
   async manageLike(@Param() input: LikePostInput) {
     return await this.postService.manageLike(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('post')
+  @UseGuards(AuthGuard)
+  @Delete('remove/:postId')
+  async removePost(@Param() input: RemovePostInput) {
+    return await this.postService.removePost(input);
   }
 }
