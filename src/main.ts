@@ -5,7 +5,7 @@ import { utilities, WinstonModule } from 'nest-winston';
 import { format, transports } from 'winston';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { HttpExceptionFilter } from './shared/exceptions/exception.filter';
+import { BaseHttpExceptionFilter } from './shared/exceptions/base-http-exception-filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -47,7 +47,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({ transform: true, forbidUnknownValues: true }),
   );
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new BaseHttpExceptionFilter());
   SwaggerModule.setup('api', app, document);
   await app.listen(3000);
 }

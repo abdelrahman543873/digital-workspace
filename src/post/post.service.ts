@@ -7,6 +7,7 @@ import { REQUEST } from '@nestjs/core';
 import { LikePostInput } from './inputs/like-post.input';
 import { RemovePostInput } from './inputs/remove-post.input';
 import { ReportPostInput } from './inputs/report-post.input';
+import { BaseHttpException } from '../shared/exceptions/base-http-exception';
 
 @Injectable()
 export class PostService {
@@ -45,6 +46,8 @@ export class PostService {
   }
 
   async getNewsFeed(pagination: Pagination) {
+    if (this.request.currentUser.following.length === 0)
+      throw new BaseHttpException(this.request.lang, 605);
     return await this.postRepository.getNewsFeed(
       this.request.currentUser._id,
       pagination,
