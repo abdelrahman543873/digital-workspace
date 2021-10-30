@@ -4,6 +4,7 @@ import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
 import { AddUserInput } from './inputs/add-user.input';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
+import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
 
 @Controller('user')
 export class UserController {
@@ -27,5 +28,13 @@ export class UserController {
   @Get('testUsers')
   async getTestUsers() {
     return await this.userService.getTestUsers();
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @UseGuards(AuthGuard)
+  @Put('manageFollow')
+  async manageFollow(@Body() input: ManageFollowUserInput) {
+    return await this.userService.manageFollow(input);
   }
 }

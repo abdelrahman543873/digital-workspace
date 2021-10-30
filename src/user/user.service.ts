@@ -5,6 +5,7 @@ import { generateAuthToken } from '../shared/utils/token-utils';
 import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 import { REQUEST } from '@nestjs/core';
 import { RequestContext } from 'src/shared/request.interface';
+import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
 
 @Injectable()
 export class UserService {
@@ -23,6 +24,13 @@ export class UserService {
 
   async addFavWidget(input: AddFavWidgetInput) {
     return await this.userRepo.addFavWidget(
+      this.request.currentUser._id,
+      input,
+    );
+  }
+
+  async manageFollow(input: ManageFollowUserInput) {
+    return await this.userRepo.manageFollow(
       this.request.currentUser._id,
       input,
     );

@@ -16,6 +16,8 @@ export interface UserType {
   birthDate?: Date;
   directManagerId?: ObjectId;
   widgets?: string[];
+  following?: ObjectId[];
+  followers?: ObjectId[];
 }
 
 export const buildUserParams = (obj: UserType = {}): User => {
@@ -32,5 +34,7 @@ export const buildUserParams = (obj: UserType = {}): User => {
     birthDate: obj.birthDate || date.past(),
     directManagerId: obj.directManagerId || null,
     widgets: obj.widgets || random.arrayElements(WIDGETS),
+    followers: obj.followers || [],
+    following: obj.following || [],
   };
 };

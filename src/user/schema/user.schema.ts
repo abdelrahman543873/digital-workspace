@@ -45,6 +45,12 @@ export class User {
 
   @Prop({ type: Types.ObjectId, ref: 'User' })
   directManagerId: ObjectId;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
+  followers: ObjectId[];
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
+  following: ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
