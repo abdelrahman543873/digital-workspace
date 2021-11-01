@@ -16,12 +16,13 @@ interface CommentType {
 export const buildCommentParams = async (
   obj: CommentType = {},
 ): Promise<Comment> => {
+  const userId = (await userFactory())._id;
   return {
     comment: obj.comment || null,
     post: obj.post || (await postFactory())._id,
     content: obj.content || faker.random.words(),
-    likes: obj.likes || [(await userFactory())._id],
-    commenter: obj.commenter || (await userFactory())._id,
+    likes: obj.likes || [userId],
+    commenter: obj.commenter || userId,
   };
 };
 

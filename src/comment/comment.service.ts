@@ -3,6 +3,7 @@ import { REQUEST } from '@nestjs/core';
 import { RequestContext } from 'src/shared/request.interface';
 import { CommentRepository } from './comment.repository';
 import { PostCommentInput } from './inputs/post-comment.input';
+import { ManageLikeCommentInput } from './inputs/manage-like-comment.input';
 
 @Injectable()
 export class CommentService {
@@ -12,6 +13,13 @@ export class CommentService {
   ) {}
   async postComment(input: PostCommentInput) {
     return await this.commentRepo.postComment(
+      this.request.currentUser._id,
+      input,
+    );
+  }
+
+  async manageLikeComment(input: ManageLikeCommentInput) {
+    return await this.commentRepo.manageLikeComment(
       this.request.currentUser._id,
       input,
     );
