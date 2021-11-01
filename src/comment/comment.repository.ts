@@ -5,6 +5,7 @@ import { CommentDocument, Comment } from './schema/comment.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { PostCommentInput } from './inputs/post-comment.input';
 import { ManageLikeCommentInput } from './inputs/manage-like-comment.input';
+import { DeleteCommentInput } from './inputs/delete-comment.input';
 
 @Injectable()
 export class CommentRepository extends BaseRepository<Comment> {
@@ -43,5 +44,12 @@ export class CommentRepository extends BaseRepository<Comment> {
       },
     ]);
     return await this.commentSchema.findOne({ _id: input.commentId });
+  }
+
+  async deleteCommentInput(userId: ObjectId, input: DeleteCommentInput) {
+    return await this.commentSchema.deleteOne({
+      _id: input.commentId,
+      commenter: userId,
+    });
   }
 }
