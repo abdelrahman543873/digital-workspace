@@ -49,6 +49,7 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new BaseHttpExceptionFilter());
   SwaggerModule.setup('api', app, document);
+  app.enableCors();
   await app.listen(3000);
 }
 bootstrap();
