@@ -1,0 +1,38 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- release
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        command: build
+        dockerfile: '**/Dockerfile'
+        tags: |
+          valsquad.azurecr.io/digital-workspace-api
+    - task: AzureCLI@2
+      displayName: Push image
+      inputs:
+        azureSubscription: 'Visual Studio Enterprise Subscription – MPN(59a38f78-cfe2-4e34-8bbf-886834e39d96)'
+        scriptType: 'ps'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az acr login --name valsquad
+          docker push wspmecr.azurecr.io/me-reminder
