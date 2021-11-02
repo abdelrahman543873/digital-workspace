@@ -34,7 +34,8 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          Write-Host "Using an input-macro works: $(password).substring(0,6) - $(username)"
+          $secret = $(password)
+          Write-Host "Using an input-macro works: $secret.substring(0,6) - $(username)""
           Write-Host "Using the mapped env var for this task works and is recommended: $env:PASSWORD - $env:USERNAME"
     # - task: PowerShell@2
     #   env:
