@@ -28,6 +28,12 @@ stages:
         tags: |
           valsquad.azurecr.io/digital-workspace-api
     - task: PowerShell@2
+      env:
+        USERNAME: $(username)
+        PASSWORD: $(password)
       inputs:
         targetType: 'inline'
-        script: 'az upgrade'
+        script: |
+          az login -u $env:USERNAME -p $env:PASSWORD
+          az acr login --name valsquad
+          docker push valsquad.azurecr.io/digital-workspace-api
