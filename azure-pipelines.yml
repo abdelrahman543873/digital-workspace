@@ -30,13 +30,13 @@ stages:
     - task: PowerShell@2
       env:
         USERNAME: $(username)
-        PASSWORD: $(password)
+        test: $(password)
       inputs:
         targetType: 'inline'
         script: |
           Write-Host "Using an input-macro works: $(password) - $(username)"
           Write-Host "Using the mapped env var for this task works and is recommended: $env:PASSWORD - $env:USERNAME"
-          az login -u "$(username)" -p $env:PASSWORD
+          az login -u "$(username)" -p $env:test
     # - task: PowerShell@2
     #   env:
     #     USERNAME: $(username)
