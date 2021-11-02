@@ -28,16 +28,14 @@ stages:
     #     tags: |
     #       valsquad.azurecr.io/digital-workspace-api
     - task: PowerShell@2
-      env:
-        USERNAME: $(username)
-        test: $(password)
       inputs:
         targetType: 'inline'
         script: |
           $secret = "$(password)"
+          $user = "$(username)"
           Write-Host "Using an input-macro works: $secret.substring(0,6) - $(username)"
           Write-Host "Using the mapped env var for this task works and is recommended: $env:PASSWORD - $env:USERNAME"
-          $secret.ToCharArray()
+          az login -u $user -p $secret
     # - task: PowerShell@2
     #   env:
     #     USERNAME: $(username)
