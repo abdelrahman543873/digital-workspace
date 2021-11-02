@@ -27,12 +27,7 @@ stages:
         dockerfile: '**/Dockerfile'
         tags: |
           valsquad.azurecr.io/digital-workspace-api
-    - task: AzureCLI@2
-      displayName: Push image
+    - task: PowerShell@2
       inputs:
-        azureSubscription: 'Visual Studio Enterprise Subscription – MPN(59a38f78-cfe2-4e34-8bbf-886834e39d96)'
-        scriptType: 'ps'
-        scriptLocation: 'inlineScript'
-        inlineScript: |
-          az acr login --name valsquad
-          docker push wspmecr.azurecr.io/me-reminder
+        targetType: 'inline'
+        script: 'az upgrade'
