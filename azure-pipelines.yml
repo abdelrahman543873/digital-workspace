@@ -31,7 +31,8 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          Import-Module Az.Accounts
+          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+          Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
           $secret = "$(password)"
           $user = "$(username)"
           $securePassword = ConvertTo-SecureString "$secret" -AsPlainText -Force
