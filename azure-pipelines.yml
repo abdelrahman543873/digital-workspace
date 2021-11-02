@@ -34,6 +34,6 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          az login -u $env:USERNAME -p $env:PASSWORD
+          az login -u $(username) -p $(password)
           az acr login --name valsquad
           docker push valsquad.azurecr.io/digital-workspace-api
