@@ -20,19 +20,16 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    - task: Docker@2
-      displayName: Build an image
+    - task: PowerShell@2
       inputs:
-        command: build
-        dockerfile: '**/Dockerfile'
-        tags: |
-          valsquad.azurecr.io/digital-workspace-api
-    - task: AzureCLI@2
-      displayName: Push image
-      inputs:
-        azureSubscription: 'Visual Studio Enterprise Subscription – MPN(59a38f78-cfe2-4e34-8bbf-886834e39d96)'
-        scriptType: 'ps'
-        scriptLocation: 'inlineScript'
-        inlineScript: |
-          az acr login --name valsquad
-          docker push wspmecr.azurecr.io/me-reminder
+        targetType: 'inline'
+        script: |
+          Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+          $secret = "$(password)"
+          $user = "$(username)"
+          $securePassword = ConvertTo-SecureString "$secret" -AsPlainText -Force
+          $credentials = New-Object System.Management.Automation.PSCredential($user, $securePassword)
+          Login-AzAccount -Credential $credentials
+          Connect-AzContainerRegistry -Name valsquad
+          docker build -f Dockerfile . -t valsquad.azurecr.io/digital-workspace-api
+          docker push valsquad.azurecr.io/digital-workspace-api
