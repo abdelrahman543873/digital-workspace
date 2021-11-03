@@ -8,7 +8,10 @@ describe('register user suite case', () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_USER,
-      variables: params,
+      variables: {
+        email: params.email,
+        password: params.password,
+      },
     });
     expect(res.body.token).toBeTruthy();
     expect(res.body.email).toBe(params.email.toLowerCase());

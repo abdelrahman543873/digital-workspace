@@ -23,7 +23,13 @@ export const moduleRef = async (): Promise<TestingModule> => {
 beforeAll(async () => {
   const module = await moduleRef();
   app = module.createNestApplication();
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
   await app.init();
 });
 
