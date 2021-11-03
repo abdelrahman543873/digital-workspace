@@ -31,5 +31,5 @@ stages:
           $credentials = New-Object System.Management.Automation.PSCredential($user, $securePassword)
           Login-AzAccount -Credential $credentials
           Connect-AzContainerRegistry -Name valsquad
-          docker build -f Dockerfile . -t valsquad.azurecr.io/digital-workspace-api
+          docker build . --build-arg mongodb-connection=$(mongodb-connection) -f Dockerfile-Release -t valsquad.azurecr.io/digital-workspace-api
           docker push valsquad.azurecr.io/digital-workspace-api
