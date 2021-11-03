@@ -1,6 +1,7 @@
+import { LookupSchemasEnum } from './../app.const';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from 'mongoose';
+import { Model, ObjectId, Types } from 'mongoose';
 import { CommentDocument, Comment } from './schema/comment.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { PostCommentInput } from './inputs/post-comment.input';
@@ -48,8 +49,16 @@ export class CommentRepository extends BaseRepository<Comment> {
 
   async deleteCommentInput(userId: ObjectId, input: DeleteCommentInput) {
     return await this.commentSchema.deleteOne({
-      _id: input.commentId,
-      commenter: userId,
+      $or: [
+        {
+          _id: input.commentId,
+          commenter: userId,
+        },
+        {
+          _id: input.commentId,
+          'post.userId': userId,
+        },
+      ],
     });
   }
 }
