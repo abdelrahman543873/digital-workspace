@@ -17,20 +17,6 @@ describe('add fav widget suite case', () => {
     expect(res.body.widgets[0]).toBe(WIDGETS[0]);
   });
 
-  it("shouldn't duplicate fav Widgets", async () => {
-    const user = await userFactory({ widgets: [WIDGETS[0]] });
-    const res = await testRequest({
-      method: HTTP_METHODS_ENUM.PUT,
-      url: ADD_FAV_WIDGET,
-      variables: {
-        widgets: [WIDGETS[0]],
-      },
-      token: user.token,
-    });
-    expect(res.body.widgets[0]).toBe(WIDGETS[0]);
-    expect(res.body.widgets.length).toBe(1);
-  });
-
   it('should add empty widget', async () => {
     const user = await userFactory({ widgets: [WIDGETS[0]] });
     const res = await testRequest({

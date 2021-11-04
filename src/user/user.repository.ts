@@ -55,16 +55,9 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   async addFavWidget(userId: ObjectId, input: AddFavWidgetInput) {
-    if (!input.widgets.length) {
-      return await this.userSchema.findOneAndUpdate(
-        { _id: userId },
-        { widgets: [] },
-        { new: true },
-      );
-    }
     return await this.userSchema.findOneAndUpdate(
       { _id: userId },
-      { $addToSet: { widgets: { $each: input.widgets } } },
+      { widgets: input.widgets },
       { new: true },
     );
   }
