@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AppModule } from '../src/app.module';
 import { SeedUsersServices } from '../src/shared/services/seed-users.service';
+import { APP_FILTER } from '@nestjs/core';
+import { BaseHttpExceptionFilter } from '../src/shared/exceptions/base-http-exception-filter';
 
 export let app: INestApplication;
 
@@ -14,6 +16,12 @@ const seedUsersServices = {
 export const moduleRef = async (): Promise<TestingModule> => {
   return await Test.createTestingModule({
     imports: [AppModule],
+    providers: [
+      {
+        provide: APP_FILTER,
+        useClass: BaseHttpExceptionFilter,
+      },
+    ],
   })
     .overrideProvider(SeedUsersServices)
     .useValue(seedUsersServices)

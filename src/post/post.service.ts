@@ -1,5 +1,4 @@
 import { Pagination } from './../shared/utils/pagination.input';
-import { RequestContext } from './../shared/request.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { PostRepository } from './post.repository';
 import { AddPostInput } from './inputs/add-post.input';
@@ -8,6 +7,7 @@ import { LikePostInput } from './inputs/like-post.input';
 import { RemovePostInput } from './inputs/remove-post.input';
 import { ReportPostInput } from './inputs/report-post.input';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
+import { RequestContext } from 'src/shared/request.interface';
 
 @Injectable()
 export class PostService {
@@ -47,7 +47,7 @@ export class PostService {
 
   async getNewsFeed(pagination: Pagination) {
     if (this.request.currentUser.following.length === 0)
-      throw new BaseHttpException(this.request.lang, 605);
+      throw new BaseHttpException('EN', 605);
     return await this.postRepository.getNewsFeed(
       this.request.currentUser._id,
       pagination,
