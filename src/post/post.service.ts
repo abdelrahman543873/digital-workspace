@@ -46,11 +46,11 @@ export class PostService {
   }
 
   async getNewsFeed(pagination: Pagination) {
-    if (this.request.currentUser.following.length === 0)
-      throw new BaseHttpException('EN', 605);
-    return await this.postRepository.getNewsFeed(
+    const posts = await this.postRepository.getNewsFeed(
       this.request.currentUser._id,
       pagination,
     );
+    if (!posts.totalDocs) throw new BaseHttpException('EN', 605);
+    return posts;
   }
 }
