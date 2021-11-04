@@ -6,6 +6,7 @@ import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 import { REQUEST } from '@nestjs/core';
 import { RequestContext } from 'src/shared/request.interface';
 import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
+import { SearchUserInput } from './inputs/search-user.input';
 
 @Injectable()
 export class UserService {
@@ -27,6 +28,10 @@ export class UserService {
       this.request.currentUser._id,
       input,
     );
+  }
+
+  async searchUser(input: SearchUserInput) {
+    return await this.userRepo.searchUser(input);
   }
 
   async manageFollow(input: ManageFollowUserInput) {

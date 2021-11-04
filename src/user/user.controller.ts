@@ -1,10 +1,19 @@
 import { AuthGuard } from './../shared/guards/auth.guard';
 import { UserService } from './user.service';
-import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { AddUserInput } from './inputs/add-user.input';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
+import { SearchUserInput } from './inputs/search-user.input';
 
 @Controller('user')
 export class UserController {
@@ -22,6 +31,14 @@ export class UserController {
   @Put('favWidget')
   async addFavWidget(@Body() input: AddFavWidgetInput) {
     return await this.userService.addFavWidget(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @UseGuards(AuthGuard)
+  @Get('search')
+  async searchUser(@Query() input: SearchUserInput) {
+    return await this.userService.searchUser(input);
   }
 
   @ApiTags('user')
