@@ -16,7 +16,7 @@ export const LocalizedErrorMessages: IErrorMessage = {
     AR: 'invalid currency code',
   },
   605: {
-    EN: "you aren't following anyone",
-    AR: "you aren't following anyone",
+    EN: 'you have no posts to show',
+    AR: 'you have no posts to show',
   },
 };
