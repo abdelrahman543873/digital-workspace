@@ -10,6 +10,7 @@ import { buildUserParams } from './user.seed';
 import { TestUser, TestUserDocument } from './schema/test-user.schema';
 import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
+import { SearchUserInput } from './inputs/search-user.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -60,6 +61,13 @@ export class UserRepository extends BaseRepository<User> {
       { widgets: input.widgets },
       { new: true },
     );
+  }
+
+  async searchUser(input: SearchUserInput) {
+    return await this.userSchema.find({
+      ...(input.email && { email: { $regex: input.email } }),
+      ...(input.username && { username: { $regex: input.username } }),
+    });
   }
 
   async manageFollow(userId: ObjectId, input: ManageFollowUserInput) {
