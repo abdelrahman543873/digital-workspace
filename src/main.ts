@@ -45,7 +45,12 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   app.useGlobalPipes(
-    new ValidationPipe({ transform: true, forbidUnknownValues: true }),
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      stopAtFirstError: true,
+      forbidNonWhitelisted: true,
+    }),
   );
   app.useGlobalFilters(new BaseHttpExceptionFilter());
   SwaggerModule.setup('api', app, document);

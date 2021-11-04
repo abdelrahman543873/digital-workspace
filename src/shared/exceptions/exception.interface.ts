@@ -1,5 +1,5 @@
 export interface ExceptionInterface {
   statusCode: number;
-  message: Array<string> | string;
+  message: string;
   error: string;
 }

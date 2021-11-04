@@ -16,7 +16,14 @@ export enum LangEnum {
 
 export const GENDER = ['M', 'F'];
 export const DAY_NAMES = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
-export const WIDGETS = ['PRAYER', 'CURRENCY', 'TEMPERATURE'];
+export const WIDGETS = [
+  'PRAYER',
+  'CURRENCY',
+  'TEMPERATURE',
+  'MEETINGS',
+  'TASKS',
+];
 export enum LookupSchemasEnum {
   users = 'users',
+  posts = 'posts',
 }
