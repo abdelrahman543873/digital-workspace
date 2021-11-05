@@ -26,7 +26,7 @@ describe('get news feed suite case', () => {
     expect(res.body.statusCode).toBe(605);
   });
 
-  it('should get owned posts in the news feed ', async () => {
+  it('should get owned posts in the news feed and get users data', async () => {
     const user = await userFactory();
     const post = await postFactory({ userId: user._id });
     const res = await testRequest({
@@ -34,6 +34,7 @@ describe('get news feed suite case', () => {
       url: NEWS_FEED,
       token: user.token,
     });
+    expect(res.body.docs[0].user._id.toString()).toBe(user._id.toString());
     expect(res.body.docs[0]._id.toString()).toBe(post._id.toString());
   });
 });

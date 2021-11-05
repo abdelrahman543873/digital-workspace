@@ -96,6 +96,17 @@ export class PostRepository extends BaseRepository<Post> {
       {
         $project: { user: 0 },
       },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      {
+        $unwind: '$user',
+      },
     ]);
     return await this.postSchema.aggregatePaginate(aggregation, {
       sort: { createdAt: 1 },
