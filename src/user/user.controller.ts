@@ -14,6 +14,9 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
 import { SearchUserInput } from './inputs/search-user.input';
+import { Param } from '@nestjs/common';
+import { GetUserByIdInput } from './inputs/get-user-by-id.input';
+import { User } from './schema/user.schema';
 
 @Controller('user')
 export class UserController {
@@ -31,6 +34,14 @@ export class UserController {
   @Put('favWidget')
   async addFavWidget(@Body() input: AddFavWidgetInput) {
     return await this.userService.addFavWidget(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @UseGuards(AuthGuard)
+  @Get('userById/:id')
+  async getUserById(@Param() input: GetUserByIdInput): Promise<User> {
+    return await this.userService.getUserById(input);
   }
 
   @ApiBearerAuth()

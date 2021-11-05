@@ -11,6 +11,7 @@ import { TestUser, TestUserDocument } from './schema/test-user.schema';
 import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
 import { SearchUserInput } from './inputs/search-user.input';
+import { GetUserByIdInput } from './inputs/get-user-by-id.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -130,5 +131,9 @@ export class UserRepository extends BaseRepository<User> {
       ],
     );
     return await this.userSchema.findOne({ _id: userId });
+  }
+
+  async getUserById(input: GetUserByIdInput): Promise<User> {
+    return await this.userSchema.findOne({ _id: input.id });
   }
 }

@@ -7,6 +7,8 @@ import { REQUEST } from '@nestjs/core';
 import { RequestContext } from 'src/shared/request.interface';
 import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
 import { SearchUserInput } from './inputs/search-user.input';
+import { GetUserByIdInput } from './inputs/get-user-by-id.input';
+import { User } from './schema/user.schema';
 
 @Injectable()
 export class UserService {
@@ -39,5 +41,9 @@ export class UserService {
       this.request.currentUser._id,
       input,
     );
+  }
+
+  async getUserById(input: GetUserByIdInput): Promise<User> {
+    return await this.userRepo.getUserById(input);
   }
 }
