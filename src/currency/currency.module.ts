@@ -8,7 +8,8 @@ import { CurrencyRepository } from './currency.repository';
 
 @Module({
   imports: [
-    CacheModule.register({ ttl: 0 }),
+    // caching for a day in seconds
+    CacheModule.register({ ttl: 86400 }),
     HttpModule.registerAsync({
       useFactory: async (configService: ConfigService) => ({
         baseURL: configService.get<string>(ENV_VARIABLE_NAMES.CURRENCY_API),

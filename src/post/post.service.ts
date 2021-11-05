@@ -50,7 +50,7 @@ export class PostService {
       this.request.currentUser._id,
       pagination,
     );
-    if (!posts.totalDocs) throw new BaseHttpException('EN', 605);
+    if (!posts.totalDocs) throw new BaseHttpException(this.request.lang, 605);
     return posts;
   }
 }

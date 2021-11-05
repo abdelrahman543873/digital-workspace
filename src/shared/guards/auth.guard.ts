@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<RequestContext>();
     request.appContext = request['headers'];
-    request.lang = request?.appContext?.['accept-language'] ?? LangEnum.EN;
+    request.lang = (request?.appContext?.['lang'] as string) ?? LangEnum.EN;
     const currentUser = await this.helperService.getCurrentUser(
       request.appContext,
     );

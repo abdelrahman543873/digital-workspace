@@ -12,11 +12,16 @@ export class CurrencyRepository {
   ) {}
 
   async getConversions(input: GetCurrencyInput) {
-    const response = await firstValueFrom(
-      this.httpsService.get(
-        `/latest?access_key=${process.env.CURRENCY_API_KEY}`,
-      ),
-    );
+    const conversions = await this.cacheManager.get('conversions');
+    let response;
+    if (!conversions) {
+      response = await firstValueFrom(
+        this.httpsService.get(
+          `/latest?access_key=${process.env.CURRENCY_API_KEY}`,
+        ),
+      );
+      await this.cacheManager.set('conversions', response);
+    } else response = conversions;
     await this.cacheManager.set('currencies', Object.keys(response.data.rates));
     const base = response.data.rates[input.base];
     return await Object.keys(response.data.rates).map((currency) => {
