@@ -36,4 +36,4 @@ globalConfig.json
 !.vscode/extensions.json
 
 # public file
-client
+client/posts
