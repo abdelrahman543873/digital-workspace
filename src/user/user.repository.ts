@@ -35,7 +35,7 @@ export class UserRepository extends BaseRepository<User> {
 
   async seedUsers() {
     const verifyExistingTestUsers = await this.testUserSchema.findOne();
-    // if (verifyExistingTestUsers) return this.testUserSchema.find();
+    if (verifyExistingTestUsers) return this.testUserSchema.find();
     const users: User[] = [];
     for (let i = 0; i < 10; i++) {
       const params = buildUserParams();
