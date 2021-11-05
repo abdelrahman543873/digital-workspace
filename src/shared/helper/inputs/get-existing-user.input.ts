@@ -1,5 +1,4 @@
 import {
-  IsBoolean,
   IsEmail,
   IsLowercase,
   IsMongoId,
@@ -7,7 +6,6 @@ import {
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
-import { ObjectId } from 'mongoose';
 
 export class GetExistingUserInput {
   @IsOptional()
