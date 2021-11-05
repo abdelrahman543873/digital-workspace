@@ -11,12 +11,14 @@ import { CommentModule } from './comment/comment.module';
 import { ServicesModule } from './shared/services/services.module';
 import { AuthModule } from './shared/auth/auth.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRoot({
-      rootPath: './client',
+      rootPath: join(__dirname, '..', '..', 'client'),
+      renderPath: join(__dirname, '..', '..', 'client'),
     }),
     DataBaseModule,
     HelperModule,
