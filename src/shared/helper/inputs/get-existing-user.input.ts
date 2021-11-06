@@ -11,7 +11,7 @@ export class GetExistingUserInput {
   @IsOptional()
   @IsMongoId()
   @IsString()
-  _id?: ObjectId;
+  _id?: string;
 
   @IsOptional()
   @IsLowercase()
