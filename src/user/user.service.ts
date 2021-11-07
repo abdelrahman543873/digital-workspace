@@ -1,3 +1,4 @@
+import { Pagination } from './../shared/utils/pagination.input';
 import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { AddUserInput } from './inputs/add-user.input';
@@ -45,5 +46,12 @@ export class UserService {
 
   async getUserById(input: GetUserByIdInput): Promise<User> {
     return await this.userRepo.getUserById(input);
+  }
+
+  async recommendUsers(pagination: Pagination) {
+    return await this.userRepo.recommendUsers(
+      this.request.currentUser._id,
+      pagination,
+    );
   }
 }
