@@ -23,4 +23,19 @@ describe('add post suite case', () => {
     expect(res.body.userId).toBe(user._id.toString());
     expect(res.body.content).toBe(postParams.content);
   });
+
+  it('should add post without upload attachment', async () => {
+    const user = await userFactory();
+    const postParams = await buildPostParams({ userId: user._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_POST,
+      variables: {
+        content: postParams.content,
+      },
+      token: user.token,
+    });
+    expect(res.body.userId).toBe(user._id.toString());
+    expect(res.body.content).toBe(postParams.content);
+  });
 });
