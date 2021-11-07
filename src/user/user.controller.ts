@@ -17,6 +17,8 @@ import { SearchUserInput } from './inputs/search-user.input';
 import { Param } from '@nestjs/common';
 import { GetUserByIdInput } from './inputs/get-user-by-id.input';
 import { User } from './schema/user.schema';
+import { Pagination } from '../shared/utils/pagination.input';
+import { AggregatePaginateResult } from 'mongoose';
 
 @Controller('user')
 export class UserController {
@@ -50,6 +52,14 @@ export class UserController {
   @Get('search')
   async searchUser(@Query() input: SearchUserInput) {
     return await this.userService.searchUser(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @UseGuards(AuthGuard)
+  @Get('recommendations')
+  async recommendUsers(@Query() pagination: Pagination) {
+    return await this.userService.recommendUsers(pagination);
   }
 
   @ApiTags('user')

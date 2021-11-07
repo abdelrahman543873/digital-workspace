@@ -1,7 +1,9 @@
+import { Pagination } from './../shared/utils/pagination.input';
+import { LookupSchemasEnum } from './../app.const';
 import { hashPass } from './../shared/utils/bcryptHelper';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId, Types } from 'mongoose';
+import { AggregatePaginateModel, Model, ObjectId, Types } from 'mongoose';
 import { User, UserDocument } from './schema/user.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { AddUserInput } from './inputs/add-user.input';
@@ -15,7 +17,8 @@ import { GetUserByIdInput } from './inputs/get-user-by-id.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
-    @InjectModel(User.name) private userSchema: Model<UserDocument>,
+    @InjectModel(User.name)
+    private userSchema: AggregatePaginateModel<UserDocument>,
     @InjectModel(TestUser.name) private testUserSchema: Model<TestUserDocument>,
   ) {
     super(userSchema);
@@ -135,5 +138,52 @@ export class UserRepository extends BaseRepository<User> {
 
   async getUserById(input: GetUserByIdInput): Promise<User> {
     return await this.userSchema.findOne({ _id: input.id });
+  }
+
+  async recommendUsers(userId: ObjectId, pagination: Pagination) {
+    const aggregation = this.userSchema.aggregate([
+      {
+        $match: {
+          _id: userId,
+        },
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          let: { usersFollowers: '$following', loggedUserId: '$_id' },
+          pipeline: [
+            {
+              $addFields: {
+                commonToBoth: {
+                  $setIntersection: ['$$usersFollowers', '$followers'],
+                },
+              },
+            },
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $gte: [{ $size: '$commonToBoth' }, 1] },
+                    { $not: { $in: ['$$loggedUserId', '$followers'] } },
+                  ],
+                },
+              },
+            },
+            {
+              $project: { commonToBoth: 0 },
+            },
+          ],
+          as: 'users',
+        },
+      },
+      { $project: { users: 1, _id: 0 } },
+      { $unwind: '$users' },
+      { $replaceRoot: { newRoot: '$users' } },
+    ]);
+    return await this.userSchema.aggregatePaginate(aggregation, {
+      sort: { createdAt: 1 },
+      offset: pagination.offset * pagination.limit,
+      limit: pagination.limit,
+    });
   }
 }
