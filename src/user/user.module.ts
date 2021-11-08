@@ -5,6 +5,9 @@ import { UserRepository } from './user.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schema/user.schema';
 import { TestUser, TestUserSchema } from './schema/test-user.schema';
+import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { filename } from '../shared/utils/multer-file-name copy';
 
 @Module({
   imports: [
@@ -12,6 +15,13 @@ import { TestUser, TestUserSchema } from './schema/test-user.schema';
       { name: User.name, schema: UserSchema },
       { name: TestUser.name, schema: TestUserSchema },
     ]),
+    MulterModule.register({
+      preservePath: true,
+      storage: diskStorage({
+        destination: './client/posts',
+        filename,
+      }),
+    }),
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository],

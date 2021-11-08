@@ -1,3 +1,4 @@
+import { JoiValidationPipe } from './../shared/pipes/joi.pipe';
 import { AuthGuard } from './../shared/guards/auth.guard';
 import { UserService } from './user.service';
 import {
@@ -8,9 +9,12 @@ import {
   Put,
   UseGuards,
   Query,
+  UseInterceptors,
+  UploadedFiles,
+  UsePipes,
 } from '@nestjs/common';
 import { AddUserInput } from './inputs/add-user.input';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
 import { SearchUserInput } from './inputs/search-user.input';
@@ -18,8 +22,10 @@ import { Param } from '@nestjs/common';
 import { GetUserByIdInput } from './inputs/get-user-by-id.input';
 import { User } from './schema/user.schema';
 import { Pagination } from '../shared/utils/pagination.input';
-import { AggregatePaginateResult } from 'mongoose';
-
+import { UpdateUserInput } from './inputs/update-user.input';
+import { UpdateUserSwagger } from './swagger/update-user.swagger';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { UpdateUserJoi } from './joi/update-user.joi';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -28,6 +34,30 @@ export class UserController {
   @Post('register')
   async addUser(@Body() input: AddUserInput) {
     return await this.userService.addUser(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody(UpdateUserSwagger)
+  @UseGuards(AuthGuard)
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'profilePic', maxCount: 1 },
+      { name: 'coverPic', maxCount: 1 },
+    ]),
+  )
+  @UsePipes(new JoiValidationPipe(UpdateUserJoi, true))
+  @Put('update')
+  async updateUser(
+    @Body() input: UpdateUserInput,
+    @UploadedFiles()
+    files: {
+      profilePic?: Express.Multer.File[];
+      coverPic?: Express.Multer.File[];
+    },
+  ) {
+    return await this.userService.updateUser(input, files);
   }
 
   @ApiBearerAuth()

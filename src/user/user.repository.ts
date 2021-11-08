@@ -14,6 +14,7 @@ import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
 import { SearchUserInput } from './inputs/search-user.input';
 import { GetUserByIdInput } from './inputs/get-user-by-id.input';
+import { UpdateUserInput } from './inputs/update-user.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -163,6 +164,13 @@ export class UserRepository extends BaseRepository<User> {
               $match: {
                 $expr: {
                   $and: [
+                    {
+                      $cond: [
+                        { $ifNull: ['$commonToBoth', false] }, // if
+                        true,
+                        false,
+                      ],
+                    },
                     { $gte: [{ $size: '$commonToBoth' }, 1] },
                     { $not: { $in: ['$$loggedUserId', '$followers'] } },
                   ],
@@ -185,5 +193,30 @@ export class UserRepository extends BaseRepository<User> {
       offset: pagination.offset * pagination.limit,
       limit: pagination.limit,
     });
+  }
+
+  async updateUser(
+    userId: ObjectId,
+    input: UpdateUserInput,
+    files: {
+      profilePic?: Express.Multer.File[];
+      coverPic?: Express.Multer.File[];
+    },
+  ) {
+    const { newPassword, ...filteredInput } = input;
+    return await this.userSchema.findOneAndUpdate(
+      { _id: userId },
+      {
+        ...filteredInput,
+        directManagerId: input.directManagerId as ObjectId,
+        ...(newPassword && { password: hashPassSync(newPassword) }),
+        ...(files.coverPic?.[0] && {
+          coverPic: `${process.env.HOST}pictures/${files.coverPic[0].filename}`,
+        }),
+        ...(files.profilePic?.[0] && {
+          profilePic: `${process.env.HOST}pictures/${files.profilePic[0].filename}`,
+        }),
+      },
+    );
   }
 }

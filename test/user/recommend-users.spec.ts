@@ -31,4 +31,14 @@ describe('recommend users suite case', () => {
     });
     expect(res.body.totalDocs).toBe(0);
   });
+
+  it("shouldn't recommend users where one user is present", async () => {
+    const user = await userFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: RECOMMEND_USERS,
+      token: user.token,
+    });
+    expect(res.body.totalDocs).toBe(0);
+  });
 });
