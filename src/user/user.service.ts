@@ -10,6 +10,7 @@ import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
 import { SearchUserInput } from './inputs/search-user.input';
 import { GetUserByIdInput } from './inputs/get-user-by-id.input';
 import { User } from './schema/user.schema';
+import { UpdateUserInput } from './inputs/update-user.input';
 
 @Injectable()
 export class UserService {
@@ -22,6 +23,21 @@ export class UserService {
     user.token = generateAuthToken(user._id);
     return user;
   }
+
+  async updateUser(
+    input: UpdateUserInput,
+    files: {
+      profilePic?: Express.Multer.File[];
+      coverPic?: Express.Multer.File[];
+    },
+  ) {
+    return await this.userRepo.updateUser(
+      this.request.currentUser._id,
+      input,
+      files,
+    );
+  }
+
   async getTestUsers() {
     return await this.userRepo.getTestUsers();
   }
