@@ -4,6 +4,44 @@ import { GENDER } from '../../app.const';
 
 export type UserDocument = User & Document;
 
+@Schema({ versionKey: false, _id: false })
+export class Experience {
+  @Prop()
+  position: string;
+
+  @Prop({ type: Date })
+  startDate: Date;
+
+  @Prop({ type: Date })
+  endDate: Date;
+}
+
+const ExperienceSchema = SchemaFactory.createForClass(Experience);
+
+@Schema({ versionKey: false, _id: false })
+export class Education {
+  @Prop()
+  level: string;
+
+  @Prop({ type: Date })
+  startDate: Date;
+
+  @Prop({ type: Date })
+  endDate: Date;
+}
+
+const EducationSchema = SchemaFactory.createForClass(Education);
+
+@Schema({ versionKey: false, _id: false })
+export class Skill {
+  @Prop()
+  percentage: number;
+
+  @Prop()
+  name: string;
+}
+
+const SkillSchema = SchemaFactory.createForClass(Skill);
 @Schema({ versionKey: false, timestamps: true })
 export class User {
   _id?: ObjectId;
@@ -22,8 +60,14 @@ export class User {
   @Prop()
   username: string;
 
-  @Prop()
-  experience: string;
+  @Prop({ type: [ExperienceSchema] })
+  experience: Experience[];
+
+  @Prop({ type: [EducationSchema] })
+  education: Education[];
+
+  @Prop({ type: [SkillSchema] })
+  skill: Skill[];
 
   @Prop()
   description: string;

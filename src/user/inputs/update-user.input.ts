@@ -1,11 +1,16 @@
+import { Type } from 'class-transformer';
 import {
+  ArrayNotEmpty,
+  IsArray,
   IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
   Min,
+  ValidateNested,
 } from 'class-validator';
 import { ObjectId } from 'mongoose';
+import { Experience, Skill, Education } from '../schema/user.schema';
 
 export class UpdateUserInput {
   @IsOptional()
@@ -26,9 +31,25 @@ export class UpdateUserInput {
   newPassword?: string;
 
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  experience?: string;
+  @IsArray()
+  @ArrayNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => Experience)
+  experience?: Experience[];
+
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => Skill)
+  skill?: Skill[];
+
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => Education)
+  education?: Education[];
 
   @IsOptional()
   @IsString()
