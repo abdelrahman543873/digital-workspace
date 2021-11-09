@@ -132,7 +132,7 @@ export class PostRepository extends BaseRepository<Post> {
       },
     ]);
     return await this.postSchema.aggregatePaginate(aggregation, {
-      sort: { createdAt: 1 },
+      sort: { createdAt: -1 },
       offset: pagination.offset * pagination.limit,
       limit: pagination.limit,
     });
