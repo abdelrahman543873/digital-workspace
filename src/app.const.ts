@@ -26,4 +26,5 @@ export const WIDGETS = [
 export enum LookupSchemasEnum {
   users = 'users',
   posts = 'posts',
+  comments = 'comments',
 }
