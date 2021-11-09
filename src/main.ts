@@ -39,7 +39,7 @@ async function bootstrap() {
     .addTag('weather', 'weather api routes')
     .addTag('prayer', 'prayer api routes')
     .addTag('currency', 'currency api routes')
-    .addTag('user', 'user api routes')
+    .addTag('user', 'user routes')
     .addTag('comment', 'comment routes')
     .addTag('authentication', 'authentication routes')
     .addBearerAuth()
