@@ -49,6 +49,10 @@ export class UserService {
     );
   }
 
+  getMyProfile() {
+    return this.request.currentUser;
+  }
+
   async searchUser(input: SearchUserInput) {
     return await this.userRepo.searchUser(input);
   }

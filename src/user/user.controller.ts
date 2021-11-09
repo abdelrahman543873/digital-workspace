@@ -71,6 +71,14 @@ export class UserController {
   @ApiBearerAuth()
   @ApiTags('user')
   @UseGuards(AuthGuard)
+  @Get('myProfile')
+  async getMyProfile() {
+    return this.userService.getMyProfile();
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @UseGuards(AuthGuard)
   @Get('userById/:id')
   async getUserById(@Param() input: GetUserByIdInput): Promise<User> {
     return await this.userService.getUserById(input);

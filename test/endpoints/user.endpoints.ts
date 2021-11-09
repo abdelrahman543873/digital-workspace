@@ -6,3 +6,4 @@ export const SEARCH_USER = '/user/search';
 export const GET_USER_BY_ID = '/user/userById';
 export const RECOMMEND_USERS = '/user/recommendations';
 export const UPDATE_USER = '/user/update';
+export const GET_MY_PROFILE = '/user/myProfile';
