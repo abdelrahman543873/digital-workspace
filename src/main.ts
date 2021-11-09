@@ -53,10 +53,7 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  app.useGlobalFilters(
-    new BaseHttpExceptionFilter(),
-    new AllExceptionsFilter(),
-  );
+  app.useGlobalFilters(new BaseHttpExceptionFilter());
   SwaggerModule.setup('api', app, document);
   app.enableCors();
   await app.listen(3000);

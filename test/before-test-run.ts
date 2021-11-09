@@ -22,10 +22,6 @@ export const moduleRef = async (): Promise<TestingModule> => {
         provide: APP_FILTER,
         useClass: BaseHttpExceptionFilter,
       },
-      {
-        provide: APP_FILTER,
-        useClass: AllExceptionsFilter,
-      },
     ],
   })
     .overrideProvider(SeedUsersServices)
