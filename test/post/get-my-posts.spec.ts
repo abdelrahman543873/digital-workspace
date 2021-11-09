@@ -16,4 +16,14 @@ describe('get my posts suite case', () => {
     });
     expect(res.body.docs[0]._id.toString()).toBe(post._id.toString());
   });
+
+  it('should get my posts if there are no posts', async () => {
+    const user = await userFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: GET_MY_POSTS,
+      token: user.token,
+    });
+    expect(res.body.totalDocs).toBe(0);
+  });
 });

@@ -77,6 +77,6 @@ export class PostController {
   @UseGuards(AuthGuard)
   @Get('myPosts')
   async getMyPosts(@Query() pagination: Pagination) {
-    return await this.postService.getNewsFeed(pagination);
+    return await this.postService.getMyPosts(pagination);
   }
 }

@@ -59,7 +59,9 @@ export class PostRepository extends BaseRepository<Post> {
   }
 
   async removePost(userId: ObjectId, input: RemovePostInput) {
-    return await this.postSchema.deleteOne({ userId, id: input.postId });
+    return await this.postSchema.deleteOne({
+      $and: [{ userId }, { _id: new Types.ObjectId(input.postId) }],
+    });
   }
 
   async reportPost(userId: ObjectId, input: ReportPostInput) {
@@ -128,7 +130,7 @@ export class PostRepository extends BaseRepository<Post> {
   async getMyPosts(userId: ObjectId, pagination: Pagination) {
     const aggregation = this.postSchema.aggregate([
       {
-        match: { userId },
+        $match: { userId },
       },
     ]);
     return await this.postSchema.aggregatePaginate(aggregation, {
