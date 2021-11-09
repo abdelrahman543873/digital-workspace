@@ -6,6 +6,7 @@ import { format, transports } from 'winston';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { BaseHttpExceptionFilter } from './shared/exceptions/base-http-exception-filter';
+import { AllExceptionsFilter } from './shared/exceptions/generic-error-exception-filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -52,7 +53,10 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  app.useGlobalFilters(new BaseHttpExceptionFilter());
+  app.useGlobalFilters(
+    new BaseHttpExceptionFilter(),
+    new AllExceptionsFilter(),
+  );
   SwaggerModule.setup('api', app, document);
   app.enableCors();
   await app.listen(3000);

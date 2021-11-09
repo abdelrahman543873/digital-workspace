@@ -4,6 +4,7 @@ import { AppModule } from '../src/app.module';
 import { SeedUsersServices } from '../src/shared/services/seed-users.service';
 import { APP_FILTER } from '@nestjs/core';
 import { BaseHttpExceptionFilter } from '../src/shared/exceptions/base-http-exception-filter';
+import { AllExceptionsFilter } from '../src/shared/exceptions/generic-error-exception-filter';
 
 export let app: INestApplication;
 
@@ -20,6 +21,10 @@ export const moduleRef = async (): Promise<TestingModule> => {
       {
         provide: APP_FILTER,
         useClass: BaseHttpExceptionFilter,
+      },
+      {
+        provide: APP_FILTER,
+        useClass: AllExceptionsFilter,
       },
     ],
   })
