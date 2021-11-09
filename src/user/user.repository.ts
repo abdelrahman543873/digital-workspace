@@ -210,13 +210,14 @@ export class UserRepository extends BaseRepository<User> {
         ...filteredInput,
         directManagerId: input.directManagerId as ObjectId,
         ...(newPassword && { password: hashPassSync(newPassword) }),
-        ...(files.coverPic?.[0] && {
+        ...(files?.coverPic && {
           coverPic: `${process.env.HOST}pictures/${files.coverPic[0].filename}`,
         }),
-        ...(files.profilePic?.[0] && {
+        ...(files?.profilePic && {
           profilePic: `${process.env.HOST}pictures/${files.profilePic[0].filename}`,
         }),
       },
+      { new: true },
     );
   }
 }
