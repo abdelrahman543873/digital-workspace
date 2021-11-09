@@ -7,7 +7,7 @@ describe('search user suite case', () => {
     const user = await userFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${SEARCH_USER}?email=${user.email}`,
+      url: `${SEARCH_USER}?keyword=${user.email}`,
       token: user.token,
     });
     expect(res.body[0]._id.toString()).toBe(user._id.toString());
@@ -17,7 +17,7 @@ describe('search user suite case', () => {
     const user = await userFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${SEARCH_USER}?username=${user.username}`,
+      url: `${SEARCH_USER}?keyword=${user.username}`,
       token: user.token,
     });
     expect(res.body[0]._id.toString()).toBe(user._id.toString());
@@ -27,7 +27,7 @@ describe('search user suite case', () => {
     const user = await userFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${SEARCH_USER}?username=${user.username.substr(3)}`,
+      url: `${SEARCH_USER}?keyword=${user.username.substr(3)}`,
       token: user.token,
     });
     expect(res.body[0]._id.toString()).toBe(user._id.toString());

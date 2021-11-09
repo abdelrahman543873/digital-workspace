@@ -70,8 +70,10 @@ export class UserRepository extends BaseRepository<User> {
 
   async searchUser(input: SearchUserInput) {
     return await this.userSchema.find({
-      ...(input.email && { email: { $regex: input.email } }),
-      ...(input.username && { username: { $regex: input.username } }),
+      $or: [
+        { email: { $regex: input.keyword } },
+        { username: { $regex: input.keyword } },
+      ],
     });
   }
 
