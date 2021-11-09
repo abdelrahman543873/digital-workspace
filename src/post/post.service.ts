@@ -53,4 +53,11 @@ export class PostService {
     if (!posts.totalDocs) throw new BaseHttpException(this.request.lang, 605);
     return posts;
   }
+
+  async getMyPosts(pagination: Pagination) {
+    return await this.postRepository.getMyPosts(
+      this.request.currentUser._id,
+      pagination,
+    );
+  }
 }

@@ -71,4 +71,12 @@ export class PostController {
   async getNewsFeed(@Query() pagination: Pagination) {
     return await this.postService.getNewsFeed(pagination);
   }
+
+  @ApiBearerAuth()
+  @ApiTags('post')
+  @UseGuards(AuthGuard)
+  @Get('myPosts')
+  async getMyPosts(@Query() pagination: Pagination) {
+    return await this.postService.getNewsFeed(pagination);
+  }
 }

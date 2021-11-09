@@ -124,4 +124,17 @@ export class PostRepository extends BaseRepository<Post> {
       limit: pagination.limit,
     });
   }
+
+  async getMyPosts(userId: ObjectId, pagination: Pagination) {
+    const aggregation = this.postSchema.aggregate([
+      {
+        match: { userId },
+      },
+    ]);
+    return await this.postSchema.aggregatePaginate(aggregation, {
+      sort: { createdAt: 1 },
+      offset: pagination.offset * pagination.limit,
+      limit: pagination.limit,
+    });
+  }
 }
