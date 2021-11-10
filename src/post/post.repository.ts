@@ -132,6 +132,14 @@ export class PostRepository extends BaseRepository<Post> {
       {
         $match: { userId },
       },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.comments,
+          localField: '_id',
+          foreignField: 'post',
+          as: 'comments',
+        },
+      },
       { $sort: { createdAt: -1 } },
     ]);
     return await this.postSchema.aggregatePaginate(aggregation, {
