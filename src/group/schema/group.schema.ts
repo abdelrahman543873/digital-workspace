@@ -10,7 +10,7 @@ export class Group {
   @Prop({ type: Types.ObjectId, ref: 'User' })
   admin: ObjectId;
 
-  @Prop()
+  @Prop({ unique: true })
   name: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
