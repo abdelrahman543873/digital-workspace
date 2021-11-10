@@ -74,4 +74,8 @@ export class UserService {
       pagination,
     );
   }
+
+  async getStats() {
+    return await this.userRepo.getStats(this.request.currentUser._id);
+  }
 }

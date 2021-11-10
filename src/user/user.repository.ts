@@ -222,4 +222,82 @@ export class UserRepository extends BaseRepository<User> {
       { new: true },
     );
   }
+
+  async getStats(userId: ObjectId) {
+    return (
+      await this.userSchema.aggregate([
+        {
+          $match: {
+            $expr: { $eq: [userId, '$_id'] },
+          },
+        },
+        {
+          $addFields: { followers: { $size: '$followers' } },
+        },
+        {
+          $lookup: {
+            from: LookupSchemasEnum.posts,
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: [userId, '$userId'],
+                  },
+                },
+              },
+            ],
+            as: 'posts',
+          },
+        },
+        {
+          $addFields: { posts: { $size: '$posts' } },
+        },
+        {
+          $lookup: {
+            from: LookupSchemasEnum.groups,
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $in: [userId, '$members'],
+                  },
+                },
+              },
+            ],
+            as: 'groups',
+          },
+        },
+        {
+          $addFields: { groups: { $size: '$groups' } },
+        },
+        {
+          $lookup: {
+            from: LookupSchemasEnum.pages,
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $in: [userId, '$likes'],
+                  },
+                },
+              },
+            ],
+            as: 'likes',
+          },
+        },
+        {
+          $addFields: { likes: { $size: '$likes' } },
+        },
+        {
+          $project: {
+            likes: 1,
+            groups: 1,
+            posts: 1,
+            followers: 1,
+            _id: 0,
+          },
+        },
+      ])
+    )[0];
+  }
 }

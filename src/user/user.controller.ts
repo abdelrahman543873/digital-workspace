@@ -113,4 +113,12 @@ export class UserController {
   async manageFollow(@Body() input: ManageFollowUserInput) {
     return await this.userService.manageFollow(input);
   }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @UseGuards(AuthGuard)
+  @Get('stats')
+  async getStats() {
+    return await this.userService.getStats();
+  }
 }

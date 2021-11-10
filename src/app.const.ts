@@ -27,4 +27,6 @@ export enum LookupSchemasEnum {
   users = 'users',
   posts = 'posts',
   comments = 'comments',
+  groups = 'groups',
+  pages = 'pages',
 }
