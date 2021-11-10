@@ -2,15 +2,18 @@ import { ObjectId } from 'mongoose';
 import { userFactory } from '../user/user.factory';
 import { Page } from './schema/page.schema';
 import { PageRepo } from '../../test/page/page-test-repo';
+import { name } from 'faker';
 
 interface PageType {
   admin?: ObjectId;
+  name?: string;
   likes?: ObjectId[];
 }
 
 export const buildPageParams = async (obj: PageType = {}): Promise<Page> => {
   const userId = (await userFactory())._id;
   return {
+    name: obj.name || name.title(),
     admin: obj.admin || userId,
     likes: obj.likes || [userId],
   };

@@ -17,4 +17,27 @@ describe('page manage like suite case', () => {
     });
     expect(res.body.likes[1].toString()).toBe(user._id.toString());
   });
+
+  it('should dislike page', async () => {
+    const user = await userFactory();
+    const page = await pageFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: MANAGE_LIKE_PAGE,
+      variables: {
+        pageId: page._id.toString(),
+      },
+      token: user.token,
+    });
+    expect(res.body.likes[1].toString()).toBe(user._id.toString());
+    const res2 = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: MANAGE_LIKE_PAGE,
+      variables: {
+        pageId: page._id.toString(),
+      },
+      token: user.token,
+    });
+    expect(res2.body.likes.length).toBe(1);
+  });
 });

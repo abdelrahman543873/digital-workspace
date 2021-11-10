@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { RequestContext } from 'src/shared/request.interface';
+import { CreatePageInput } from './inputs/create-page.input';
 import { ManageLikePageInput } from './inputs/manage-like-page.input';
 import { PageRepository } from './page.repository';
 
@@ -12,6 +13,13 @@ export class PageService {
   ) {}
   async manageLikePage(input: ManageLikePageInput) {
     return await this.pageRepository.manageLikePage(
+      this.request.currentUser._id,
+      input,
+    );
+  }
+
+  async createPage(input: CreatePageInput) {
+    return await this.pageRepository.createPage(
       this.request.currentUser._id,
       input,
     );

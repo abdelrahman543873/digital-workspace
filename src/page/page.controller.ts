@@ -3,6 +3,7 @@ import { Body, Controller, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ManageLikePageInput } from './inputs/manage-like-page.input';
 import { PageService } from './page.service';
+import { CreatePageInput } from './inputs/create-page.input';
 
 @Controller('page')
 export class PageController {
@@ -14,5 +15,13 @@ export class PageController {
   @Put('manageLike')
   async manageLikePage(@Body() input: ManageLikePageInput) {
     return await this.pageService.manageLikePage(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('page')
+  @UseGuards(AuthGuard)
+  @Put('create')
+  async createPage(@Body() input: CreatePageInput) {
+    return await this.pageService.createPage(input);
   }
 }

@@ -10,6 +10,9 @@ export class Page {
   @Prop({ type: Types.ObjectId, ref: 'User' })
   admin: ObjectId;
 
+  @Prop()
+  name: string;
+
   @Prop({ type: [Types.ObjectId] })
   likes: ObjectId[];
 }

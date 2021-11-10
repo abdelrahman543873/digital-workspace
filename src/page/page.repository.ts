@@ -4,6 +4,7 @@ import { BaseRepository } from '../shared/generics/repository.abstract';
 import { ManageLikePageInput } from './inputs/manage-like-page.input';
 import { InjectModel } from '@nestjs/mongoose';
 import { AggregatePaginateModel, ObjectId } from 'mongoose';
+import { CreatePageInput } from './inputs/create-page.input';
 
 @Injectable()
 export class PageRepository extends BaseRepository<Page> {
@@ -34,5 +35,9 @@ export class PageRepository extends BaseRepository<Page> {
       },
     ]);
     return await this.pageSchema.findOne({ _id: input.pageId });
+  }
+
+  async createPage(userId: ObjectId, input: CreatePageInput) {
+    return await this.pageSchema.create({ admin: userId, ...input });
   }
 }
