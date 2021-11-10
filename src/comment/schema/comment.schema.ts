@@ -3,7 +3,7 @@ import { Document, ObjectId, Types } from 'mongoose';
 
 export type CommentDocument = Comment & Document;
 
-@Schema({ versionKey: false })
+@Schema({ versionKey: false, timestamps: true })
 export class Comment {
   _id?: ObjectId;
 

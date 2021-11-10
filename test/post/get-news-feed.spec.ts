@@ -47,6 +47,7 @@ describe('get news feed suite case', () => {
       url: NEWS_FEED,
       token: follower.token,
     });
+    expect(res.body.docs[0].comments[0].commenter).toHaveProperty('profilePic');
     expect(res.body.docs[0].comments[0].content).toBe(comment.content);
     expect(res.body.docs[0]._id).toBe(post._id.toString());
   });
