@@ -1,10 +1,11 @@
-import { Injectable, Post } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Page, PageDocument } from './schema/page.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { ManageLikePageInput } from './inputs/manage-like-page.input';
 import { InjectModel } from '@nestjs/mongoose';
-import { AggregatePaginateModel, ObjectId } from 'mongoose';
+import { AggregatePaginateModel, ObjectId, Types } from 'mongoose';
 import { CreatePageInput } from './inputs/create-page.input';
+import { Pagination } from '../shared/utils/pagination.input';
 
 @Injectable()
 export class PageRepository extends BaseRepository<Page> {
@@ -39,5 +40,19 @@ export class PageRepository extends BaseRepository<Page> {
 
   async createPage(userId: ObjectId, input: CreatePageInput) {
     return await this.pageSchema.create({ admin: userId, ...input });
+  }
+
+  async getLikedPages(userId: ObjectId, pagination: Pagination) {
+    const aggregation = this.pageSchema.aggregate([
+      {
+        $match: {
+          $expr: { $in: [userId, '$likes'] },
+        },
+      },
+    ]);
+    return await this.pageSchema.aggregatePaginate(aggregation, {
+      offset: pagination.offset * pagination.limit,
+      limit: pagination.limit,
+    });
   }
 }

@@ -1,3 +1,4 @@
+import { Pagination } from './../shared/utils/pagination.input';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { RequestContext } from 'src/shared/request.interface';
@@ -22,6 +23,13 @@ export class PageService {
     return await this.pageRepository.createPage(
       this.request.currentUser._id,
       input,
+    );
+  }
+
+  async getLikedPages(pagination: Pagination) {
+    return await this.pageRepository.getLikedPages(
+      this.request.currentUser._id,
+      pagination,
     );
   }
 }

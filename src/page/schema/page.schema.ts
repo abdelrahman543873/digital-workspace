@@ -13,7 +13,7 @@ export class Page {
   @Prop()
   name: string;
 
-  @Prop({ type: [Types.ObjectId] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
   likes: ObjectId[];
 }
 
