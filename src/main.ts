@@ -6,7 +6,6 @@ import { format, transports } from 'winston';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { BaseHttpExceptionFilter } from './shared/exceptions/base-http-exception-filter';
-import { AllExceptionsFilter } from './shared/exceptions/generic-error-exception-filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -40,6 +39,7 @@ async function bootstrap() {
     .addTag('prayer', 'prayer api routes')
     .addTag('currency', 'currency api routes')
     .addTag('user', 'user routes')
+    .addTag('page', 'page routes')
     .addTag('comment', 'comment routes')
     .addTag('authentication', 'authentication routes')
     .addBearerAuth()
