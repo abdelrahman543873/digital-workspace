@@ -6,12 +6,16 @@ interface ExperienceType {
   startDate?: Date;
   endDate?: Date;
   position?: string;
+  name?: string;
+  logo?: string;
 }
 
 interface EducationType {
   startDate?: Date;
   endDate?: Date;
   level?: string;
+  name?: string;
+  logo?: string;
 }
 
 interface SkillType {
@@ -40,6 +44,8 @@ export interface UserType {
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
   return {
+    name: obj.name || name.title(),
+    logo: obj.logo || `${process.env.HOST}defaults/avatar.jpg`,
     position: obj.position || name.jobTitle(),
     endDate: obj.endDate || date.future(),
     startDate: obj.startDate || date.past(),
@@ -48,6 +54,8 @@ const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
 
 const buildEducationParams = (obj: EducationType = {}): Education => {
   return {
+    name: obj.name || name.title(),
+    logo: obj.logo || `${process.env.HOST}defaults/avatar.jpg`,
     level: obj.level || name.jobTitle(),
     endDate: obj.endDate || date.future(),
     startDate: obj.startDate || date.past(),

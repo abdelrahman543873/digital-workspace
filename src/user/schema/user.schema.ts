@@ -7,6 +7,12 @@ export type UserDocument = User & Document;
 @Schema({ versionKey: false, _id: false })
 export class Experience {
   @Prop()
+  logo: string;
+
+  @Prop()
+  name: string;
+
+  @Prop()
   position: string;
 
   @Prop({ type: Date })
@@ -20,6 +26,12 @@ const ExperienceSchema = SchemaFactory.createForClass(Experience);
 
 @Schema({ versionKey: false, _id: false })
 export class Education {
+  @Prop()
+  logo: string;
+
+  @Prop()
+  name: string;
+
   @Prop()
   level: string;
 
