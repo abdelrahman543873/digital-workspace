@@ -5,7 +5,7 @@ import { NEWS_FEED } from '../endpoints/post.endpoints';
 import { postFactory } from '../../src/post/post.factory';
 import { commentFactory } from '../../src/comment/comment.factory';
 describe('get news feed suite case', () => {
-  it('should get news feed suite case', async () => {
+  it('should get news feed', async () => {
     const followed = await userFactory();
     const follower = await userFactory({ following: [followed._id] });
     const post = await postFactory({ userId: followed._id });
@@ -15,6 +15,26 @@ describe('get news feed suite case', () => {
       token: follower.token,
     });
     expect(res.body.docs[0]._id).toBe(post._id.toString());
+  });
+
+  it('should get news feed in recent order', async () => {
+    const followed = await userFactory();
+    const follower = await userFactory({ following: [followed._id] });
+    const oldPost = await postFactory({
+      userId: followed._id,
+      createdAt: new Date('2020-11-10T07:42:41.910Z'),
+    });
+    const recentPost = await postFactory({
+      userId: followed._id,
+      createdAt: new Date(),
+    });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: NEWS_FEED,
+      token: follower.token,
+    });
+    expect(res.body.docs[0]._id).toBe(recentPost._id.toString());
+    expect(res.body.docs[1]._id).toBe(oldPost._id.toString());
   });
 
   it('should get news feeds with comments', async () => {

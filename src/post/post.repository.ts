@@ -119,9 +119,9 @@ export class PostRepository extends BaseRepository<Post> {
           as: 'comments',
         },
       },
+      { $sort: { createdAt: -1 } },
     ]);
     return await this.postSchema.aggregatePaginate(aggregation, {
-      sort: { createdAt: 1 },
       offset: pagination.offset * pagination.limit,
       limit: pagination.limit,
     });
@@ -132,9 +132,9 @@ export class PostRepository extends BaseRepository<Post> {
       {
         $match: { userId },
       },
+      { $sort: { createdAt: -1 } },
     ]);
     return await this.postSchema.aggregatePaginate(aggregation, {
-      sort: { createdAt: -1 },
       offset: pagination.offset * pagination.limit,
       limit: pagination.limit,
     });

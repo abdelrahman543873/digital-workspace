@@ -10,6 +10,8 @@ interface PostType {
   likes?: ObjectId[];
   attachments?: string[];
   reports?: Report[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export const buildPostParams = async (obj: PostType = {}): Promise<Post> => {
@@ -22,6 +24,8 @@ export const buildPostParams = async (obj: PostType = {}): Promise<Post> => {
     reports: obj.reports || [
       { userId, reason: faker.commerce.productDescription() },
     ],
+    createdAt: obj.createdAt,
+    updatedAt: obj.createdAt,
   };
 };
 

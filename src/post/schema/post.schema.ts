@@ -32,6 +32,10 @@ export class Post {
 
   @Prop({ type: [ReportSchema] })
   reports: Report[];
+
+  createdAt: Date;
+
+  updatedAt: Date;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
