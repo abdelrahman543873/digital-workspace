@@ -1,4 +1,3 @@
-import { LookupSchemasEnum } from './../app.const';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId, Types } from 'mongoose';
@@ -19,7 +18,7 @@ export class CommentRepository extends BaseRepository<Comment> {
   async postComment(commenter: ObjectId, input: PostCommentInput) {
     return await this.commentSchema.create({
       commenter,
-      post: input.postId,
+      post: new Types.ObjectId(input.postId),
       content: input.content,
     });
   }
