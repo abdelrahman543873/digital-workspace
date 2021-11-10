@@ -13,6 +13,7 @@ import { AuthModule } from './shared/auth/auth.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { PageModule } from './page/page.module';
+import { GroupModule } from './group/group.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { PageModule } from './page/page.module';
     ServicesModule,
     AuthModule,
     PageModule,
+    GroupModule,
   ],
 })
 export class AppModule {}

@@ -39,6 +39,7 @@ async function bootstrap() {
     .addTag('prayer', 'prayer api routes')
     .addTag('currency', 'currency api routes')
     .addTag('user', 'user routes')
+    .addTag('group', 'group routes')
     .addTag('page', 'page routes')
     .addTag('comment', 'comment routes')
     .addTag('authentication', 'authentication routes')
