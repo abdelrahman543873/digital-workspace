@@ -6,7 +6,7 @@ describe('get weather suite case', () => {
   it('get weather', async () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_WEATHER}/25.7999/30.4964`,
+      url: `${GET_WEATHER}/-8.245643262729885/31.173460775217215`,
     });
     expect(res.body.length).toBe(8);
     expect(res.body[0].day).toBe(DAY_NAMES[new Date().getDay()]);
