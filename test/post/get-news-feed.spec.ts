@@ -17,6 +17,23 @@ describe('get news feed suite case', () => {
     expect(res.body.docs[0]._id).toBe(post._id.toString());
   });
 
+  it('should increase seen count', async () => {
+    const followed = await userFactory();
+    const follower = await userFactory({ following: [followed._id] });
+    const post = await postFactory({ userId: followed._id });
+    await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: NEWS_FEED,
+      token: follower.token,
+    });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: NEWS_FEED,
+      token: follower.token,
+    });
+    expect(res.body.docs[0].seen.length).toBe(2);
+  });
+
   it('should get news feed in recent order', async () => {
     const followed = await userFactory();
     const follower = await userFactory({ following: [followed._id] });

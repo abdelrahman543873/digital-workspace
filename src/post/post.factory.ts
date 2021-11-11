@@ -12,6 +12,7 @@ interface PostType {
   reports?: Report[];
   createdAt?: Date;
   updatedAt?: Date;
+  seen?: ObjectId[];
 }
 
 export const buildPostParams = async (obj: PostType = {}): Promise<Post> => {
@@ -24,6 +25,7 @@ export const buildPostParams = async (obj: PostType = {}): Promise<Post> => {
     reports: obj.reports || [
       { userId, reason: faker.commerce.productDescription() },
     ],
+    seen: obj.seen || [userId],
     createdAt: obj.createdAt,
     updatedAt: obj.createdAt,
   };

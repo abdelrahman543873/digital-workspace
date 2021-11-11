@@ -138,10 +138,25 @@ export class PostRepository extends BaseRepository<Post> {
       },
       { $sort: { createdAt: -1 } },
     ]);
-    return await this.postSchema.aggregatePaginate(aggregation, {
-      offset: pagination.offset * pagination.limit,
-      limit: pagination.limit,
+    const aggregationResult = await this.postSchema.aggregatePaginate(
+      aggregation,
+      {
+        offset: pagination.offset * pagination.limit,
+        limit: pagination.limit,
+      },
+    );
+    const postsIds = aggregationResult.docs.map((post) => {
+      return post._id;
     });
+    await this.postSchema.updateMany(
+      { _id: { $in: postsIds } },
+      {
+        $addToSet: {
+          seen: userId,
+        },
+      },
+    );
+    return aggregationResult;
   }
 
   async getMyPosts(userId: ObjectId, pagination: Pagination) {
