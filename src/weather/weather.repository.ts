@@ -21,6 +21,7 @@ export class WeatherRepository {
         day: DAY_NAMES[date.getUTCDay()],
         temperature: forecast.temp.max,
         windSpeed: forecast.wind_speed,
+        location: response.data.timezone,
       };
       return formattedForecast;
     });
