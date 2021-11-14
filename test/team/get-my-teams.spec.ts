@@ -15,6 +15,17 @@ describe('get my teams suite case', () => {
     expect(res.body.docs[0]._id.toString()).toBe(team._id.toString());
   });
 
+  it('should get my teams by Id', async () => {
+    const user = await userFactory();
+    const team = await teamFactory({ members: [user._id] });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_MY_TEAMS}?userId=${user._id}`,
+      token: user.token,
+    });
+    expect(res.body.docs[0]._id.toString()).toBe(team._id.toString());
+  });
+
   it('should get teams i am admin in', async () => {
     const user = await userFactory();
     const team = await teamFactory({ admin: user._id });

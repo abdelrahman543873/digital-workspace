@@ -6,6 +6,7 @@ import { BaseRepository } from '../shared/generics/repository.abstract';
 import { CreateTeamInput } from './inputs/create-team.input';
 import { AddTeamMemberInput } from './inputs/manage-team-member.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { MyTeamsInput } from './inputs/get-my-teams.input';
 
 @Injectable()
 export class TeamRepository extends BaseRepository<Team> {
@@ -55,19 +56,23 @@ export class TeamRepository extends BaseRepository<Team> {
     });
   }
 
-  async getMyTeams(userId: ObjectId, pagination: Pagination) {
+  async getMyTeams(userId: ObjectId, input: MyTeamsInput) {
+    const chosenId = input.userId ? new Types.ObjectId(input.userId) : userId;
     const aggregation = this.teamSchema.aggregate([
       {
         $match: {
           $expr: {
-            $or: [{ $in: [userId, '$members'] }, { $eq: ['$admin', userId] }],
+            $or: [
+              { $in: [chosenId, '$members'] },
+              { $eq: ['$admin', chosenId] },
+            ],
           },
         },
       },
     ]);
     return await this.teamSchema.aggregatePaginate(aggregation, {
-      offset: pagination.offset * pagination.limit,
-      limit: pagination.limit,
+      offset: input.offset * input.limit,
+      limit: input.limit,
     });
   }
 }

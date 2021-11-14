@@ -14,4 +14,15 @@ describe('get joined groups suite case', () => {
     });
     expect(res.body.docs[0].members[0]).toContain(user._id.toString());
   });
+
+  it('should get joined groups with id', async () => {
+    const user = await userFactory();
+    const group = await groupFactory({ members: [user._id] });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${JOINED_GROUPS}?userId=${user._id}`,
+      token: user.token,
+    });
+    expect(res.body.docs[0].members[0]).toContain(user._id.toString());
+  });
 });

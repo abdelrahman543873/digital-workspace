@@ -5,6 +5,7 @@ import { REQUEST } from '@nestjs/core';
 import { RequestContext } from 'src/shared/request.interface';
 import { AddTeamMemberInput } from './inputs/manage-team-member.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { MyTeamsInput } from './inputs/get-my-teams.input';
 
 @Injectable()
 export class TeamService {
@@ -26,10 +27,10 @@ export class TeamService {
     );
   }
 
-  async getMyTeams(pagination: Pagination) {
+  async getMyTeams(input: MyTeamsInput) {
     return await this.teamRepository.getMyTeams(
       this.request.currentUser._id,
-      pagination,
+      input,
     );
   }
 }

@@ -6,6 +6,7 @@ import { BaseRepository } from '../shared/generics/repository.abstract';
 import { CreateGroupInput } from './inputs/create-group.input';
 import { ManageJoinGroupInput } from './inputs/manage-join-group.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { JoinedGroupsInput } from './joined-groups.input';
 
 @Injectable()
 export class GroupRepository extends BaseRepository<Group> {
@@ -47,17 +48,18 @@ export class GroupRepository extends BaseRepository<Group> {
     });
   }
 
-  async getJoinedGroups(userId: ObjectId, pagination: Pagination) {
+  async getJoinedGroups(userId: ObjectId, input: JoinedGroupsInput) {
+    const chosenId = input.userId ? new Types.ObjectId(input.userId) : userId;
     const aggregation = this.groupSchema.aggregate([
       {
         $match: {
-          $expr: { $in: [userId, '$members'] },
+          $expr: { $in: [chosenId, '$members'] },
         },
       },
     ]);
     return await this.groupSchema.aggregatePaginate(aggregation, {
-      offset: pagination.offset * pagination.limit,
-      limit: pagination.limit,
+      offset: input.offset * input.limit,
+      limit: input.limit,
     });
   }
 }

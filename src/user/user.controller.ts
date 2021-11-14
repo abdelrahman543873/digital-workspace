@@ -26,6 +26,7 @@ import { UpdateUserInput } from './inputs/update-user.input';
 import { UpdateUserSwagger } from './swagger/update-user.swagger';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { UpdateUserJoi } from './joi/update-user.joi';
+import { GetStatsInput } from './inputs/get-stats.input';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -118,7 +119,7 @@ export class UserController {
   @ApiTags('user')
   @UseGuards(AuthGuard)
   @Get('stats')
-  async getStats() {
-    return await this.userService.getStats();
+  async getStats(@Query() input: GetStatsInput) {
+    return await this.userService.getStats(input);
   }
 }

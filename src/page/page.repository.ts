@@ -6,6 +6,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { AggregatePaginateModel, ObjectId, Types } from 'mongoose';
 import { CreatePageInput } from './inputs/create-page.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { LikedPagesInput } from './inputs/liked-pages.input';
 
 @Injectable()
 export class PageRepository extends BaseRepository<Page> {
@@ -42,17 +43,20 @@ export class PageRepository extends BaseRepository<Page> {
     return await this.pageSchema.create({ admin: userId, ...input });
   }
 
-  async getLikedPages(userId: ObjectId, pagination: Pagination) {
+  async getLikedPages(userId: ObjectId, input: LikedPagesInput) {
+    const chosenId = input.userId ? new Types.ObjectId(input.userId) : userId;
     const aggregation = this.pageSchema.aggregate([
       {
         $match: {
-          $expr: { $in: [userId, '$likes'] },
+          $expr: {
+            $in: [chosenId, '$likes'],
+          },
         },
       },
     ]);
     return await this.pageSchema.aggregatePaginate(aggregation, {
-      offset: pagination.offset * pagination.limit,
-      limit: pagination.limit,
+      offset: input.offset * input.limit,
+      limit: input.limit,
     });
   }
 
