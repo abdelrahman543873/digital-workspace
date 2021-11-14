@@ -33,4 +33,12 @@ export class PageController {
   async getLikedPages(@Query() pagination: Pagination) {
     return await this.pageService.getLikedPages(pagination);
   }
+
+  @ApiBearerAuth()
+  @ApiTags('page')
+  @UseGuards(AuthGuard)
+  @Get('pages')
+  async getPages(@Query() pagination: Pagination) {
+    return await this.pageService.getPages(pagination);
+  }
 }

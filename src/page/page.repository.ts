@@ -55,4 +55,16 @@ export class PageRepository extends BaseRepository<Page> {
       limit: pagination.limit,
     });
   }
+
+  async getPages(pagination: Pagination) {
+    const aggregation = this.pageSchema.aggregate([
+      {
+        $match: {},
+      },
+    ]);
+    return await this.pageSchema.aggregatePaginate(aggregation, {
+      offset: pagination.offset * pagination.limit,
+      limit: pagination.limit,
+    });
+  }
 }

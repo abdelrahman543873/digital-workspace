@@ -32,4 +32,8 @@ export class PageService {
       pagination,
     );
   }
+
+  async getPages(pagination: Pagination) {
+    return await this.pageRepository.getPages(pagination);
+  }
 }
