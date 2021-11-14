@@ -18,7 +18,7 @@ import { filename } from '../shared/utils/multer-file-name copy';
     MulterModule.register({
       preservePath: true,
       storage: diskStorage({
-        destination: './client/posts',
+        destination: './client/pictures',
         filename,
       }),
     }),

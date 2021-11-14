@@ -15,6 +15,7 @@ import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
 import { SearchUserInput } from './inputs/search-user.input';
 import { GetUserByIdInput } from './inputs/get-user-by-id.input';
 import { UpdateUserInput } from './inputs/update-user.input';
+import { GetStatsInput } from './inputs/get-stats.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -71,8 +72,8 @@ export class UserRepository extends BaseRepository<User> {
   async searchUser(input: SearchUserInput) {
     return await this.userSchema.find({
       $or: [
-        { email: { $regex: input.keyword } },
-        { username: { $regex: input.keyword } },
+        { email: { $regex: input.keyword, $options: 'i' } },
+        { username: { $regex: input.keyword, $options: 'i' } },
       ],
     });
   }
@@ -223,12 +224,13 @@ export class UserRepository extends BaseRepository<User> {
     );
   }
 
-  async getStats(userId: ObjectId) {
+  async getStats(userId: ObjectId, input: GetStatsInput) {
+    const chosenId = input.userId ? new Types.ObjectId(input.userId) : userId;
     return (
       await this.userSchema.aggregate([
         {
           $match: {
-            $expr: { $eq: [userId, '$_id'] },
+            $expr: { $eq: [chosenId, '$_id'] },
           },
         },
         {
@@ -241,7 +243,7 @@ export class UserRepository extends BaseRepository<User> {
               {
                 $match: {
                   $expr: {
-                    $eq: [userId, '$userId'],
+                    $eq: [chosenId, '$userId'],
                   },
                 },
               },
@@ -259,7 +261,7 @@ export class UserRepository extends BaseRepository<User> {
               {
                 $match: {
                   $expr: {
-                    $in: [userId, '$members'],
+                    $in: [chosenId, '$members'],
                   },
                 },
               },
@@ -277,7 +279,7 @@ export class UserRepository extends BaseRepository<User> {
               {
                 $match: {
                   $expr: {
-                    $in: [userId, '$likes'],
+                    $in: [chosenId, '$likes'],
                   },
                 },
               },

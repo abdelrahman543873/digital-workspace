@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  Allow,
   ArrayNotEmpty,
   IsArray,
   IsMongoId,
@@ -59,4 +60,10 @@ export class UpdateUserInput {
   @IsOptional()
   @IsMongoId()
   directManagerId?: string | ObjectId;
+
+  @Allow()
+  profilePic: string;
+
+  @Allow()
+  coverPic: string;
 }

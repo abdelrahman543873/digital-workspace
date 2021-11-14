@@ -5,6 +5,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ManageLikePageInput } from './inputs/manage-like-page.input';
 import { PageService } from './page.service';
 import { CreatePageInput } from './inputs/create-page.input';
+import { LikedPagesInput } from './inputs/liked-pages.input';
 
 @Controller('page')
 export class PageController {
@@ -30,7 +31,15 @@ export class PageController {
   @ApiTags('page')
   @UseGuards(AuthGuard)
   @Get('likedPages')
-  async getLikedPages(@Query() pagination: Pagination) {
-    return await this.pageService.getLikedPages(pagination);
+  async getLikedPages(@Query() input: LikedPagesInput) {
+    return await this.pageService.getLikedPages(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('page')
+  @UseGuards(AuthGuard)
+  @Get('pages')
+  async getPages(@Query() pagination: Pagination) {
+    return await this.pageService.getPages(pagination);
   }
 }

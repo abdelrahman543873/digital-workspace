@@ -27,11 +27,17 @@ export class Post {
   @Prop({ type: [Types.ObjectId] })
   likes: ObjectId[];
 
+  @Prop({ type: [Types.ObjectId] })
+  seen: ObjectId[];
+
   @Prop([String])
   attachments: string[];
 
   @Prop({ type: [ReportSchema] })
   reports: Report[];
+
+  @Prop()
+  isPublished: boolean;
 
   createdAt: Date;
 

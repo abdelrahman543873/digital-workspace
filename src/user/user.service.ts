@@ -11,6 +11,7 @@ import { SearchUserInput } from './inputs/search-user.input';
 import { GetUserByIdInput } from './inputs/get-user-by-id.input';
 import { User } from './schema/user.schema';
 import { UpdateUserInput } from './inputs/update-user.input';
+import { GetStatsInput } from './inputs/get-stats.input';
 
 @Injectable()
 export class UserService {
@@ -75,7 +76,7 @@ export class UserService {
     );
   }
 
-  async getStats() {
-    return await this.userRepo.getStats(this.request.currentUser._id);
+  async getStats(input: GetStatsInput) {
+    return await this.userRepo.getStats(this.request.currentUser._id, input);
   }
 }

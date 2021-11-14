@@ -5,6 +5,7 @@ import { GroupRepository } from './group.repository';
 import { CreateGroupInput } from './inputs/create-group.input';
 import { ManageJoinGroupInput } from './inputs/manage-join-group.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { JoinedGroupsInput } from './joined-groups.input';
 
 @Injectable()
 export class GroupService {
@@ -26,10 +27,10 @@ export class GroupService {
     );
   }
 
-  async getJoinedGroups(pagination: Pagination) {
+  async getJoinedGroups(input: JoinedGroupsInput) {
     return await this.groupRepository.getJoinedGroups(
       this.request.currentUser._id,
-      pagination,
+      input,
     );
   }
 }

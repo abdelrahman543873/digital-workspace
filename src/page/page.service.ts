@@ -5,6 +5,7 @@ import { RequestContext } from 'src/shared/request.interface';
 import { CreatePageInput } from './inputs/create-page.input';
 import { ManageLikePageInput } from './inputs/manage-like-page.input';
 import { PageRepository } from './page.repository';
+import { LikedPagesInput } from './inputs/liked-pages.input';
 
 @Injectable()
 export class PageService {
@@ -26,10 +27,14 @@ export class PageService {
     );
   }
 
-  async getLikedPages(pagination: Pagination) {
+  async getLikedPages(input: LikedPagesInput) {
     return await this.pageRepository.getLikedPages(
       this.request.currentUser._id,
-      pagination,
+      input,
     );
+  }
+
+  async getPages(pagination: Pagination) {
+    return await this.pageRepository.getPages(pagination);
   }
 }
