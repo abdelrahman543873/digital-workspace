@@ -36,6 +36,9 @@ export class Post {
   @Prop({ type: [ReportSchema] })
   reports: Report[];
 
+  @Prop()
+  isPublished: boolean;
+
   createdAt: Date;
 
   updatedAt: Date;
