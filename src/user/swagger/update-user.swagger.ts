@@ -4,7 +4,7 @@ export const UpdateUserSwagger: ApiBodyOptions = {
   schema: {
     type: 'object',
     properties: {
-      username: {
+      fullName: {
         type: 'string',
       },
       password: {

@@ -26,7 +26,7 @@ interface SkillType {
 export interface UserType {
   email?: string;
   password?: string;
-  username?: string;
+  fullName?: string;
   phone?: string;
   experience?: Experience[];
   education?: Education[];
@@ -73,7 +73,7 @@ export const buildUserParams = (obj: UserType = {}): User => {
   return {
     email: obj.email || internet.email(),
     password: obj.password || internet.password(),
-    username: obj.username || name.firstName(),
+    fullName: obj.fullName || `${name.firstName()} ${name.lastName()}`,
     phone: obj.phone || phone.phoneNumber(),
     experience: obj.experience || [buildExperienceParams()],
     description: obj.description || name.jobDescriptor(),

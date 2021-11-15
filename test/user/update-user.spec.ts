@@ -24,9 +24,9 @@ describe('update user case', () => {
       url: UPDATE_USER,
       token: user.token,
       variables: {
-        username: 'something',
+        fullName: 'something',
       },
     });
-    expect(res.body.username).toBe('something');
+    expect(res.body.fullName).toBe('something');
   });
 });

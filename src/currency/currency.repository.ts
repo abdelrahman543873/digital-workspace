@@ -27,14 +27,14 @@ export class CurrencyRepository {
     return await Object.keys(response.data.rates).map((currency) => {
       return {
         country: currency,
-        conversionRate: parseInt(
+        conversionRate: parseFloat(
           `${input.amount * (response.data.rates[currency] / base)}`,
-        ),
+        ).toPrecision(2),
       };
     });
   }
 
-  async getCurrencies() {
+  async getCurrencies(): Promise<Array<string>> {
     const currencies = await this.cacheManager.get('currencies');
     if (!currencies) {
       const response = await firstValueFrom(
@@ -47,6 +47,6 @@ export class CurrencyRepository {
         Object.keys(response.data.rates),
       );
     }
-    return currencies;
+    return await this.cacheManager.get('currencies');
   }
 }

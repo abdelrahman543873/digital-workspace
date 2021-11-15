@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import validateCurrencyCode from 'validate-currency-code';
 import { CurrencyRepository } from './currency.repository';
 import { GetCurrencyInput } from './inputs/get-currency.input';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
@@ -13,12 +12,13 @@ export class CurrencyService {
     @Inject(REQUEST) private readonly request: RequestContext,
   ) {}
   async getConversions(input: GetCurrencyInput) {
-    if (!validateCurrencyCode(input.base))
+    const currencies = await this.getCurrencies();
+    if (!currencies.includes(input.base))
       throw new BaseHttpException(this.request.lang, 604);
     return await this.currencyRepo.getConversions(input);
   }
 
-  async getCurrencies() {
+  async getCurrencies(): Promise<Array<string>> {
     return await this.currencyRepo.getCurrencies();
   }
 }
