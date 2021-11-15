@@ -4,7 +4,6 @@ import { RequestContext } from 'src/shared/request.interface';
 import { GroupRepository } from './group.repository';
 import { CreateGroupInput } from './inputs/create-group.input';
 import { ManageJoinGroupInput } from './inputs/manage-join-group.input';
-import { Pagination } from '../shared/utils/pagination.input';
 import { JoinedGroupsInput } from './joined-groups.input';
 
 @Injectable()

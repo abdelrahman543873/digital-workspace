@@ -37,6 +37,7 @@ async function bootstrap() {
     .addTag('authentication', 'authentication routes')
     .addTag('user', 'user routes')
     .addTag('post', 'post routes')
+    .addTag('task', 'task api routes')
     .addTag('group', 'group related routes')
     .addTag('team', 'team related routes')
     .addTag('page', 'page routes')

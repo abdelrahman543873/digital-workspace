@@ -41,7 +41,7 @@ describe('get my posts suite case', () => {
     const post = await postFactory({
       userId: user._id,
     });
-    const postRequest = await testRequest({
+    await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: POST_COMMENT,
       variables: {

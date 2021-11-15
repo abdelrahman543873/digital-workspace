@@ -5,7 +5,6 @@ import { Team, TeamDocument } from './schema/team.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { CreateTeamInput } from './inputs/create-team.input';
 import { AddTeamMemberInput } from './inputs/manage-team-member.input';
-import { Pagination } from '../shared/utils/pagination.input';
 import { MyTeamsInput } from './inputs/get-my-teams.input';
 
 @Injectable()

@@ -15,6 +15,7 @@ import { join } from 'path';
 import { PageModule } from './page/page.module';
 import { GroupModule } from './group/group.module';
 import { TeamModule } from './team/team.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { TeamModule } from './team/team.module';
     PageModule,
     GroupModule,
     TeamModule,
+    TaskModule,
   ],
 })
 export class AppModule {}

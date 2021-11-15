@@ -5,7 +5,6 @@ import { Group, GroupDocument } from './schema/group.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { CreateGroupInput } from './inputs/create-group.input';
 import { ManageJoinGroupInput } from './inputs/manage-join-group.input';
-import { Pagination } from '../shared/utils/pagination.input';
 import { JoinedGroupsInput } from './joined-groups.input';
 
 @Injectable()

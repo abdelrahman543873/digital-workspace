@@ -20,7 +20,7 @@ describe('get news feed suite case', () => {
   it('should increase seen count', async () => {
     const followed = await userFactory();
     const follower = await userFactory({ following: [followed._id] });
-    const post = await postFactory({ userId: followed._id });
+    await postFactory({ userId: followed._id });
     await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: NEWS_FEED,

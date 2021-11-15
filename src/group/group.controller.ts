@@ -12,7 +12,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { GroupService } from './group.service';
 import { CreateGroupInput } from './inputs/create-group.input';
 import { ManageJoinGroupInput } from './inputs/manage-join-group.input';
-import { Pagination } from '../shared/utils/pagination.input';
 import { JoinedGroupsInput } from './joined-groups.input';
 
 @Controller('group')
