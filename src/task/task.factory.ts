@@ -2,7 +2,7 @@ import { ObjectId } from 'mongoose';
 import { userFactory } from '../user/user.factory';
 import { commerce, name, random } from 'faker';
 import { Task } from './schema/task.schema';
-import { PRIORITIES } from '../app.const';
+import { PRIORITIES, TASK_STATUS } from '../app.const';
 import { TaskRepo } from '../../test/task/task-test-repo';
 
 interface TaskType {
@@ -11,6 +11,7 @@ interface TaskType {
   title?: string;
   description?: string;
   priority?: string;
+  status?: string;
 }
 
 export const buildTaskParams = async (obj: TaskType = {}): Promise<Task> => {
@@ -21,6 +22,7 @@ export const buildTaskParams = async (obj: TaskType = {}): Promise<Task> => {
     title: obj.title || name.title(),
     description: obj.description || commerce.productDescription(),
     priority: obj.priority || random.arrayElement(PRIORITIES),
+    status: obj.status || random.arrayElement(TASK_STATUS),
   };
 };
 

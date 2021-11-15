@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { AggregatePaginateModel, ObjectId, Types } from 'mongoose';
+import { AggregatePaginateModel, ObjectId, SchemaTypes, Types } from 'mongoose';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { Task, TaskDocument } from './schema/task.schema';
 import { CreateTaskInput } from './inputs/create-task.input';
 import { GetTasksInput } from './inputs/get-tasks.input';
+import { UpdateTaskInput } from './inputs/update-task.input';
 
 @Injectable()
 export class TaskRepository extends BaseRepository<Task> {
@@ -38,5 +39,20 @@ export class TaskRepository extends BaseRepository<Task> {
       offset: input.offset * input.limit,
       limit: input.limit,
     });
+  }
+
+  async updateTask(userId: ObjectId, input: UpdateTaskInput) {
+    const { taskId, assignee, ...filteredInput } = input;
+    return await this.taskSchema.findOneAndUpdate(
+      {
+        assigner: userId,
+        _id: new Types.ObjectId(taskId),
+      },
+      {
+        ...filteredInput,
+        ...(assignee && { assignee: new SchemaTypes.ObjectId(taskId) }),
+      },
+      { new: true },
+    );
   }
 }

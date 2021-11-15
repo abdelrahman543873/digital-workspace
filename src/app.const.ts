@@ -32,3 +32,5 @@ export enum LookupSchemasEnum {
 }
 
 export const PRIORITIES = ['low', 'medium', 'high'];
+
+export const TASK_STATUS = ['approved', 'rejected'];
