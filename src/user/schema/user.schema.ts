@@ -70,7 +70,7 @@ export class User {
   phone: string;
 
   @Prop()
-  username: string;
+  fullName: string;
 
   @Prop({ type: [ExperienceSchema] })
   experience: Experience[];

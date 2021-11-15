@@ -17,7 +17,7 @@ export class UpdateUserInput {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  username?: string;
+  fullName?: string;
 
   @IsOptional()
   @IsString()
