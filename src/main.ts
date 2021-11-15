@@ -6,7 +6,7 @@ import { format, transports } from 'winston';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { BaseHttpExceptionFilter } from './shared/exceptions/base-http-exception-filter';
-
+import compression from 'compression';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger({
@@ -48,6 +48,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
+  app.use(compression());
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

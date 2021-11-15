@@ -4,7 +4,7 @@ import { AppModule } from '../src/app.module';
 import { SeedUsersServices } from '../src/shared/services/seed-users.service';
 import { APP_FILTER } from '@nestjs/core';
 import { BaseHttpExceptionFilter } from '../src/shared/exceptions/base-http-exception-filter';
-
+import compression from 'compression';
 export let app: INestApplication;
 
 const seedUsersServices = {
@@ -31,6 +31,7 @@ export const moduleRef = async (): Promise<TestingModule> => {
 beforeAll(async () => {
   const module = await moduleRef();
   app = module.createNestApplication();
+  app.use(compression());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
