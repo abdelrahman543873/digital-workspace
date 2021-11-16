@@ -16,11 +16,28 @@ export class TaskRepository extends BaseRepository<Task> {
     super(taskSchema);
   }
 
-  async createTask(userId: ObjectId, input: CreateTaskInput) {
+  async createTask(
+    userId: ObjectId,
+    input: CreateTaskInput,
+    files: {
+      attachments?: Express.Multer.File[];
+      logo?: Express.Multer.File[];
+    },
+  ) {
     return await this.taskSchema.create({
       ...input,
       assigner: userId,
       assignee: new Types.ObjectId(input.assignee),
+      ...(files?.attachments && {
+        attachments: files.attachments.map((file) => {
+          return `${process.env.HOST}tasks/${file.filename}`;
+        }),
+      }),
+      ...(files?.logo && {
+        logo: files.logo.map((file) => {
+          return `${process.env.HOST}tasks/${file.filename}`;
+        })[0],
+      }),
     });
   }
 

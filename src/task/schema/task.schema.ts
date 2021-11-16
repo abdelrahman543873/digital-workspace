@@ -25,6 +25,12 @@ export class Task {
 
   @Prop({ enum: TASK_STATUS })
   status: string;
+
+  @Prop({ type: [String] })
+  attachments: string[];
+
+  @Prop({ type: String })
+  logo: string;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

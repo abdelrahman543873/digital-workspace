@@ -1,4 +1,4 @@
-import { IsIn, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { Allow, IsIn, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 import { PRIORITIES } from '../../app.const';
 
 export class CreateTaskInput {
@@ -16,4 +16,10 @@ export class CreateTaskInput {
   @IsString()
   @IsIn(PRIORITIES)
   priority: string;
+
+  @Allow()
+  attachments: string[];
+
+  @Allow()
+  logo: string[];
 }
