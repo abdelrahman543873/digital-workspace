@@ -13,5 +13,6 @@ describe('get liked pages suite case', () => {
       token: user.token,
     });
     expect(res.body.docs[0].likes[0].fullName).toBe(user.fullName);
+    expect(res.body.docs[0].likes[0]._id.toString()).toBe(user._id.toString());
   });
 });
