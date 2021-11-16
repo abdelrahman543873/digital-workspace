@@ -15,6 +15,9 @@ export class Page {
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
   likes: ObjectId[];
+
+  @Prop({ type: String })
+  logo: string;
 }
 
 export const PageSchema = SchemaFactory.createForClass(Page);

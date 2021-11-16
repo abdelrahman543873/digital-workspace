@@ -17,4 +17,23 @@ describe('create page suite case', () => {
     });
     expect(res.body.name).toBe(page.name);
   });
+
+  it('should create page with logo', async () => {
+    const user = await userFactory();
+    const page = await buildPageParams();
+    const testFiles = process.cwd();
+    const filePath = `${testFiles}/test/test-files/test-duck.jpeg`;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: CREATE_PAGE,
+      variables: {
+        name: page.name,
+      },
+      token: user.token,
+      filePath,
+      fileParam: 'logo',
+    });
+    expect(res.body.name).toBe(page.name);
+    expect(res.body.logo).toContain('pages');
+  });
 });

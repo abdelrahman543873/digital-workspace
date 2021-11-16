@@ -20,10 +20,11 @@ export class PageService {
     );
   }
 
-  async createPage(input: CreatePageInput) {
+  async createPage(input: CreatePageInput, logo: Express.Multer.File) {
     return await this.pageRepository.createPage(
       this.request.currentUser._id,
       input,
+      logo,
     );
   }
 

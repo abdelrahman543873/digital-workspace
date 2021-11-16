@@ -1,3 +1,4 @@
+import { LookupSchemasEnum } from './../app.const';
 import { Injectable } from '@nestjs/common';
 import { Page, PageDocument } from './schema/page.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
@@ -39,8 +40,16 @@ export class PageRepository extends BaseRepository<Page> {
     return await this.pageSchema.findOne({ _id: input.pageId });
   }
 
-  async createPage(userId: ObjectId, input: CreatePageInput) {
-    return await this.pageSchema.create({ admin: userId, ...input });
+  async createPage(
+    userId: ObjectId,
+    input: CreatePageInput,
+    logo: Express.Multer.File,
+  ) {
+    return await this.pageSchema.create({
+      admin: userId,
+      ...input,
+      ...(logo && { logo: `${process.env.HOST}pages/${logo.filename}` }),
+    });
   }
 
   async getLikedPages(userId: ObjectId, input: LikedPagesInput) {
@@ -51,6 +60,23 @@ export class PageRepository extends BaseRepository<Page> {
           $expr: {
             $in: [chosenId, '$likes'],
           },
+        },
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          let: { likes: '$likes' },
+          as: 'likes',
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: ['$_id', '$$likes'],
+                },
+              },
+            },
+            { $project: { _id: 0, profilePic: 1, fullName: 1 } },
+          ],
         },
       },
     ]);
