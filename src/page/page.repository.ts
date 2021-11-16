@@ -1,3 +1,4 @@
+import { LookupSchemasEnum } from './../app.const';
 import { Injectable } from '@nestjs/common';
 import { Page, PageDocument } from './schema/page.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
@@ -59,6 +60,23 @@ export class PageRepository extends BaseRepository<Page> {
           $expr: {
             $in: [chosenId, '$likes'],
           },
+        },
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          let: { likes: '$likes' },
+          as: 'likes',
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: ['$_id', '$$likes'],
+                },
+              },
+            },
+            { $project: { _id: 0, profilePic: 1, fullName: 1 } },
+          ],
         },
       },
     ]);
