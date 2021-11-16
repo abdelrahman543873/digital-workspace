@@ -75,7 +75,7 @@ export class PageRepository extends BaseRepository<Page> {
                 },
               },
             },
-            { $project: { _id: 0, profilePic: 1, fullName: 1 } },
+            { $project: { profilePic: 1, fullName: 1 } },
           ],
         },
       },
