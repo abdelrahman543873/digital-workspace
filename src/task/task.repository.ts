@@ -6,6 +6,7 @@ import { Task, TaskDocument } from './schema/task.schema';
 import { CreateTaskInput } from './inputs/create-task.input';
 import { GetTasksInput } from './inputs/get-tasks.input';
 import { UpdateTaskInput } from './inputs/update-task.input';
+import { GetTaskByIdInput } from './inputs/get-task-by-id.input';
 
 @Injectable()
 export class TaskRepository extends BaseRepository<Task> {
@@ -38,6 +39,12 @@ export class TaskRepository extends BaseRepository<Task> {
           return `${process.env.HOST}tasks/${file.filename}`;
         })[0],
       }),
+    });
+  }
+
+  async getTask(input: GetTaskByIdInput) {
+    return await this.taskSchema.findOne({
+      _id: new Types.ObjectId(input.taskId),
     });
   }
 
