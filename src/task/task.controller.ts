@@ -10,16 +10,15 @@ import {
   Put,
   UseInterceptors,
   UploadedFiles,
+  Param,
 } from '@nestjs/common';
 import { CreateTaskInput } from './inputs/create-task.input';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { GetTasksInput } from './inputs/get-tasks.input';
 import { UpdateTaskInput } from './inputs/update-task.input';
-import {
-  FileFieldsInterceptor,
-  FilesInterceptor,
-} from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CreateTaskSwagger } from './swagger/create-task.swagger';
+import { GetTaskByIdInput } from './inputs/get-task-by-id.input';
 
 @Controller('task')
 export class TaskController {
@@ -54,6 +53,14 @@ export class TaskController {
   @Get('tasks')
   async getTasks(@Query() input: GetTasksInput) {
     return await this.taskService.getTasks(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('task')
+  @UseGuards(AuthGuard)
+  @Get(':taskId')
+  async getTask(@Param() input: GetTaskByIdInput) {
+    return await this.taskService.getTask(input);
   }
 
   @ApiBearerAuth()

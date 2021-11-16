@@ -5,6 +5,7 @@ import { REQUEST } from '@nestjs/core';
 import { RequestContext } from 'src/shared/request.interface';
 import { GetTasksInput } from './inputs/get-tasks.input';
 import { UpdateTaskInput } from './inputs/update-task.input';
+import { GetTaskByIdInput } from './inputs/get-task-by-id.input';
 
 @Injectable()
 export class TaskService {
@@ -32,6 +33,10 @@ export class TaskService {
       this.request.currentUser._id,
       input,
     );
+  }
+
+  async getTask(input: GetTaskByIdInput) {
+    return await this.taskRepository.getTask(input);
   }
 
   async updateTask(input: UpdateTaskInput) {
