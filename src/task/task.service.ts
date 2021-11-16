@@ -13,10 +13,17 @@ export class TaskService {
     @Inject(REQUEST) private readonly request: RequestContext,
   ) {}
 
-  async createTask(input: CreateTaskInput) {
+  async createTask(
+    input: CreateTaskInput,
+    files: {
+      attachments?: Express.Multer.File[];
+      logo?: Express.Multer.File[];
+    },
+  ) {
     return await this.taskRepository.createTask(
       this.request.currentUser._id,
       input,
+      files,
     );
   }
 
