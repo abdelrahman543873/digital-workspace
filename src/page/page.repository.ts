@@ -39,8 +39,16 @@ export class PageRepository extends BaseRepository<Page> {
     return await this.pageSchema.findOne({ _id: input.pageId });
   }
 
-  async createPage(userId: ObjectId, input: CreatePageInput) {
-    return await this.pageSchema.create({ admin: userId, ...input });
+  async createPage(
+    userId: ObjectId,
+    input: CreatePageInput,
+    logo: Express.Multer.File,
+  ) {
+    return await this.pageSchema.create({
+      admin: userId,
+      ...input,
+      ...(logo && { logo: `${process.env.HOST}pages/${logo.filename}` }),
+    });
   }
 
   async getLikedPages(userId: ObjectId, input: LikedPagesInput) {

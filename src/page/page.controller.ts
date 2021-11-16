@@ -1,11 +1,21 @@
 import { Pagination } from './../shared/utils/pagination.input';
 import { AuthGuard } from './../shared/guards/auth.guard';
-import { Body, Controller, Get, Put, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Put,
+  Query,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ManageLikePageInput } from './inputs/manage-like-page.input';
 import { PageService } from './page.service';
 import { CreatePageInput } from './inputs/create-page.input';
 import { LikedPagesInput } from './inputs/liked-pages.input';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('page')
 export class PageController {
@@ -22,9 +32,13 @@ export class PageController {
   @ApiBearerAuth()
   @ApiTags('page')
   @UseGuards(AuthGuard)
+  @UseInterceptors(FileInterceptor('logo'))
   @Put('create')
-  async createPage(@Body() input: CreatePageInput) {
-    return await this.pageService.createPage(input);
+  async createPage(
+    @Body() input: CreatePageInput,
+    @UploadedFile() logo: Express.Multer.File,
+  ) {
+    return await this.pageService.createPage(input, logo);
   }
 
   @ApiBearerAuth()
