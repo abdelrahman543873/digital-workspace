@@ -11,6 +11,10 @@ export const CreateTaskSwagger: ApiBodyOptions = {
       title: { type: 'string' },
       description: { type: 'string' },
       priority: { type: 'string', enum: PRIORITIES },
+      logo: {
+        type: 'string',
+        format: 'binary',
+      },
       attachments: {
         type: 'array',
         items: {
