@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import { Injectable } from '@nestjs/common';
 import { getAuthToken } from '../utils/token-utils';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ConfigService } from '@nestjs/config';
 import { User, UserDocument } from '../../user/schema/user.schema';
 import { ENV_VARIABLE_NAMES } from '../../app.const';
@@ -33,7 +33,7 @@ export class HelperService {
   async getExistingUser(input: GetExistingUserInput): Promise<User> {
     return await this.userSchema.findOne(
       {
-        ...(input._id && { _id: input._id }),
+        ...(input._id && { _id: new Types.ObjectId(input._id) }),
         ...(input.email && { email: input.email }),
         ...(input.mobile && { mobile: input.mobile }),
       },
@@ -47,7 +47,7 @@ export class HelperService {
   ): Promise<User> {
     return await this.userSchema
       .findOne({
-        ...(input._id && { _id: input._id }),
+        ...(input._id && { _id: new Types.ObjectId(input._id) }),
         ...(input.email && { email: input.email }),
         ...(input.mobile && { mobile: input.mobile }),
       })

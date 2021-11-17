@@ -147,7 +147,7 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   async getUserById(input: GetUserByIdInput): Promise<User> {
-    return await this.userSchema.findOne({ _id: input.id });
+    return await this.userSchema.findOne({ _id: new Types.ObjectId(input.id) });
   }
 
   async recommendUsers(userId: ObjectId, pagination: Pagination) {
@@ -196,9 +196,9 @@ export class UserRepository extends BaseRepository<User> {
       { $project: { users: 1, _id: 0 } },
       { $unwind: '$users' },
       { $replaceRoot: { newRoot: '$users' } },
+      { $sort: { createdAt: -1 } },
     ]);
     return await this.userSchema.aggregatePaginate(aggregation, {
-      sort: { createdAt: 1 },
       offset: pagination.offset * pagination.limit,
       limit: pagination.limit,
     });

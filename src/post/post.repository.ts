@@ -37,7 +37,7 @@ export class PostRepository extends BaseRepository<Post> {
   }
 
   async manageLike(userId: ObjectId, input: LikePostInput) {
-    await this.postSchema.updateOne({ _id: input.postId }, [
+    await this.postSchema.updateOne({ _id: new Types.ObjectId(input.postId) }, [
       {
         $set: {
           likes: {
@@ -56,7 +56,9 @@ export class PostRepository extends BaseRepository<Post> {
         },
       },
     ]);
-    return await this.postSchema.findOne({ _id: input.postId });
+    return await this.postSchema.findOne({
+      _id: new Types.ObjectId(input.postId),
+    });
   }
 
   async removePost(userId: ObjectId, input: RemovePostInput) {
@@ -67,7 +69,7 @@ export class PostRepository extends BaseRepository<Post> {
 
   async reportPost(userId: ObjectId, input: ReportPostInput) {
     return await this.postSchema.findOneAndUpdate(
-      { _id: input.postId },
+      { _id: new Types.ObjectId(input.postId) },
       { $push: { reports: { userId, reason: input.reason } } },
       { new: true },
     );

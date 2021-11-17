@@ -24,25 +24,28 @@ export class CommentRepository extends BaseRepository<Comment> {
   }
 
   async manageLikeComment(userId: ObjectId, input: ManageLikeCommentInput) {
-    await this.commentSchema.updateOne({ _id: input.commentId }, [
-      {
-        $set: {
-          likes: {
-            $cond: [
-              {
-                $in: [userId, '$likes'],
-              },
-              {
-                $setDifference: ['$likes', [userId]],
-              },
-              {
-                $concatArrays: ['$likes', [userId]],
-              },
-            ],
+    await this.commentSchema.updateOne(
+      { _id: new Types.ObjectId(input.commentId) },
+      [
+        {
+          $set: {
+            likes: {
+              $cond: [
+                {
+                  $in: [userId, '$likes'],
+                },
+                {
+                  $setDifference: ['$likes', [userId]],
+                },
+                {
+                  $concatArrays: ['$likes', [userId]],
+                },
+              ],
+            },
           },
         },
-      },
-    ]);
+      ],
+    );
     return await this.commentSchema.findOne({ _id: input.commentId });
   }
 
@@ -50,11 +53,11 @@ export class CommentRepository extends BaseRepository<Comment> {
     return await this.commentSchema.deleteOne({
       $or: [
         {
-          _id: input.commentId,
+          _id: new Types.ObjectId(input.commentId),
           commenter: userId,
         },
         {
-          _id: input.commentId,
+          _id: new Types.ObjectId(input.commentId),
           'post.userId': userId,
         },
       ],
