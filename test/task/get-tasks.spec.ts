@@ -13,6 +13,9 @@ describe('get tasks suite case', () => {
       url: GET_TASKS,
       token: user.token,
     });
+    expect(res.body.docs[0].assigner._id.toString()).toBe(
+      task.assigner.toString(),
+    );
     expect(res.body.docs[0]._id.toString()).toBe(task._id.toString());
   });
 

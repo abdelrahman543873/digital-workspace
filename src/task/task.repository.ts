@@ -1,3 +1,4 @@
+import { LookupSchemasEnum } from './../app.const';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AggregatePaginateModel, ObjectId, SchemaTypes, Types } from 'mongoose';
@@ -58,6 +59,24 @@ export class TaskRepository extends BaseRepository<Task> {
           },
         },
       },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          let: { assigner: '$assigner' },
+          as: 'assigner',
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$_id', '$$assigner'],
+                },
+              },
+            },
+            { $project: { profilePic: 1, fullName: 1 } },
+          ],
+        },
+      },
+      { $unwind: '$assigner' },
       {
         $match: {
           ...(input.status && {
