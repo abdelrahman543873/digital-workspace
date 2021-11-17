@@ -72,6 +72,9 @@ export class User {
   @Prop()
   fullName: string;
 
+  @Prop()
+  currentPosition: string;
+
   @Prop({ type: [ExperienceSchema] })
   experience: Experience[];
 
