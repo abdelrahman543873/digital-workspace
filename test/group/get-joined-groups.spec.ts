@@ -12,7 +12,9 @@ describe('get joined groups suite case', () => {
       url: JOINED_GROUPS,
       token: user.token,
     });
-    expect(res.body.docs[0].members[0]).toContain(user._id.toString());
+    expect(res.body.docs[0].members[0]._id.toString()).toContain(
+      user._id.toString(),
+    );
   });
 
   it('should get joined groups with id', async () => {
@@ -23,6 +25,8 @@ describe('get joined groups suite case', () => {
       url: `${JOINED_GROUPS}?userId=${user._id}`,
       token: user.token,
     });
-    expect(res.body.docs[0].members[0]).toContain(user._id.toString());
+    expect(res.body.docs[0].members[0]._id.toString()).toContain(
+      user._id.toString(),
+    );
   });
 });
