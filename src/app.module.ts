@@ -16,6 +16,7 @@ import { PageModule } from './page/page.module';
 import { GroupModule } from './group/group.module';
 import { TeamModule } from './team/team.module';
 import { TaskModule } from './task/task.module';
+import { EventModule } from './event/event.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { TaskModule } from './task/task.module';
     GroupModule,
     TeamModule,
     TaskModule,
+    EventModule,
   ],
 })
 export class AppModule {}

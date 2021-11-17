@@ -10,12 +10,13 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { ManageLikePageInput } from './inputs/manage-like-page.input';
 import { PageService } from './page.service';
 import { CreatePageInput } from './inputs/create-page.input';
 import { LikedPagesInput } from './inputs/liked-pages.input';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CreatePageSwagger } from './swagger/create-page.swagger';
 
 @Controller('page')
 export class PageController {
@@ -32,6 +33,8 @@ export class PageController {
   @ApiBearerAuth()
   @ApiTags('page')
   @UseGuards(AuthGuard)
+  @ApiConsumes('multipart/form-data')
+  @ApiBody(CreatePageSwagger)
   @UseInterceptors(FileInterceptor('logo'))
   @Put('create')
   async createPage(
