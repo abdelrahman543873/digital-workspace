@@ -6,6 +6,7 @@ import { BaseRepository } from '../shared/generics/repository.abstract';
 import { Event, EventDocument } from './schema/event.schema';
 import { CreateEventInput } from './inputs/create-event.input';
 import { GetEventsInput } from './inputs/get-events.input';
+import { ManageJoinEventInput } from './inputs/manage-join.input';
 
 @Injectable()
 export class EventRepository extends BaseRepository<Event> {
@@ -59,6 +60,34 @@ export class EventRepository extends BaseRepository<Event> {
     return await this.eventSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
       limit: input.limit,
+    });
+  }
+
+  async manageJoinEvent(userId: ObjectId, input: ManageJoinEventInput) {
+    await this.eventSchema.updateOne(
+      { _id: new Types.ObjectId(input.eventId) },
+      [
+        {
+          $set: {
+            attendees: {
+              $cond: [
+                {
+                  $in: [userId, '$attendees'],
+                },
+                {
+                  $setDifference: ['$attendees', [userId]],
+                },
+                {
+                  $concatArrays: ['$attendees', [userId]],
+                },
+              ],
+            },
+          },
+        },
+      ],
+    );
+    return await this.eventSchema.findOne({
+      _id: new Types.ObjectId(input.eventId),
     });
   }
 }

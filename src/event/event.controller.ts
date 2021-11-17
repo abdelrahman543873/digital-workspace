@@ -15,6 +15,7 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateEventSwagger } from './swagger/create-event.swagger';
 import { GetEventsInput } from './inputs/get-events.input';
+import { ManageJoinEventInput } from './inputs/manage-join.input';
 
 @Controller('event')
 export class EventController {
@@ -39,5 +40,12 @@ export class EventController {
   @Get('events')
   async getEvents(@Query() input: GetEventsInput) {
     return await this.eventService.getEvents(input);
+  }
+
+  @ApiTags('event')
+  @UseGuards(AuthGuard)
+  @Post('join')
+  async manageJoinEvent(@Body() input: ManageJoinEventInput) {
+    return await this.eventService.manageJoinEvent(input);
   }
 }

@@ -18,7 +18,7 @@ export class PageRepository extends BaseRepository<Page> {
     super(pageSchema);
   }
   async manageLikePage(userId: ObjectId, input: ManageLikePageInput) {
-    await this.pageSchema.updateOne({ _id: input.pageId }, [
+    await this.pageSchema.updateOne({ _id: new Types.ObjectId(input.pageId) }, [
       {
         $set: {
           likes: {
@@ -37,7 +37,9 @@ export class PageRepository extends BaseRepository<Page> {
         },
       },
     ]);
-    return await this.pageSchema.findOne({ _id: input.pageId });
+    return await this.pageSchema.findOne({
+      _id: new Types.ObjectId(input.pageId),
+    });
   }
 
   async createPage(

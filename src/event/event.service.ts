@@ -4,6 +4,7 @@ import { RequestContext } from 'src/shared/request.interface';
 import { EventRepository } from './event.repository';
 import { CreateEventInput } from './inputs/create-event.input';
 import { GetEventsInput } from './inputs/get-events.input';
+import { ManageJoinEventInput } from './inputs/manage-join.input';
 
 @Injectable()
 export class EventService {
@@ -21,6 +22,13 @@ export class EventService {
 
   async getEvents(input: GetEventsInput) {
     return await this.eventRepository.getEvents(
+      this.request.currentUser._id,
+      input,
+    );
+  }
+
+  async manageJoinEvent(input: ManageJoinEventInput) {
+    return await this.eventRepository.manageJoinEvent(
       this.request.currentUser._id,
       input,
     );
