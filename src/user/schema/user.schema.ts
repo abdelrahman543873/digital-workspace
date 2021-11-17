@@ -105,10 +105,10 @@ export class User {
   @Prop({ type: Types.ObjectId, ref: 'User' })
   directManagerId: ObjectId;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
+  @Prop({ type: [Types.ObjectId] })
   followers: ObjectId[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
+  @Prop({ type: [Types.ObjectId] })
   following: ObjectId[];
 }
 
