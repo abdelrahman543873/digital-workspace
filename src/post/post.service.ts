@@ -47,7 +47,7 @@ export class PostService {
 
   async getNewsFeed(pagination: Pagination) {
     const posts = await this.postRepository.getNewsFeed(
-      this.request.currentUser._id,
+      this.request.currentUser,
       pagination,
     );
     if (!posts.totalDocs) throw new BaseHttpException(this.request.lang, 605);

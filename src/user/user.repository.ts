@@ -98,10 +98,16 @@ export class UserRepository extends BaseRepository<User> {
                       $in: [input.userId, '$following'],
                     },
                     {
-                      $setDifference: ['$following', [input.userId]],
+                      $setDifference: [
+                        '$following',
+                        [new Types.ObjectId(input.userId)],
+                      ],
                     },
                     {
-                      $concatArrays: ['$following', [input.userId]],
+                      $concatArrays: [
+                        '$following',
+                        [new Types.ObjectId(input.userId)],
+                      ],
                     },
                   ],
                 },

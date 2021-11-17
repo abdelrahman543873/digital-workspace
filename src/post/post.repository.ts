@@ -9,6 +9,7 @@ import { BaseRepository } from '../shared/generics/repository.abstract';
 import { LikePostInput } from './inputs/like-post.input';
 import { RemovePostInput } from './inputs/remove-post.input';
 import { ReportPostInput } from './inputs/report-post.input';
+import { User } from '../user/schema/user.schema';
 @Injectable()
 export class PostRepository extends BaseRepository<Post> {
   constructor(
@@ -72,44 +73,15 @@ export class PostRepository extends BaseRepository<Post> {
     );
   }
 
-  async getNewsFeed(userId: ObjectId, pagination: Pagination) {
+  async getNewsFeed(user: User, pagination: Pagination) {
     const aggregation = this.postSchema.aggregate([
       {
-        $lookup: {
-          from: LookupSchemasEnum.users,
-          as: 'user',
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $eq: ['$_id', userId],
-                },
-              },
-            },
+        $match: {
+          $or: [
+            { $expr: { $in: ['$userId', user.following] } },
+            { userId: user._id },
           ],
         },
-      },
-      {
-        $unwind: '$user',
-      },
-      {
-        $match: {
-          $or: [{ $expr: { $in: ['$userId', '$user.following'] } }, { userId }],
-        },
-      },
-      {
-        $project: { user: 0 },
-      },
-      {
-        $lookup: {
-          from: LookupSchemasEnum.users,
-          localField: 'userId',
-          foreignField: '_id',
-          as: 'user',
-        },
-      },
-      {
-        $unwind: '$user',
       },
       {
         $lookup: {
@@ -136,6 +108,17 @@ export class PostRepository extends BaseRepository<Post> {
           ],
         },
       },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      {
+        $unwind: '$user',
+      },
       { $sort: { createdAt: -1 } },
     ]);
     const aggregationResult = await this.postSchema.aggregatePaginate(
@@ -152,7 +135,7 @@ export class PostRepository extends BaseRepository<Post> {
       { _id: { $in: postsIds } },
       {
         $addToSet: {
-          seen: userId,
+          seen: user._id,
         },
       },
     );

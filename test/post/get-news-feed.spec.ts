@@ -1,3 +1,5 @@
+import { ADD_POST } from './../endpoints/post.endpoints';
+import { FOLLOW_USER } from './../endpoints/user.endpoints';
 import { testRequest } from '../request';
 import { HTTP_METHODS_ENUM } from '../request.methods.enum';
 import { userFactory } from '../../src/user/user.factory';
@@ -89,5 +91,32 @@ describe('get news feed suite case', () => {
     });
     expect(res.body.docs[0].user._id.toString()).toBe(user._id.toString());
     expect(res.body.docs[0]._id.toString()).toBe(post._id.toString());
+  });
+
+  it('should follow user then the followed user posts then get the post from the follower perspective', async () => {
+    const followed = await userFactory();
+    const follower = await userFactory();
+    const followReq = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: FOLLOW_USER,
+      variables: { userId: followed._id },
+      token: follower.token,
+    });
+    expect(followReq.body.following[0]).toBe(followed._id.toString());
+    const postReq = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_POST,
+      variables: {
+        content: 'a post',
+      },
+      token: followed.token,
+    });
+    expect(postReq.body.content).toBe('a post');
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: NEWS_FEED,
+      token: follower.token,
+    });
+    expect(res.body.docs[0]._id.toString()).toBe(postReq.body._id.toString());
   });
 });
