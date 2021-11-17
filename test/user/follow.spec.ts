@@ -45,4 +45,15 @@ describe('follow user suite case', () => {
       follower._id.toString(),
     );
   });
+
+  it('should throw error if user follows himself', async () => {
+    const follower = await userFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: FOLLOW_USER,
+      variables: { userId: follower._id },
+      token: follower.token,
+    });
+    expect(res.body.statusCode).toBe(606);
+  });
 });

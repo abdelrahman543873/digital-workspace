@@ -12,6 +12,8 @@ import { GetUserByIdInput } from './inputs/get-user-by-id.input';
 import { User } from './schema/user.schema';
 import { UpdateUserInput } from './inputs/update-user.input';
 import { GetStatsInput } from './inputs/get-stats.input';
+import { BaseHttpException } from '../shared/exceptions/base-http-exception';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class UserService {
@@ -59,6 +61,9 @@ export class UserService {
   }
 
   async manageFollow(input: ManageFollowUserInput) {
+    if (input.userId === this.request.currentUser._id.toString()) {
+      throw new BaseHttpException(this.request.lang, 606);
+    }
     return await this.userRepo.manageFollow(
       this.request.currentUser._id,
       input,

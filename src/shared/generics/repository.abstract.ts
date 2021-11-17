@@ -1,5 +1,11 @@
 import { Repository } from '../interfaces/repository.interface';
-import { Model, Document, FilterQuery } from 'mongoose';
+import {
+  Model,
+  Document,
+  FilterQuery,
+  UpdateQuery,
+  UpdateWithAggregationPipeline,
+} from 'mongoose';
 
 export abstract class BaseRepository<T> implements Repository<T> {
   // creating a property to use your code in all instances
@@ -25,5 +31,11 @@ export abstract class BaseRepository<T> implements Repository<T> {
 
   async findOne(filter: FilterQuery<T & Document<any>>): Promise<T> {
     return await this._model.findOne(filter);
+  }
+  async updateOne(
+    filter: FilterQuery<T & Document<any>>,
+    update: UpdateQuery<T & Document<any, any>>,
+  ): Promise<Record<any, any>> {
+    return await this._model.updateOne(filter, update);
   }
 }

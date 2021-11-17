@@ -19,4 +19,8 @@ export const LocalizedErrorMessages: IErrorMessage = {
     EN: 'you have no posts to show',
     AR: 'you have no posts to show',
   },
+  606: {
+    EN: "you can't follow yourself",
+    AR: "you can't follow yourself",
+  },
 };
