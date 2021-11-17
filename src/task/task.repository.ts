@@ -50,12 +50,11 @@ export class TaskRepository extends BaseRepository<Task> {
   }
 
   async getTasks(userId: ObjectId, input: GetTasksInput) {
-    const chosenId = input.userId ? new Types.ObjectId(input.userId) : userId;
     const aggregation = this.taskSchema.aggregate([
       {
         $match: {
           $expr: {
-            $eq: [chosenId, '$assignee'],
+            $eq: [userId, '$assignee'],
           },
         },
       },

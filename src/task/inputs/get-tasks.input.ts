@@ -4,10 +4,6 @@ import { TASK_STATUS } from '../../app.const';
 
 export class GetTasksInput extends Pagination {
   @IsOptional()
-  @IsMongoId()
-  userId?: string;
-
-  @IsOptional()
   @IsIn(TASK_STATUS)
   status?: string;
 }
