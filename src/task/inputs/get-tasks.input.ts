@@ -1,4 +1,4 @@
-import { IsIn, IsMongoId, IsOptional } from 'class-validator';
+import { IsIn, IsOptional } from 'class-validator';
 import { Pagination } from '../../shared/utils/pagination.input';
 import { TASK_STATUS } from '../../app.const';
 

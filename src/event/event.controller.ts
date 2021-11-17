@@ -3,7 +3,9 @@ import { EventService } from './event.service';
 import {
   Body,
   Controller,
+  Get,
   Post,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -12,6 +14,7 @@ import { CreateEventInput } from './inputs/create-event.input';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateEventSwagger } from './swagger/create-event.swagger';
+import { GetEventsInput } from './inputs/get-events.input';
 
 @Controller('event')
 export class EventController {
@@ -29,5 +32,12 @@ export class EventController {
     @UploadedFile() logo: Express.Multer.File,
   ) {
     return await this.eventService.createEvent(input, logo);
+  }
+
+  @ApiTags('event')
+  @UseGuards(AuthGuard)
+  @Get('events')
+  async getEvents(@Query() input: GetEventsInput) {
+    return await this.eventService.getEvents(input);
   }
 }

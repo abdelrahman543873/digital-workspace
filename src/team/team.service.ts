@@ -4,7 +4,6 @@ import { CreateTeamInput } from './inputs/create-team.input';
 import { REQUEST } from '@nestjs/core';
 import { RequestContext } from 'src/shared/request.interface';
 import { AddTeamMemberInput } from './inputs/manage-team-member.input';
-import { Pagination } from '../shared/utils/pagination.input';
 import { MyTeamsInput } from './inputs/get-my-teams.input';
 
 @Injectable()

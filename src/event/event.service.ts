@@ -3,6 +3,7 @@ import { REQUEST } from '@nestjs/core';
 import { RequestContext } from 'src/shared/request.interface';
 import { EventRepository } from './event.repository';
 import { CreateEventInput } from './inputs/create-event.input';
+import { GetEventsInput } from './inputs/get-events.input';
 
 @Injectable()
 export class EventService {
@@ -15,6 +16,13 @@ export class EventService {
       this.request.currentUser._id,
       input,
       logo,
+    );
+  }
+
+  async getEvents(input: GetEventsInput) {
+    return await this.eventRepository.getEvents(
+      this.request.currentUser._id,
+      input,
     );
   }
 }
