@@ -58,6 +58,15 @@ export class TaskRepository extends BaseRepository<Task> {
           },
         },
       },
+      {
+        $match: {
+          ...(input.status && {
+            $expr: {
+              $eq: [input.status, '$status'],
+            },
+          }),
+        },
+      },
     ]);
     return await this.taskSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,

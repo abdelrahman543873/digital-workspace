@@ -1,3 +1,4 @@
+import { LookupSchemasEnum } from './../app.const';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AggregatePaginateModel, ObjectId, Types } from 'mongoose';
@@ -53,6 +54,23 @@ export class GroupRepository extends BaseRepository<Group> {
       {
         $match: {
           $expr: { $in: [chosenId, '$members'] },
+        },
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          let: { members: '$members' },
+          as: 'members',
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: ['$_id', '$$members'],
+                },
+              },
+            },
+            { $project: { profilePic: 1, fullName: 1 } },
+          ],
         },
       },
     ]);

@@ -23,7 +23,7 @@ export class Task {
   @Prop({ enum: PRIORITIES })
   priority: string;
 
-  @Prop({ enum: TASK_STATUS })
+  @Prop({ enum: TASK_STATUS, default: TASK_STATUS[1] })
   status: string;
 
   @Prop({ type: [String] })
