@@ -35,6 +35,7 @@ export class EventController {
     return await this.eventService.createEvent(input, logo);
   }
 
+  @ApiBearerAuth()
   @ApiTags('event')
   @UseGuards(AuthGuard)
   @Get('events')
@@ -42,6 +43,7 @@ export class EventController {
     return await this.eventService.getEvents(input);
   }
 
+  @ApiBearerAuth()
   @ApiTags('event')
   @UseGuards(AuthGuard)
   @Post('join')
