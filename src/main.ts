@@ -7,6 +7,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { BaseHttpExceptionFilter } from './shared/exceptions/base-http-exception-filter';
 import compression from 'compression';
+import { MongooseExceptionFilter } from './shared/exceptions/mongo-exception-filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger({
@@ -58,7 +59,10 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  app.useGlobalFilters(new BaseHttpExceptionFilter());
+  app.useGlobalFilters(
+    new BaseHttpExceptionFilter(),
+    new MongooseExceptionFilter(),
+  );
   SwaggerModule.setup('api', app, document);
   app.enableCors();
   await app.listen(3000);

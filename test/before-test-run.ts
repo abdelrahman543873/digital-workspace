@@ -1,3 +1,4 @@
+import { MongooseExceptionFilter } from './../src/shared/exceptions/mongo-exception-filter';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AppModule } from '../src/app.module';
@@ -20,6 +21,10 @@ export const moduleRef = async (): Promise<TestingModule> => {
       {
         provide: APP_FILTER,
         useClass: BaseHttpExceptionFilter,
+      },
+      {
+        provide: APP_FILTER,
+        useClass: MongooseExceptionFilter,
       },
     ],
   })

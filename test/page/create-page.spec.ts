@@ -18,6 +18,28 @@ describe('create page suite case', () => {
     expect(res.body.name).toBe(page.name);
   });
 
+  it('should throw error when creating two pages with the same name', async () => {
+    const user = await userFactory();
+    const page = await buildPageParams();
+    await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: CREATE_PAGE,
+      variables: {
+        name: page.name,
+      },
+      token: user.token,
+    });
+    const res2 = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: CREATE_PAGE,
+      variables: {
+        name: page.name,
+      },
+      token: user.token,
+    });
+    expect(res2.body.statusCode).toBe(418);
+  });
+
   it('should create page with logo', async () => {
     const user = await userFactory();
     const page = await buildPageParams();
