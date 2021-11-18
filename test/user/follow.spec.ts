@@ -25,6 +25,35 @@ describe('follow user suite case', () => {
     );
   });
 
+  it('should follow and follow back', async () => {
+    const follower = await userFactory();
+    const followed = await userFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: FOLLOW_USER,
+      variables: { userId: followed._id },
+      token: follower.token,
+    });
+    expect(res.body.following[0]).toBe(followed._id.toString());
+    const updatedFollowedUser = await (
+      await UserRepo()
+    ).findOne({
+      _id: followed._id,
+    });
+    expect(updatedFollowedUser.followers[0].toString()).toBe(
+      follower._id.toString(),
+    );
+    const res2 = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: FOLLOW_USER,
+      variables: { userId: follower._id },
+      token: followed.token,
+    });
+    expect(res2.body.following[0].toString()).toContain(
+      follower._id.toString(),
+    );
+  });
+
   it('should follow a user that has posts', async () => {
     const follower = await userFactory();
     const followed = await userFactory();

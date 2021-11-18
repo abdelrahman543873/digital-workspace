@@ -111,7 +111,7 @@ export class UserRepository extends BaseRepository<User> {
                     },
                   ],
                 },
-                {},
+                '$following',
               ],
             },
             followers: {
@@ -134,9 +134,8 @@ export class UserRepository extends BaseRepository<User> {
                     },
                   ],
                 },
-                {
-                  // if the _id doesn't match the followed person _id do nothing
-                },
+                // if the _id doesn't match the followed person _id do nothing
+                '$followers',
               ],
             },
           },
