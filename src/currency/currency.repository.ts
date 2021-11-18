@@ -30,8 +30,8 @@ export class CurrencyRepository {
       }`;
       const formattedConversionRate =
         conversionRate.split('.')[0] +
-          '.' +
-          conversionRate.split('.')[1]?.substring(0, 2) || '';
+        '.' +
+        (conversionRate.split('.')[1]?.substring(0, 2) || '');
       return {
         country: currency,
         conversionRate: formattedConversionRate,
