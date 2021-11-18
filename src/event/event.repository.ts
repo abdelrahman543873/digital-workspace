@@ -56,6 +56,19 @@ export class EventRepository extends BaseRepository<Event> {
           ],
         },
       },
+      {
+        $addFields: {
+          upcoming: {
+            $cond: {
+              if: {
+                $gt: ['$date', new Date().toISOString()],
+              },
+              then: true,
+              else: false,
+            },
+          },
+        },
+      },
     ]);
     return await this.eventSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
