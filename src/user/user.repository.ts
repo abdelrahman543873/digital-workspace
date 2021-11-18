@@ -95,7 +95,7 @@ export class UserRepository extends BaseRepository<User> {
                 {
                   $cond: [
                     {
-                      $in: [input.userId, '$following'],
+                      $in: [new Types.ObjectId(input.userId), '$following'],
                     },
                     {
                       $setDifference: [
