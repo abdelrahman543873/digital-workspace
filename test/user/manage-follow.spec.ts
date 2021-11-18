@@ -85,4 +85,16 @@ describe('follow user suite case', () => {
     });
     expect(res.body.statusCode).toBe(606);
   });
+
+  it("should throw error if user doesn't exist", async () => {
+    const follower = await userFactory();
+    const randomId = (await postFactory())._id;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: FOLLOW_USER,
+      variables: { userId: randomId.toString() },
+      token: follower.token,
+    });
+    expect(res.body.statusCode).toBe(602);
+  });
 });

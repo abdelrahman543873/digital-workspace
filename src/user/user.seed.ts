@@ -1,5 +1,5 @@
 import { User, Experience, Skill, Education } from './schema/user.schema';
-import { ObjectId } from 'mongoose';
+import { ObjectId, Types } from 'mongoose';
 import { datatype, date, internet, name, phone, random } from 'faker';
 import { GENDER, WIDGETS } from '../app.const';
 interface ExperienceType {
@@ -36,7 +36,7 @@ export interface UserType {
   coverPic?: string;
   gender?: string;
   birthDate?: Date;
-  directManagerId?: ObjectId;
+  directManagerId?: Types.ObjectId;
   widgets?: string[];
   following?: ObjectId[];
   followers?: ObjectId[];

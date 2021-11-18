@@ -216,7 +216,7 @@ export class UserRepository extends BaseRepository<User> {
       { _id: userId },
       {
         ...filteredInput,
-        directManagerId: input.directManagerId as ObjectId,
+        directManagerId: new Types.ObjectId(input.directManagerId),
         ...(newPassword && { password: hashPassSync(newPassword) }),
         ...(files?.coverPic && {
           coverPic: `${process.env.HOST}pictures/${files.coverPic[0].filename}`,
@@ -306,5 +306,9 @@ export class UserRepository extends BaseRepository<User> {
         },
       ])
     )[0];
+  }
+
+  async checkUserExists(userId: string) {
+    return await this.userSchema.count({ _id: new Types.ObjectId(userId) });
   }
 }

@@ -23,4 +23,8 @@ export const LocalizedErrorMessages: IErrorMessage = {
     EN: "you can't follow yourself",
     AR: "you can't follow yourself",
   },
+  607: {
+    EN: "your id can't be the direct manager id",
+    AR: "your id can't be the direct manager id",
+  },
 };

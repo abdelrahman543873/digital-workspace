@@ -103,7 +103,7 @@ export class User {
   birthDate: Date;
 
   @Prop({ type: Types.ObjectId, ref: 'User' })
-  directManagerId: ObjectId;
+  directManagerId: Types.ObjectId;
 
   @Prop({ type: [Types.ObjectId] })
   followers: ObjectId[];

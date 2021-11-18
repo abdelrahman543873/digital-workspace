@@ -10,7 +10,6 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { ObjectId } from 'mongoose';
 import { Experience, Skill, Education } from '../schema/user.schema';
 
 export class UpdateUserInput {
@@ -59,7 +58,7 @@ export class UpdateUserInput {
 
   @IsOptional()
   @IsMongoId()
-  directManagerId?: string | ObjectId;
+  directManagerId?: string;
 
   @Allow()
   profilePic: string;

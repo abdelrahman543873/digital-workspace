@@ -13,7 +13,6 @@ import { User } from './schema/user.schema';
 import { UpdateUserInput } from './inputs/update-user.input';
 import { GetStatsInput } from './inputs/get-stats.input';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
-import { Types } from 'mongoose';
 
 @Injectable()
 export class UserService {
@@ -34,6 +33,13 @@ export class UserService {
       coverPic?: Express.Multer.File[];
     },
   ) {
+    if (
+      input.directManagerId &&
+      !(await this.userRepo.checkUserExists(input.directManagerId))
+    )
+      throw new BaseHttpException(this.request.lang, 602);
+    if (input?.directManagerId === this.request.currentUser._id.toString())
+      throw new BaseHttpException(this.request.lang, 607);
     return await this.userRepo.updateUser(
       this.request.currentUser._id,
       input,
@@ -61,6 +67,8 @@ export class UserService {
   }
 
   async manageFollow(input: ManageFollowUserInput) {
+    if (!(await this.userRepo.checkUserExists(input.userId)))
+      throw new BaseHttpException(this.request.lang, 602);
     if (input.userId === this.request.currentUser._id.toString()) {
       throw new BaseHttpException(this.request.lang, 606);
     }
