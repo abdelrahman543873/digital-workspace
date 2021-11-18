@@ -25,11 +25,16 @@ export class CurrencyRepository {
     await this.cacheManager.set('currencies', Object.keys(response.data.rates));
     const base = response.data.rates[input.base];
     return await Object.keys(response.data.rates).map((currency) => {
+      const conversionRate = `${
+        input.amount * (response.data.rates[currency] / base)
+      }`;
+      const formattedConversionRate =
+        conversionRate.split('.')[0] +
+          '.' +
+          conversionRate.split('.')[1]?.substring(0, 2) || '';
       return {
         country: currency,
-        conversionRate: parseFloat(
-          `${input.amount * (response.data.rates[currency] / base)}`,
-        ).toPrecision(2),
+        conversionRate: formattedConversionRate,
       };
     });
   }
