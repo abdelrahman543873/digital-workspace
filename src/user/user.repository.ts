@@ -344,7 +344,6 @@ export class UserRepository extends BaseRepository<User> {
           },
         },
         { $unwind: '$manager' },
-        { $project: { manager: 1, subordinates: 1, _id: 0 } },
       ])
     )[0];
   }
