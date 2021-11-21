@@ -1,6 +1,6 @@
 import { User, Experience, Skill, Education } from './schema/user.schema';
 import { ObjectId, Types } from 'mongoose';
-import { datatype, date, internet, name, phone, random } from 'faker';
+import { address, datatype, date, internet, name, phone, random } from 'faker';
 import { GENDER, WIDGETS } from '../app.const';
 interface ExperienceType {
   startDate?: Date;
@@ -41,6 +41,7 @@ export interface UserType {
   following?: ObjectId[];
   followers?: ObjectId[];
   currentPosition?: string;
+  nationality?: string;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -89,5 +90,6 @@ export const buildUserParams = (obj: UserType = {}): User => {
     education: obj.education || [buildEducationParams()],
     skill: obj.skill || [buildSkillParams()],
     currentPosition: obj.currentPosition || name.jobTitle(),
+    nationality: obj.nationality || address.country(),
   };
 };

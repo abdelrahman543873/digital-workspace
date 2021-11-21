@@ -110,6 +110,9 @@ export class User {
 
   @Prop({ type: [Types.ObjectId] })
   following: ObjectId[];
+
+  @Prop()
+  nationality: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
