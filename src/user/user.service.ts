@@ -13,6 +13,7 @@ import { User } from './schema/user.schema';
 import { UpdateUserInput } from './inputs/update-user.input';
 import { GetStatsInput } from './inputs/get-stats.input';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
+import { GetHierarchyInput } from './inputs/get-hierarchy.input';
 
 @Injectable()
 export class UserService {
@@ -64,6 +65,10 @@ export class UserService {
 
   async searchUser(input: SearchUserInput) {
     return await this.userRepo.searchUser(input);
+  }
+
+  async getHierarchy(input: GetHierarchyInput) {
+    return await this.userRepo.getHierarchy(this.request.currentUser, input);
   }
 
   async manageFollow(input: ManageFollowUserInput) {

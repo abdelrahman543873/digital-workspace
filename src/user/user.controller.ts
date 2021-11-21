@@ -27,6 +27,7 @@ import { UpdateUserSwagger } from './swagger/update-user.swagger';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { UpdateUserJoi } from './joi/update-user.joi';
 import { GetStatsInput } from './inputs/get-stats.input';
+import { GetHierarchyInput } from './inputs/get-hierarchy.input';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -75,6 +76,14 @@ export class UserController {
   @Get('myProfile')
   async getMyProfile() {
     return this.userService.getMyProfile();
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @UseGuards(AuthGuard)
+  @Get('hierarchy')
+  async getHierarchy(@Query() input: GetHierarchyInput) {
+    return await this.userService.getHierarchy(input);
   }
 
   @ApiBearerAuth()

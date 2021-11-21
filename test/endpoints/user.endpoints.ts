@@ -8,3 +8,4 @@ export const RECOMMEND_USERS = '/user/recommendations';
 export const UPDATE_USER = '/user/update';
 export const GET_MY_PROFILE = '/user/myProfile';
 export const STATS = '/user/stats';
+export const GET_HIERARCHY = '/user/hierarchy';

@@ -16,6 +16,7 @@ import { SearchUserInput } from './inputs/search-user.input';
 import { GetUserByIdInput } from './inputs/get-user-by-id.input';
 import { UpdateUserInput } from './inputs/update-user.input';
 import { GetStatsInput } from './inputs/get-stats.input';
+import { GetHierarchyInput } from './inputs/get-hierarchy.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -310,5 +311,41 @@ export class UserRepository extends BaseRepository<User> {
 
   async checkUserExists(userId: string) {
     return await this.userSchema.count({ _id: new Types.ObjectId(userId) });
+  }
+
+  async getHierarchy(user: User, input: GetHierarchyInput) {
+    const chosenId = input.userId ? new Types.ObjectId(input.userId) : user._id;
+    return (
+      await this.userSchema.aggregate([
+        {
+          $match: {
+            $expr: { $eq: ['$_id', chosenId] },
+          },
+        },
+        {
+          $lookup: {
+            from: LookupSchemasEnum.users,
+            as: 'subordinates',
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: ['$directManagerId', chosenId] },
+                },
+              },
+            ],
+          },
+        },
+        {
+          $lookup: {
+            from: LookupSchemasEnum.users,
+            as: 'manager',
+            localField: 'directManagerId',
+            foreignField: '_id',
+          },
+        },
+        { $unwind: '$manager' },
+        { $project: { manager: 1, subordinates: 1, _id: 0 } },
+      ])
+    )[0];
   }
 }
