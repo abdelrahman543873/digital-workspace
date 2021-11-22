@@ -17,6 +17,7 @@ import { GetUserByIdInput } from './inputs/get-user-by-id.input';
 import { UpdateUserInput } from './inputs/update-user.input';
 import { GetStatsInput } from './inputs/get-stats.input';
 import { GetHierarchyInput } from './inputs/get-hierarchy.input';
+import { HidePostInput } from './inputs/hide-post.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -360,5 +361,13 @@ export class UserRepository extends BaseRepository<User> {
       offset: pagination.offset * pagination.limit,
       limit: pagination.limit,
     });
+  }
+
+  async hidePost(userId: ObjectId, input: HidePostInput) {
+    return await this.userSchema.findOneAndUpdate(
+      { _id: userId },
+      { $addToSet: { hiddenPosts: input.postId } },
+      { new: true },
+    );
   }
 }

@@ -40,6 +40,7 @@ export interface UserType {
   widgets?: string[];
   following?: ObjectId[];
   followers?: ObjectId[];
+  hiddenPosts?: ObjectId[];
   currentPosition?: string;
   nationality?: string;
 }
@@ -91,5 +92,6 @@ export const buildUserParams = (obj: UserType = {}): User => {
     skill: obj.skill || [buildSkillParams()],
     currentPosition: obj.currentPosition || name.jobTitle(),
     nationality: obj.nationality || address.country(),
+    hiddenPosts: obj.hiddenPosts || [],
   };
 };

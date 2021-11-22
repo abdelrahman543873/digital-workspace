@@ -14,6 +14,7 @@ import { UpdateUserInput } from './inputs/update-user.input';
 import { GetStatsInput } from './inputs/get-stats.input';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
 import { GetHierarchyInput } from './inputs/get-hierarchy.input';
+import { HidePostInput } from './inputs/hide-post.input';
 
 @Injectable()
 export class UserService {
@@ -100,5 +101,9 @@ export class UserService {
 
   async getMostFollowed(pagination: Pagination) {
     return await this.userRepo.getMostFollowed(pagination);
+  }
+
+  async hidePost(input: HidePostInput) {
+    return await this.userRepo.hidePost(this.request.currentUser._id, input);
   }
 }

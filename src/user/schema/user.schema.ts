@@ -113,6 +113,9 @@ export class User {
 
   @Prop()
   nationality: string;
+
+  @Prop({ type: [Types.ObjectId] })
+  hiddenPosts: ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

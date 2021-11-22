@@ -28,6 +28,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { UpdateUserJoi } from './joi/update-user.joi';
 import { GetStatsInput } from './inputs/get-stats.input';
 import { GetHierarchyInput } from './inputs/get-hierarchy.input';
+import { HidePostInput } from './inputs/hide-post.input';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -116,6 +117,14 @@ export class UserController {
   @Get('mostFollowed')
   async getMostFollowedUsers(@Query() pagination: Pagination) {
     return await this.userService.getMostFollowed(pagination);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @UseGuards(AuthGuard)
+  @Put('hidePost')
+  async hidePost(@Body() input: HidePostInput) {
+    return await this.userService.hidePost(input);
   }
 
   @ApiTags('user')
