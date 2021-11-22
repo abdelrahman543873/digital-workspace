@@ -10,6 +10,7 @@ import { LikePostInput } from './inputs/like-post.input';
 import { RemovePostInput } from './inputs/remove-post.input';
 import { ReportPostInput } from './inputs/report-post.input';
 import { User } from '../user/schema/user.schema';
+import { MyPostsInput } from './inputs/my-posts.input';
 @Injectable()
 export class PostRepository extends BaseRepository<Post> {
   constructor(
@@ -144,10 +145,11 @@ export class PostRepository extends BaseRepository<Post> {
     return aggregationResult;
   }
 
-  async getMyPosts(userId: ObjectId, pagination: Pagination) {
+  async getMyPosts(userId: ObjectId, input: MyPostsInput) {
+    const chosenId = input.userId ? new Types.ObjectId(input.userId) : userId;
     const aggregation = this.postSchema.aggregate([
       {
-        $match: { userId },
+        $match: { userId: chosenId },
       },
       {
         $lookup: {
@@ -160,8 +162,8 @@ export class PostRepository extends BaseRepository<Post> {
       { $sort: { createdAt: -1 } },
     ]);
     return await this.postSchema.aggregatePaginate(aggregation, {
-      offset: pagination.offset * pagination.limit,
-      limit: pagination.limit,
+      offset: input.offset * input.limit,
+      limit: input.limit,
     });
   }
 }

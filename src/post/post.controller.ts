@@ -21,6 +21,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { AddPostSwagger } from './swagger/add-post.swagger';
 import { RemovePostInput } from './inputs/remove-post.input';
 import { ReportPostInput } from './inputs/report-post.input';
+import { MyPostsInput } from './inputs/my-posts.input';
 
 @Controller('post')
 export class PostController {
@@ -76,7 +77,7 @@ export class PostController {
   @ApiTags('post')
   @UseGuards(AuthGuard)
   @Get('myPosts')
-  async getMyPosts(@Query() pagination: Pagination) {
-    return await this.postService.getMyPosts(pagination);
+  async getMyPosts(@Query() input: MyPostsInput) {
+    return await this.postService.getMyPosts(input);
   }
 }

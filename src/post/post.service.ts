@@ -8,6 +8,7 @@ import { RemovePostInput } from './inputs/remove-post.input';
 import { ReportPostInput } from './inputs/report-post.input';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
 import { RequestContext } from 'src/shared/request.interface';
+import { MyPostsInput } from './inputs/my-posts.input';
 
 @Injectable()
 export class PostService {
@@ -54,10 +55,10 @@ export class PostService {
     return posts;
   }
 
-  async getMyPosts(pagination: Pagination) {
+  async getMyPosts(input: MyPostsInput) {
     return await this.postRepository.getMyPosts(
       this.request.currentUser._id,
-      pagination,
+      input,
     );
   }
 }
