@@ -18,6 +18,22 @@ describe('get news feed suite case', () => {
     });
     expect(res.body.docs[0]._id).toBe(post._id.toString());
   });
+  it("shouldn't get a post that is hidden", async () => {
+    const followed = await userFactory();
+    const firstPost = await postFactory({ userId: followed._id });
+    const secondPost = await postFactory({ userId: followed._id });
+    const follower = await userFactory({
+      following: [followed._id],
+      hiddenPosts: [firstPost._id],
+    });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: NEWS_FEED,
+      token: follower.token,
+    });
+    expect(res.body.docs[0]._id).toBe(secondPost._id.toString());
+    expect(res.body.totalDocs).toBe(1);
+  });
 
   it('should increase seen count', async () => {
     const followed = await userFactory();

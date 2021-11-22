@@ -80,9 +80,14 @@ export class PostRepository extends BaseRepository<Post> {
     const aggregation = this.postSchema.aggregate([
       {
         $match: {
-          $or: [
-            { $expr: { $in: ['$userId', user.following] } },
-            { userId: user._id },
+          $and: [
+            {
+              $or: [
+                { $expr: { $in: ['$userId', user.following] } },
+                { userId: user._id },
+              ],
+            },
+            { $expr: { $not: { $in: ['$_id', user.hiddenPosts] } } },
           ],
         },
       },
