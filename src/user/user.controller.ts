@@ -110,6 +110,14 @@ export class UserController {
     return await this.userService.recommendUsers(pagination);
   }
 
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @UseGuards(AuthGuard)
+  @Get('mostFollowed')
+  async getMostFollowedUsers(@Query() pagination: Pagination) {
+    return await this.userService.getMostFollowed(pagination);
+  }
+
   @ApiTags('user')
   @Get('testUsers')
   async getTestUsers() {

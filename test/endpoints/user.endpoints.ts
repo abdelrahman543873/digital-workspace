@@ -9,3 +9,4 @@ export const UPDATE_USER = '/user/update';
 export const GET_MY_PROFILE = '/user/myProfile';
 export const STATS = '/user/stats';
 export const GET_HIERARCHY = '/user/hierarchy';
+export const MOST_FOLLOWED = '/user/mostFollowed';

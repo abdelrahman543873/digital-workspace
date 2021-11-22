@@ -347,4 +347,18 @@ export class UserRepository extends BaseRepository<User> {
       ])
     )[0];
   }
+
+  async getMostFollowed(pagination: Pagination) {
+    const aggregation = this.userSchema.aggregate([
+      {
+        $addFields: { followersSize: { $size: '$followers' } },
+      },
+      { $sort: { followersSize: -1 } },
+      { $project: { followersSize: 0 } },
+    ]);
+    return await this.userSchema.aggregatePaginate(aggregation, {
+      offset: pagination.offset * pagination.limit,
+      limit: pagination.limit,
+    });
+  }
 }

@@ -97,4 +97,8 @@ export class UserService {
   async getStats(input: GetStatsInput) {
     return await this.userRepo.getStats(this.request.currentUser._id, input);
   }
+
+  async getMostFollowed(pagination: Pagination) {
+    return await this.userRepo.getMostFollowed(pagination);
+  }
 }
