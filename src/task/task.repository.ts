@@ -85,6 +85,7 @@ export class TaskRepository extends BaseRepository<Task> {
           }),
         },
       },
+      { $sort: { createdAt: -1 } },
     ]);
     return await this.taskSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
