@@ -51,7 +51,6 @@ export class PostService {
       this.request.currentUser,
       pagination,
     );
-    if (!posts.totalDocs) throw new BaseHttpException(this.request.lang, 605);
     return posts;
   }
 
