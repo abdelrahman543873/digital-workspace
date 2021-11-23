@@ -159,9 +159,26 @@ export class PostRepository extends BaseRepository<Post> {
       {
         $lookup: {
           from: LookupSchemasEnum.comments,
-          localField: '_id',
-          foreignField: 'post',
+          let: { postId: '$_id' },
           as: 'comments',
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$$postId', '$post'],
+                },
+              },
+            },
+            {
+              $lookup: {
+                from: LookupSchemasEnum.users,
+                localField: 'commenter',
+                foreignField: '_id',
+                as: 'commenter',
+              },
+            },
+            { $unwind: '$commenter' },
+          ],
         },
       },
       { $sort: { createdAt: -1 } },

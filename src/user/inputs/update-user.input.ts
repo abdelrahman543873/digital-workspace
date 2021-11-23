@@ -1,8 +1,11 @@
+import { Prop } from '@nestjs/mongoose';
 import { Type } from 'class-transformer';
 import {
   Allow,
   ArrayNotEmpty,
   IsArray,
+  IsISO31661Alpha2,
+  IsISO31661Alpha3,
   IsMongoId,
   IsNotEmpty,
   IsOptional,
@@ -59,6 +62,10 @@ export class UpdateUserInput {
   @IsOptional()
   @IsMongoId()
   directManagerId?: string;
+
+  @IsOptional()
+  @IsISO31661Alpha3()
+  nationality?: string;
 
   @Allow()
   profilePic: string;
