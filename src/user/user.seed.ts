@@ -91,7 +91,7 @@ export const buildUserParams = (obj: UserType = {}): User => {
     education: obj.education || [buildEducationParams()],
     skill: obj.skill || [buildSkillParams()],
     currentPosition: obj.currentPosition || name.jobTitle(),
-    nationality: obj.nationality || address.country(),
+    nationality: obj.nationality || address.countryCode(),
     hiddenPosts: obj.hiddenPosts || [],
   };
 };
