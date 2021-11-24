@@ -8,6 +8,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { BaseHttpExceptionFilter } from './shared/exceptions/base-http-exception-filter';
 import compression from 'compression';
 import { MongooseExceptionFilter } from './shared/exceptions/mongo-exception-filter';
+import { Cluster } from './cluster';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger({
@@ -67,4 +68,4 @@ async function bootstrap() {
   app.enableCors();
   await app.listen(3000);
 }
-bootstrap();
+Cluster.register(bootstrap);
