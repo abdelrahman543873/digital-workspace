@@ -16,7 +16,8 @@ export class TeamsRepository {
           client_id: process.env.CLIENT_ID,
           scope: 'user.read',
           code: input.code,
-          redirect_uri: 'https://digital-workspace-api.azurewebsites.net/api/',
+          redirect_uri:
+            'https://digital-workspace-api.azurewebsites.net/teams/events',
           grant_type: 'authorization_code',
           client_secret: process.env.CLIENT_SECRET,
         }),
@@ -29,6 +30,7 @@ export class TeamsRepository {
         token = response.data.access_token;
       })
       .catch((e) => {
+        console.log(e);
         throw new HttpException(e.message, 400);
       });
     const response = await firstValueFrom(
