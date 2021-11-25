@@ -69,11 +69,29 @@ export class PostRepository extends BaseRepository<Post> {
   }
 
   async reportPost(userId: ObjectId, input: ReportPostInput) {
-    return await this.postSchema.findOneAndUpdate(
-      { _id: new Types.ObjectId(input.postId) },
-      { $push: { reports: { userId, reason: input.reason } } },
-      { new: true },
-    );
+    await this.postSchema.updateOne({ _id: new Types.ObjectId(input.postId) }, [
+      {
+        $set: {
+          reports: {
+            $concatArrays: ['$reports', [{ userId, reason: input.reason }]],
+          },
+        },
+      },
+      {
+        $set: {
+          isPublished: {
+            $cond: {
+              if: { $gte: [{ $size: '$reports' }, 2] },
+              then: false,
+              else: '$isPublished',
+            },
+          },
+        },
+      },
+    ]);
+    return await this.postSchema.findOne({
+      _id: new Types.ObjectId(input.postId),
+    });
   }
 
   async getNewsFeed(user: User, pagination: Pagination) {
@@ -88,6 +106,7 @@ export class PostRepository extends BaseRepository<Post> {
               ],
             },
             { $expr: { $not: { $in: ['$_id', user.hiddenPosts] } } },
+            { $expr: { $eq: ['$isPublished', true] } },
           ],
         },
       },
@@ -154,7 +173,7 @@ export class PostRepository extends BaseRepository<Post> {
     const chosenId = input.userId ? new Types.ObjectId(input.userId) : userId;
     const aggregation = this.postSchema.aggregate([
       {
-        $match: { userId: chosenId },
+        $match: { $and: [{ userId: chosenId }, { isPublished: true }] },
       },
       {
         $lookup: {

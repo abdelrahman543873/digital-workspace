@@ -36,7 +36,7 @@ export class Post {
   @Prop({ type: [ReportSchema] })
   reports: Report[];
 
-  @Prop()
+  @Prop({ default: true })
   isPublished: boolean;
 
   createdAt: Date;

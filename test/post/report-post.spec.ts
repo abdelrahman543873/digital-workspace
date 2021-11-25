@@ -16,5 +16,22 @@ describe('report post suite case', () => {
       variables: { postId: post._id, reason: post.content },
     });
     expect(res.body.reports.length).toBe(2);
+    expect(res.body.isPublished).toBe(false);
+  });
+
+  it("should leave post as published if it's less than two reports", async () => {
+    const user = await userFactory();
+    const post = await postFactory({
+      userId: user._id,
+      reports: [],
+    });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: REPORT_POST,
+      token: user.token,
+      variables: { postId: post._id, reason: post.content },
+    });
+    expect(res.body.reports.length).toBe(1);
+    expect(res.body.isPublished).toBe(true);
   });
 });

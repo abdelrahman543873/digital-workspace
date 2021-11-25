@@ -18,6 +18,21 @@ describe('get news feed suite case', () => {
     });
     expect(res.body.docs[0]._id).toBe(post._id.toString());
   });
+
+  it("shouldn't get post if it's not published", async () => {
+    const followed = await userFactory();
+    const follower = await userFactory({ following: [followed._id] });
+    const post = await postFactory({
+      userId: followed._id,
+      isPublished: false,
+    });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: NEWS_FEED,
+      token: follower.token,
+    });
+    expect(res.body.totalDocs).toBe(0);
+  });
   it("shouldn't get a post that is hidden", async () => {
     const followed = await userFactory();
     const firstPost = await postFactory({ userId: followed._id });

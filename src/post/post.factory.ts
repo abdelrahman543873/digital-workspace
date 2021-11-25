@@ -27,7 +27,7 @@ export const buildPostParams = async (obj: PostType = {}): Promise<Post> => {
       { userId, reason: faker.commerce.productDescription() },
     ],
     seen: obj.seen || [userId],
-    isPublished: obj.isPublished || true,
+    isPublished: obj.isPublished ?? true,
     createdAt: obj.createdAt,
     updatedAt: obj.createdAt,
   };
