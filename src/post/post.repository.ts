@@ -177,6 +177,17 @@ export class PostRepository extends BaseRepository<Post> {
       },
       {
         $lookup: {
+          from: LookupSchemasEnum.users,
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      {
+        $unwind: '$user',
+      },
+      {
+        $lookup: {
           from: LookupSchemasEnum.comments,
           let: { postId: '$_id' },
           as: 'comments',
