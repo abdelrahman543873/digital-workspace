@@ -17,6 +17,7 @@ import { GroupModule } from './group/group.module';
 import { TeamModule } from './team/team.module';
 import { TaskModule } from './task/task.module';
 import { EventModule } from './event/event.module';
+import { TeamsModule } from './teams/teams.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { EventModule } from './event/event.module';
     TeamModule,
     TaskModule,
     EventModule,
+    TeamsModule,
   ],
 })
 export class AppModule {}

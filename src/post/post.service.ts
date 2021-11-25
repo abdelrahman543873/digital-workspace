@@ -6,7 +6,6 @@ import { REQUEST } from '@nestjs/core';
 import { LikePostInput } from './inputs/like-post.input';
 import { RemovePostInput } from './inputs/remove-post.input';
 import { ReportPostInput } from './inputs/report-post.input';
-import { BaseHttpException } from '../shared/exceptions/base-http-exception';
 import { RequestContext } from 'src/shared/request.interface';
 import { MyPostsInput } from './inputs/my-posts.input';
 
