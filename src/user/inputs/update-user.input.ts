@@ -1,10 +1,8 @@
-import { Prop } from '@nestjs/mongoose';
 import { Type } from 'class-transformer';
 import {
   Allow,
   ArrayNotEmpty,
   IsArray,
-  IsISO31661Alpha2,
   IsISO31661Alpha3,
   IsMongoId,
   IsNotEmpty,

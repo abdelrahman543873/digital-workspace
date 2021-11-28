@@ -28,11 +28,23 @@ export class UserRepository extends BaseRepository<User> {
     super(userSchema);
   }
 
-  async addUser(input: AddUserInput) {
+  async addUser(
+    input: AddUserInput,
+    files: {
+      profilePic?: Express.Multer.File[];
+      coverPic?: Express.Multer.File[];
+    },
+  ) {
     return (
       await this.userSchema.create({
         ...input,
         password: await hashPass(input.password),
+        ...(files?.coverPic && {
+          coverPic: `${process.env.HOST}pictures/${files.coverPic[0].filename}`,
+        }),
+        ...(files?.profilePic && {
+          profilePic: `${process.env.HOST}pictures/${files.profilePic[0].filename}`,
+        }),
       })
     ).toJSON();
   }

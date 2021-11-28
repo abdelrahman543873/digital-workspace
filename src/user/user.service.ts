@@ -22,8 +22,14 @@ export class UserService {
     private userRepo: UserRepository,
     @Inject(REQUEST) private readonly request: RequestContext,
   ) {}
-  async addUser(input: AddUserInput) {
-    const user = await this.userRepo.addUser(input);
+  async addUser(
+    input: AddUserInput,
+    files: {
+      profilePic?: Express.Multer.File[];
+      coverPic?: Express.Multer.File[];
+    },
+  ) {
+    const user = await this.userRepo.addUser(input, files);
     user.token = generateAuthToken(user._id);
     return user;
   }

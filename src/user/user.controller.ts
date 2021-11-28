@@ -29,14 +29,30 @@ import { UpdateUserJoi } from './joi/update-user.joi';
 import { GetStatsInput } from './inputs/get-stats.input';
 import { GetHierarchyInput } from './inputs/get-hierarchy.input';
 import { HidePostInput } from './inputs/hide-post.input';
+import { AddUserSwagger } from './swagger/add-user.swagger';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @ApiTags('user')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody(AddUserSwagger)
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'profilePic', maxCount: 1 },
+      { name: 'coverPic', maxCount: 1 },
+    ]),
+  )
   @Post('register')
-  async addUser(@Body() input: AddUserInput) {
-    return await this.userService.addUser(input);
+  async addUser(
+    @Body() input: AddUserInput,
+    @UploadedFiles()
+    files: {
+      profilePic?: Express.Multer.File[];
+      coverPic?: Express.Multer.File[];
+    },
+  ) {
+    return await this.userService.addUser(input, files);
   }
 
   @ApiBearerAuth()
