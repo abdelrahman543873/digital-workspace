@@ -10,7 +10,7 @@ describe('search user suite case', () => {
       url: `${SEARCH_USER}?keyword=${user.email}`,
       token: user.token,
     });
-    expect(res.body[0]._id.toString()).toBe(user._id.toString());
+    expect(res.body.docs[0]._id.toString()).toBe(user._id.toString());
   });
 
   it('should search user by username', async () => {
@@ -20,7 +20,7 @@ describe('search user suite case', () => {
       url: `${SEARCH_USER}?keyword=${user.fullName}`,
       token: user.token,
     });
-    expect(res.body[0]._id.toString()).toBe(user._id.toString());
+    expect(res.body.docs[0]._id.toString()).toBe(user._id.toString());
   });
 
   it('should search user by username inexact', async () => {
@@ -30,6 +30,6 @@ describe('search user suite case', () => {
       url: `${SEARCH_USER}?keyword=${user.fullName.substr(3)}`,
       token: user.token,
     });
-    expect(res.body[0]._id.toString()).toBe(user._id.toString());
+    expect(res.body.docs[0]._id.toString()).toBe(user._id.toString());
   });
 });

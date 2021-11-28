@@ -72,11 +72,19 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   async searchUser(input: SearchUserInput) {
-    return await this.userSchema.find({
-      $or: [
-        { email: { $regex: input.keyword, $options: 'i' } },
-        { fullName: { $regex: input.keyword, $options: 'i' } },
-      ],
+    const aggregation = this.userSchema.aggregate([
+      {
+        $match: {
+          $or: [
+            { email: { $regex: input.keyword, $options: 'i' } },
+            { fullName: { $regex: input.keyword, $options: 'i' } },
+          ],
+        },
+      },
+    ]);
+    return await this.userSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
     });
   }
 
