@@ -7,6 +7,7 @@ import { Event, EventDocument } from './schema/event.schema';
 import { CreateEventInput } from './inputs/create-event.input';
 import { GetEventsInput } from './inputs/get-events.input';
 import { ManageJoinEventInput } from './inputs/manage-join.input';
+import { DeleteEventInput } from './inputs/delete-event.input';
 
 @Injectable()
 export class EventRepository extends BaseRepository<Event> {
@@ -101,6 +102,13 @@ export class EventRepository extends BaseRepository<Event> {
     );
     return await this.eventSchema.findOne({
       _id: new Types.ObjectId(input.eventId),
+    });
+  }
+
+  async deleteEvent(userId: ObjectId, input: DeleteEventInput) {
+    return await this.eventSchema.findOneAndDelete({
+      _id: new Types.ObjectId(input.eventId),
+      host: userId,
     });
   }
 }

@@ -3,6 +3,7 @@ import { EventService } from './event.service';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Post,
   Query,
@@ -16,6 +17,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateEventSwagger } from './swagger/create-event.swagger';
 import { GetEventsInput } from './inputs/get-events.input';
 import { ManageJoinEventInput } from './inputs/manage-join.input';
+import { DeleteEventInput } from './inputs/delete-event.input';
 
 @Controller('event')
 export class EventController {
@@ -49,5 +51,13 @@ export class EventController {
   @Post('join')
   async manageJoinEvent(@Body() input: ManageJoinEventInput) {
     return await this.eventService.manageJoinEvent(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('event')
+  @UseGuards(AuthGuard)
+  @Delete('remove')
+  async deleteEvent(@Body() input: DeleteEventInput) {
+    return await this.eventService.deleteEvent(input);
   }
 }
