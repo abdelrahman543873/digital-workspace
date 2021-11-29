@@ -93,6 +93,25 @@ export class UserRepository extends BaseRepository<User> {
           ],
         },
       },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          foreignField: '_id',
+          localField: 'directManagerId',
+          as: 'directManager',
+        },
+      },
+      {
+        $addFields: {
+          directManager: {
+            $cond: {
+              if: { $eq: [{ $size: '$directManager' }, 1] },
+              then: { $arrayElemAt: ['$directManager', 0] },
+              else: {},
+            },
+          },
+        },
+      },
     ]);
     return await this.userSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
@@ -196,7 +215,7 @@ export class UserRepository extends BaseRepository<User> {
                   $and: [
                     {
                       $cond: [
-                        { $ifNull: ['$commonToBoth', false] }, // if
+                        { $ifNull: ['$commonToBoth', false] },
                         true,
                         false,
                       ],
