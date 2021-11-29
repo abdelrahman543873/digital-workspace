@@ -8,6 +8,7 @@ import { CreateEventInput } from './inputs/create-event.input';
 import { GetEventsInput } from './inputs/get-events.input';
 import { ManageJoinEventInput } from './inputs/manage-join.input';
 import { DeleteEventInput } from './inputs/delete-event.input';
+import { Pagination } from '../shared/utils/pagination.input';
 
 @Injectable()
 export class EventRepository extends BaseRepository<Event> {
@@ -109,6 +110,14 @@ export class EventRepository extends BaseRepository<Event> {
     return await this.eventSchema.findOneAndDelete({
       _id: new Types.ObjectId(input.eventId),
       host: userId,
+    });
+  }
+
+  async getAllEvents(input: Pagination) {
+    const aggregation = this.eventSchema.aggregate([{ $match: {} }]);
+    return await this.eventSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
     });
   }
 }

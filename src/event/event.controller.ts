@@ -1,3 +1,4 @@
+import { Pagination } from './../shared/utils/pagination.input';
 import { AuthGuard } from './../shared/guards/auth.guard';
 import { EventService } from './event.service';
 import {
@@ -43,6 +44,14 @@ export class EventController {
   @Get('events')
   async getEvents(@Query() input: GetEventsInput) {
     return await this.eventService.getEvents(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('event')
+  @UseGuards(AuthGuard)
+  @Get('AllEvents')
+  async getAllEvents(@Query() input: Pagination) {
+    return await this.eventService.getAllEvents(input);
   }
 
   @ApiBearerAuth()
