@@ -15,6 +15,7 @@ import { GetStatsInput } from './inputs/get-stats.input';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
 import { GetHierarchyInput } from './inputs/get-hierarchy.input';
 import { HidePostInput } from './inputs/hide-post.input';
+import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 
 @Injectable()
 export class UserService {
@@ -53,6 +54,23 @@ export class UserService {
       input,
       files,
     );
+  }
+
+  async updateUserById(
+    input: UpdateUserByIdInput,
+    files: {
+      profilePic?: Express.Multer.File[];
+      coverPic?: Express.Multer.File[];
+    },
+  ) {
+    if (
+      input.directManagerId &&
+      !(await this.userRepo.checkUserExists(input.directManagerId))
+    )
+      throw new BaseHttpException(this.request.lang, 602);
+    if (input?.directManagerId === this.request.currentUser._id.toString())
+      throw new BaseHttpException(this.request.lang, 607);
+    return await this.userRepo.updateUserById(input, files);
   }
 
   async getTestUsers() {

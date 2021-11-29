@@ -30,6 +30,8 @@ import { GetStatsInput } from './inputs/get-stats.input';
 import { GetHierarchyInput } from './inputs/get-hierarchy.input';
 import { HidePostInput } from './inputs/hide-post.input';
 import { AddUserSwagger } from './swagger/add-user.swagger';
+import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
+import { UpdateUserByIdSwagger } from './swagger/update-user-by-id.swagger';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -77,6 +79,30 @@ export class UserController {
     },
   ) {
     return await this.userService.updateUser(input, files);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody(UpdateUserByIdSwagger)
+  @UseGuards(AuthGuard)
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'profilePic', maxCount: 1 },
+      { name: 'coverPic', maxCount: 1 },
+    ]),
+  )
+  @UsePipes(new JoiValidationPipe(UpdateUserJoi, true))
+  @Put('updateById')
+  async updateUserById(
+    @Body() input: UpdateUserByIdInput,
+    @UploadedFiles()
+    files: {
+      profilePic?: Express.Multer.File[];
+      coverPic?: Express.Multer.File[];
+    },
+  ) {
+    return await this.userService.updateUserById(input, files);
   }
 
   @ApiBearerAuth()

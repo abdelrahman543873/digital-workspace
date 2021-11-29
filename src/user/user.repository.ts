@@ -19,6 +19,7 @@ import { UpdateUserInput } from './inputs/update-user.input';
 import { GetStatsInput } from './inputs/get-stats.input';
 import { GetHierarchyInput } from './inputs/get-hierarchy.input';
 import { HidePostInput } from './inputs/hide-post.input';
+import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -256,6 +257,31 @@ export class UserRepository extends BaseRepository<User> {
     const { newPassword, ...filteredInput } = input;
     return await this.userSchema.findOneAndUpdate(
       { _id: userId },
+      {
+        ...filteredInput,
+        directManagerId: new Types.ObjectId(input.directManagerId),
+        ...(newPassword && { password: hashPassSync(newPassword) }),
+        ...(files?.coverPic && {
+          coverPic: `${process.env.HOST}pictures/${files.coverPic[0].filename}`,
+        }),
+        ...(files?.profilePic && {
+          profilePic: `${process.env.HOST}pictures/${files.profilePic[0].filename}`,
+        }),
+      },
+      { new: true },
+    );
+  }
+
+  async updateUserById(
+    input: UpdateUserByIdInput,
+    files: {
+      profilePic?: Express.Multer.File[];
+      coverPic?: Express.Multer.File[];
+    },
+  ) {
+    const { newPassword, ...filteredInput } = input;
+    return await this.userSchema.findOneAndUpdate(
+      { _id: new Types.ObjectId(input.userId) },
       {
         ...filteredInput,
         directManagerId: new Types.ObjectId(input.directManagerId),

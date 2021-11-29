@@ -11,3 +11,4 @@ export const STATS = '/user/stats';
 export const GET_HIERARCHY = '/user/hierarchy';
 export const MOST_FOLLOWED = '/user/mostFollowed';
 export const HIDE_POST = '/user/hidePost';
+export const UPDATE_USER_BY_ID = '/user/updateById';
