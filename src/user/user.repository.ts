@@ -20,6 +20,7 @@ import { GetStatsInput } from './inputs/get-stats.input';
 import { GetHierarchyInput } from './inputs/get-hierarchy.input';
 import { HidePostInput } from './inputs/hide-post.input';
 import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
+import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -435,5 +436,30 @@ export class UserRepository extends BaseRepository<User> {
       { $addToSet: { hiddenPosts: input.postId } },
       { new: true },
     );
+  }
+
+  async getUserByBirthDate(input: GetUserByBirthDate) {
+    // formatting the date correctly for the mongodb query
+    const dateArray = new Date(input.date || Date.now())
+      .toISOString()
+      .split('-');
+    dateArray.shift();
+    dateArray[1] = dateArray[1].substring(0, 2);
+    const aggregation = this.userSchema.aggregate([
+      {
+        $match: {
+          $expr: {
+            $eq: [
+              { $dateToString: { format: '%m/%d', date: '$birthDate' } },
+              dateArray.join('/'),
+            ],
+          },
+        },
+      },
+    ]);
+    return await this.userSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
+    });
   }
 }

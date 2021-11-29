@@ -32,6 +32,7 @@ import { HidePostInput } from './inputs/hide-post.input';
 import { AddUserSwagger } from './swagger/add-user.swagger';
 import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 import { UpdateUserByIdSwagger } from './swagger/update-user-by-id.swagger';
+import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -189,5 +190,13 @@ export class UserController {
   @Get('stats')
   async getStats(@Query() input: GetStatsInput) {
     return await this.userService.getStats(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @UseGuards(AuthGuard)
+  @Get('byBirthday')
+  async getUserByBirthday(@Query() input: GetUserByBirthDate) {
+    return await this.userService.getUserByBirthDate(input);
   }
 }
