@@ -3,6 +3,7 @@ import { AuthGuard } from './../shared/guards/auth.guard';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Put,
   Query,
@@ -17,6 +18,7 @@ import { CreatePageInput } from './inputs/create-page.input';
 import { LikedPagesInput } from './inputs/liked-pages.input';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreatePageSwagger } from './swagger/create-page.swagger';
+import { DeletePageInput } from './inputs/delete-page.input';
 
 @Controller('page')
 export class PageController {
@@ -58,5 +60,13 @@ export class PageController {
   @Get('pages')
   async getPages(@Query() pagination: Pagination) {
     return await this.pageService.getPages(pagination);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('page')
+  @UseGuards(AuthGuard)
+  @Delete('remove')
+  async deletePage(@Body() input: DeletePageInput) {
+    return await this.pageService.deletePage(input);
   }
 }

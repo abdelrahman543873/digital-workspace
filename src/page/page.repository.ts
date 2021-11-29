@@ -8,6 +8,7 @@ import { AggregatePaginateModel, ObjectId, Types } from 'mongoose';
 import { CreatePageInput } from './inputs/create-page.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { LikedPagesInput } from './inputs/liked-pages.input';
+import { DeletePageInput } from './inputs/delete-page.input';
 
 @Injectable()
 export class PageRepository extends BaseRepository<Page> {
@@ -97,6 +98,13 @@ export class PageRepository extends BaseRepository<Page> {
     return await this.pageSchema.aggregatePaginate(aggregation, {
       offset: pagination.offset * pagination.limit,
       limit: pagination.limit,
+    });
+  }
+
+  async deletePage(userId: ObjectId, input: DeletePageInput) {
+    return await this.pageSchema.findOneAndDelete({
+      _id: new Types.ObjectId(input.pageId),
+      admin: userId,
     });
   }
 }
