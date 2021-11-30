@@ -3,6 +3,7 @@ import {
   Allow,
   ArrayNotEmpty,
   IsArray,
+  IsDateString,
   IsISO31661Alpha3,
   IsMongoId,
   IsNotEmpty,
@@ -30,6 +31,10 @@ export class UpdateUserInput {
   @IsNotEmpty()
   @Min(8)
   newPassword?: string;
+
+  @IsOptional()
+  @IsDateString()
+  date?: string;
 
   @IsOptional()
   @IsArray()

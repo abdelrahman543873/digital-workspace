@@ -3,6 +3,7 @@ import {
   Allow,
   ArrayNotEmpty,
   IsArray,
+  IsDateString,
   IsISO31661Alpha3,
   IsMongoId,
   IsNotEmpty,
@@ -67,6 +68,10 @@ export class UpdateUserByIdInput {
   @IsOptional()
   @IsISO31661Alpha3()
   nationality?: string;
+
+  @IsOptional()
+  @IsDateString()
+  date?: string;
 
   @Allow()
   profilePic: string;
