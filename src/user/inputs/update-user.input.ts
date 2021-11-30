@@ -34,7 +34,7 @@ export class UpdateUserInput {
 
   @IsOptional()
   @IsDateString()
-  date?: string;
+  birthDate?: string;
 
   @IsOptional()
   @IsArray()

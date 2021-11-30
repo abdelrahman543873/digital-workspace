@@ -71,7 +71,7 @@ export class UpdateUserByIdInput {
 
   @IsOptional()
   @IsDateString()
-  date?: string;
+  birthDate?: string;
 
   @Allow()
   profilePic: string;
