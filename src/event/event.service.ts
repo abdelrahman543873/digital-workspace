@@ -7,6 +7,7 @@ import { GetEventsInput } from './inputs/get-events.input';
 import { ManageJoinEventInput } from './inputs/manage-join.input';
 import { DeleteEventInput } from './inputs/delete-event.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { UpdateEventInput } from './inputs/update-event.input';
 
 @Injectable()
 export class EventService {
@@ -45,5 +46,9 @@ export class EventService {
       this.request.currentUser._id,
       input,
     );
+  }
+
+  async updateEvent(input: UpdateEventInput, logo: Express.Multer.File) {
+    return await this.eventRepository.updateEvent(input, logo);
   }
 }

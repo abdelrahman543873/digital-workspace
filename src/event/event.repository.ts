@@ -9,6 +9,7 @@ import { GetEventsInput } from './inputs/get-events.input';
 import { ManageJoinEventInput } from './inputs/manage-join.input';
 import { DeleteEventInput } from './inputs/delete-event.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { UpdateEventInput } from './inputs/update-event.input';
 
 @Injectable()
 export class EventRepository extends BaseRepository<Event> {
@@ -119,5 +120,16 @@ export class EventRepository extends BaseRepository<Event> {
       offset: input.offset * input.limit,
       limit: input.limit,
     });
+  }
+
+  async updateEvent(input: UpdateEventInput, logo: Express.Multer.File) {
+    return await this.eventSchema.findOneAndUpdate(
+      { _id: new Types.ObjectId(input.eventId) },
+      {
+        ...input,
+        ...(logo && { logo: `${process.env.HOST}events/${logo.filename}` }),
+      },
+      { new: true },
+    );
   }
 }

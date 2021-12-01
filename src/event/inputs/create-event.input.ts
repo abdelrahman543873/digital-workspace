@@ -10,7 +10,7 @@ export class CreateEventInput {
   description: string;
 
   @IsDateString()
-  date: Date;
+  date: string;
 
   @Allow()
   logo: string;
