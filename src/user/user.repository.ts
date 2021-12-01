@@ -115,6 +115,7 @@ export class UserRepository extends BaseRepository<User> {
           },
         },
       },
+      { $sort: { createdAt: -1 } },
     ]);
     return await this.userSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
