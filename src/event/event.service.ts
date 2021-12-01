@@ -8,6 +8,7 @@ import { ManageJoinEventInput } from './inputs/manage-join.input';
 import { DeleteEventInput } from './inputs/delete-event.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { UpdateEventInput } from './inputs/update-event.input';
+import { SearchEventInput } from './inputs/search-events.input';
 
 @Injectable()
 export class EventService {
@@ -54,5 +55,9 @@ export class EventService {
 
   async updateEvent(input: UpdateEventInput, logo: Express.Multer.File) {
     return await this.eventRepository.updateEvent(input, logo);
+  }
+
+  async searchEvents(input: SearchEventInput) {
+    return await this.eventRepository.searchEvents(input);
   }
 }

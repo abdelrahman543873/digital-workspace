@@ -10,6 +10,7 @@ import { ManageJoinEventInput } from './inputs/manage-join.input';
 import { DeleteEventInput } from './inputs/delete-event.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { UpdateEventInput } from './inputs/update-event.input';
+import { SearchEventInput } from './inputs/search-events.input';
 
 @Injectable()
 export class EventRepository extends BaseRepository<Event> {
@@ -137,5 +138,22 @@ export class EventRepository extends BaseRepository<Event> {
       },
       { new: true },
     );
+  }
+
+  async searchEvents(input: SearchEventInput) {
+    const aggregation = this.eventSchema.aggregate([
+      {
+        $match: {
+          $or: [
+            { title: { $regex: input.keyword, $options: 'i' } },
+            { description: { $regex: input.keyword, $options: 'i' } },
+          ],
+        },
+      },
+    ]);
+    return await this.eventSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
+    });
   }
 }

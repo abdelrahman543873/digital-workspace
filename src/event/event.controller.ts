@@ -22,6 +22,8 @@ import { ManageJoinEventInput } from './inputs/manage-join.input';
 import { DeleteEventInput } from './inputs/delete-event.input';
 import { UpdateEventInput } from './inputs/update-event.input';
 import { UpdateEventSwagger } from './swagger/update-event.swagger';
+import { SearchEventInput } from './inputs/search-events.input';
+import { Param } from '@nestjs/common';
 
 @Controller('event')
 export class EventController {
@@ -79,6 +81,14 @@ export class EventController {
   @Delete('removeById')
   async deleteEventById(@Body() input: DeleteEventInput) {
     return await this.eventService.deleteEventById(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('event')
+  @UseGuards(AuthGuard)
+  @Get('search/:keyword')
+  async searchEvents(@Param() input: SearchEventInput) {
+    return await this.eventService.searchEvents(input);
   }
 
   @ApiBearerAuth()
