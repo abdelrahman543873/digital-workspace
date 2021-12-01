@@ -3,6 +3,7 @@ import {
   Allow,
   ArrayNotEmpty,
   IsArray,
+  IsDateString,
   IsEmail,
   IsISO31661Alpha3,
   IsMongoId,
@@ -62,6 +63,15 @@ export class AddUserInput {
   @IsOptional()
   @IsISO31661Alpha3()
   nationality?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  position?: string;
+
+  @IsOptional()
+  @IsDateString()
+  birthDate?: string;
 
   @Allow()
   profilePic: string;
