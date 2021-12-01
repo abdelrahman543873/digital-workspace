@@ -76,6 +76,14 @@ export class EventController {
   @ApiBearerAuth()
   @ApiTags('event')
   @UseGuards(AuthGuard)
+  @Delete('removeById')
+  async deleteEventById(@Body() input: DeleteEventInput) {
+    return await this.eventService.deleteEventById(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('event')
+  @UseGuards(AuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody(UpdateEventSwagger)
   @UseInterceptors(FileInterceptor('logo'))

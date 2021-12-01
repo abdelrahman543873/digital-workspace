@@ -48,6 +48,10 @@ export class EventService {
     );
   }
 
+  async deleteEventById(input: DeleteEventInput) {
+    return await this.eventRepository.deleteEventById(input);
+  }
+
   async updateEvent(input: UpdateEventInput, logo: Express.Multer.File) {
     return await this.eventRepository.updateEvent(input, logo);
   }

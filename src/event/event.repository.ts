@@ -114,6 +114,12 @@ export class EventRepository extends BaseRepository<Event> {
     });
   }
 
+  async deleteEventById(input: DeleteEventInput) {
+    return await this.eventSchema.findOneAndDelete({
+      _id: new Types.ObjectId(input.eventId),
+    });
+  }
+
   async getAllEvents(input: Pagination) {
     const aggregation = this.eventSchema.aggregate([{ $match: {} }]);
     return await this.eventSchema.aggregatePaginate(aggregation, {
