@@ -20,6 +20,7 @@ import { GetHierarchyInput } from './inputs/get-hierarchy.input';
 import { HidePostInput } from './inputs/hide-post.input';
 import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
+import { DeleteUserInput } from './inputs/delete-user-by-id.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -459,6 +460,12 @@ export class UserRepository extends BaseRepository<User> {
     return await this.userSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
       limit: input.limit,
+    });
+  }
+
+  async deleteUserById(input: DeleteUserInput) {
+    return await this.userSchema.findOneAndDelete({
+      _id: new Types.ObjectId(input.userId),
     });
   }
 }

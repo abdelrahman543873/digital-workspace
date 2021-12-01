@@ -17,6 +17,7 @@ import { GetHierarchyInput } from './inputs/get-hierarchy.input';
 import { HidePostInput } from './inputs/hide-post.input';
 import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
+import { DeleteUserInput } from './inputs/delete-user-by-id.input';
 
 @Injectable()
 export class UserService {
@@ -134,5 +135,9 @@ export class UserService {
 
   async getUserByBirthDate(input: GetUserByBirthDate) {
     return await this.userRepo.getUserByBirthDate(input);
+  }
+
+  async deleteUserById(input: DeleteUserInput) {
+    return await this.userRepo.deleteUserById(input);
   }
 }
