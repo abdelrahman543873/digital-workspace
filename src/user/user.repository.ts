@@ -1,4 +1,3 @@
-import { DeletePageInput } from './../page/inputs/delete-page.input';
 import { Pagination } from './../shared/utils/pagination.input';
 import { LookupSchemasEnum } from './../app.const';
 import { hashPass } from './../shared/utils/bcryptHelper';

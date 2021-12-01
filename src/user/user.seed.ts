@@ -35,7 +35,7 @@ export interface UserType {
   profilePic?: string;
   coverPic?: string;
   gender?: string;
-  birthDate?: Date;
+  birthDate?: string;
   directManagerId?: Types.ObjectId;
   widgets?: string[];
   following?: ObjectId[];
@@ -83,7 +83,7 @@ export const buildUserParams = (obj: UserType = {}): User => {
     profilePic: obj.profilePic || `${process.env.HOST}defaults/avatar.jpg`,
     coverPic: obj.coverPic || `${process.env.HOST}defaults/avatar.jpg`,
     gender: obj.gender || random.arrayElement(GENDER),
-    birthDate: obj.birthDate || date.past(),
+    birthDate: obj.birthDate || date.past().toISOString(),
     directManagerId: obj.directManagerId || null,
     widgets: obj.widgets || random.arrayElements(WIDGETS),
     followers: obj.followers || [],

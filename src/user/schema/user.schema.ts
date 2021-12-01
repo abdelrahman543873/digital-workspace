@@ -100,7 +100,7 @@ export class User {
   widgets: string[];
 
   @Prop({ type: Date })
-  birthDate: Date;
+  birthDate: string;
 
   @Prop({ type: Types.ObjectId, ref: 'User' })
   directManagerId: Types.ObjectId;
