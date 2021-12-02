@@ -8,7 +8,7 @@ describe('create page suite case', () => {
     const user = await userFactory();
     const page = await buildPageParams();
     const res = await testRequest({
-      method: HTTP_METHODS_ENUM.PUT,
+      method: HTTP_METHODS_ENUM.POST,
       url: CREATE_PAGE,
       variables: {
         name: page.name,
@@ -22,7 +22,7 @@ describe('create page suite case', () => {
     const user = await userFactory();
     const page = await buildPageParams();
     await testRequest({
-      method: HTTP_METHODS_ENUM.PUT,
+      method: HTTP_METHODS_ENUM.POST,
       url: CREATE_PAGE,
       variables: {
         name: page.name,
@@ -30,7 +30,7 @@ describe('create page suite case', () => {
       token: user.token,
     });
     const res2 = await testRequest({
-      method: HTTP_METHODS_ENUM.PUT,
+      method: HTTP_METHODS_ENUM.POST,
       url: CREATE_PAGE,
       variables: {
         name: page.name,
@@ -46,7 +46,7 @@ describe('create page suite case', () => {
     const testFiles = process.cwd();
     const filePath = `${testFiles}/test/test-files/test-duck.jpeg`;
     const res = await testRequest({
-      method: HTTP_METHODS_ENUM.PUT,
+      method: HTTP_METHODS_ENUM.POST,
       url: CREATE_PAGE,
       variables: {
         name: page.name,

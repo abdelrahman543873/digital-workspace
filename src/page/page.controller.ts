@@ -5,6 +5,7 @@ import {
   Controller,
   Delete,
   Get,
+  Post,
   Put,
   Query,
   UploadedFile,
@@ -38,7 +39,7 @@ export class PageController {
   @ApiConsumes('multipart/form-data')
   @ApiBody(CreatePageSwagger)
   @UseInterceptors(FileInterceptor('logo'))
-  @Put('create')
+  @Post('create')
   async createPage(
     @Body() input: CreatePageInput,
     @UploadedFile() logo: Express.Multer.File,
