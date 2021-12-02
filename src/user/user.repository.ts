@@ -281,13 +281,12 @@ export class UserRepository extends BaseRepository<User> {
       coverPic?: Express.Multer.File[];
     },
   ) {
-    const { newPassword, ...filteredInput } = input;
+    const { ...filteredInput } = input;
     return await this.userSchema.findOneAndUpdate(
       { _id: new Types.ObjectId(input.userId) },
       {
         ...filteredInput,
         directManagerId: new Types.ObjectId(input.directManagerId),
-        ...(newPassword && { password: hashPassSync(newPassword) }),
         ...(files?.coverPic && {
           coverPic: `${process.env.HOST}pictures/${files.coverPic[0].filename}`,
         }),

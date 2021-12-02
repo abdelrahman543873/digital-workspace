@@ -24,18 +24,6 @@ export class UpdateUserByIdInput {
   fullName?: string;
 
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @Min(8)
-  password?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @Min(8)
-  newPassword?: string;
-
-  @IsOptional()
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
