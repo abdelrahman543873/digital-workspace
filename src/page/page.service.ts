@@ -8,6 +8,7 @@ import { PageRepository } from './page.repository';
 import { LikedPagesInput } from './inputs/liked-pages.input';
 import { DeletePageInput } from './inputs/delete-page.input';
 import { SearchPageInput } from './inputs/search-page.input';
+import { UpdatePageInput } from './inputs/update-page.input';
 
 @Injectable()
 export class PageService {
@@ -24,6 +25,14 @@ export class PageService {
 
   async createPage(input: CreatePageInput, logo: Express.Multer.File) {
     return await this.pageRepository.createPage(
+      this.request.currentUser._id,
+      input,
+      logo,
+    );
+  }
+
+  async updatePage(input: UpdatePageInput, logo: Express.Multer.File) {
+    return await this.pageRepository.updatePage(
       this.request.currentUser._id,
       input,
       logo,

@@ -10,6 +10,7 @@ import { Pagination } from '../shared/utils/pagination.input';
 import { LikedPagesInput } from './inputs/liked-pages.input';
 import { DeletePageInput } from './inputs/delete-page.input';
 import { SearchPageInput } from './inputs/search-page.input';
+import { UpdatePageInput } from './inputs/update-page.input';
 
 @Injectable()
 export class PageRepository extends BaseRepository<Page> {
@@ -54,6 +55,21 @@ export class PageRepository extends BaseRepository<Page> {
       ...input,
       ...(logo && { logo: `${process.env.HOST}pages/${logo.filename}` }),
     });
+  }
+
+  async updatePage(
+    userId: ObjectId,
+    input: UpdatePageInput,
+    logo: Express.Multer.File,
+  ) {
+    return await this.pageSchema.findOneAndUpdate(
+      { _id: new Types.ObjectId(input.pageId), admin: userId },
+      {
+        name: input.name,
+        ...(logo && { logo: `${process.env.HOST}pages/${logo.filename}` }),
+      },
+      { new: true },
+    );
   }
 
   async getLikedPages(userId: ObjectId, input: LikedPagesInput) {

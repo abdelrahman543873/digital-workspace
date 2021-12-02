@@ -22,6 +22,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreatePageSwagger } from './swagger/create-page.swagger';
 import { DeletePageInput } from './inputs/delete-page.input';
 import { SearchPageInput } from './inputs/search-page.input';
+import { UpdatePageSwagger } from './swagger/update-page.swagger';
+import { UpdatePageInput } from './inputs/update-page.input';
 
 @Controller('page')
 export class PageController {
@@ -47,6 +49,20 @@ export class PageController {
     @UploadedFile() logo: Express.Multer.File,
   ) {
     return await this.pageService.createPage(input, logo);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('page')
+  @UseGuards(AuthGuard)
+  @ApiConsumes('multipart/form-data')
+  @ApiBody(UpdatePageSwagger)
+  @UseInterceptors(FileInterceptor('logo'))
+  @Put('update')
+  async updatePage(
+    @Body() input: UpdatePageInput,
+    @UploadedFile() logo: Express.Multer.File,
+  ) {
+    return await this.pageService.updatePage(input, logo);
   }
 
   @ApiBearerAuth()
