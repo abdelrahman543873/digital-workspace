@@ -9,6 +9,8 @@ import { GetEventsInput } from './inputs/get-events.input';
 import { ManageJoinEventInput } from './inputs/manage-join.input';
 import { DeleteEventInput } from './inputs/delete-event.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { UpdateEventInput } from './inputs/update-event.input';
+import { SearchEventInput } from './inputs/search-events.input';
 
 @Injectable()
 export class EventRepository extends BaseRepository<Event> {
@@ -113,8 +115,42 @@ export class EventRepository extends BaseRepository<Event> {
     });
   }
 
+  async deleteEventById(input: DeleteEventInput) {
+    return await this.eventSchema.findOneAndDelete({
+      _id: new Types.ObjectId(input.eventId),
+    });
+  }
+
   async getAllEvents(input: Pagination) {
     const aggregation = this.eventSchema.aggregate([{ $match: {} }]);
+    return await this.eventSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
+    });
+  }
+
+  async updateEvent(input: UpdateEventInput, logo: Express.Multer.File) {
+    return await this.eventSchema.findOneAndUpdate(
+      { _id: new Types.ObjectId(input.eventId) },
+      {
+        ...input,
+        ...(logo && { logo: `${process.env.HOST}events/${logo.filename}` }),
+      },
+      { new: true },
+    );
+  }
+
+  async searchEvents(input: SearchEventInput) {
+    const aggregation = this.eventSchema.aggregate([
+      {
+        $match: {
+          $or: [
+            { title: { $regex: input.keyword, $options: 'i' } },
+            { description: { $regex: input.keyword, $options: 'i' } },
+          ],
+        },
+      },
+    ]);
     return await this.eventSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
       limit: input.limit,

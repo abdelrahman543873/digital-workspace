@@ -7,6 +7,7 @@ import { ManageLikePageInput } from './inputs/manage-like-page.input';
 import { PageRepository } from './page.repository';
 import { LikedPagesInput } from './inputs/liked-pages.input';
 import { DeletePageInput } from './inputs/delete-page.input';
+import { SearchPageInput } from './inputs/search-page.input';
 
 @Injectable()
 export class PageService {
@@ -34,6 +35,10 @@ export class PageService {
       this.request.currentUser._id,
       input,
     );
+  }
+
+  async searchPages(input: SearchPageInput) {
+    return await this.pageRepository.searchPage(input);
   }
 
   async getPages(pagination: Pagination) {

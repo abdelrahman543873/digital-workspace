@@ -4,6 +4,7 @@ import {
   ArrayNotEmpty,
   IsArray,
   IsDateString,
+  IsEmail,
   IsISO31661Alpha3,
   IsMongoId,
   IsNotEmpty,
@@ -69,6 +70,15 @@ export class UpdateUserInput {
   @IsOptional()
   @IsISO31661Alpha3()
   nationality?: string;
+
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  position?: string;
 
   @Allow()
   profilePic: string;

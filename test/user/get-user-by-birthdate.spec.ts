@@ -4,7 +4,7 @@ import { HTTP_METHODS_ENUM } from '../request.methods.enum';
 import { userFactory } from '../../src/user/user.factory';
 describe('get user by birthDate suite case', () => {
   it('should get user by birthDate if no birthDate is provided', async () => {
-    const user = await userFactory({ birthDate: new Date() });
+    const user = await userFactory({ birthDate: new Date().toISOString() });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: GET_USER_BY_BIRTH_DATE,
@@ -15,7 +15,7 @@ describe('get user by birthDate suite case', () => {
 
   it('should get user by birthDate if birthDate is provided', async () => {
     const user = await userFactory({
-      birthDate: new Date('2020-11-01T16:39:38.831Z'),
+      birthDate: new Date('2020-11-01T16:39:38.831Z').toISOString(),
     });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
@@ -29,7 +29,7 @@ describe('get user by birthDate suite case', () => {
 
   it("shouldn't get user by birthDate if birthDate doesn't match", async () => {
     const user = await userFactory({
-      birthDate: new Date('2020-11-02T16:39:38.831Z'),
+      birthDate: new Date('2020-11-02T16:39:38.831Z').toISOString(),
     });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,

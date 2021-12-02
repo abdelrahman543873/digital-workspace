@@ -6,6 +6,7 @@ import {
   Delete,
   Get,
   Post,
+  Param,
   Put,
   Query,
   UploadedFile,
@@ -20,6 +21,7 @@ import { LikedPagesInput } from './inputs/liked-pages.input';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreatePageSwagger } from './swagger/create-page.swagger';
 import { DeletePageInput } from './inputs/delete-page.input';
+import { SearchPageInput } from './inputs/search-page.input';
 
 @Controller('page')
 export class PageController {
@@ -53,6 +55,14 @@ export class PageController {
   @Get('likedPages')
   async getLikedPages(@Query() input: LikedPagesInput) {
     return await this.pageService.getLikedPages(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('page')
+  @UseGuards(AuthGuard)
+  @Get('search/:keyword')
+  async searchPages(@Param() input: SearchPageInput) {
+    return await this.pageService.searchPages(input);
   }
 
   @ApiBearerAuth()

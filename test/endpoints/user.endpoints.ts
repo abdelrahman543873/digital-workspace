@@ -13,3 +13,4 @@ export const MOST_FOLLOWED = '/user/mostFollowed';
 export const HIDE_POST = '/user/hidePost';
 export const UPDATE_USER_BY_ID = '/user/updateById';
 export const GET_USER_BY_BIRTH_DATE = '/user/byBirthday';
+export const DELETE_USER_BY_ID = '/user/delete';

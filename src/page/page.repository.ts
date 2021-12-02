@@ -9,6 +9,7 @@ import { CreatePageInput } from './inputs/create-page.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { LikedPagesInput } from './inputs/liked-pages.input';
 import { DeletePageInput } from './inputs/delete-page.input';
+import { SearchPageInput } from './inputs/search-page.input';
 
 @Injectable()
 export class PageRepository extends BaseRepository<Page> {
@@ -105,6 +106,21 @@ export class PageRepository extends BaseRepository<Page> {
     return await this.pageSchema.findOneAndDelete({
       _id: new Types.ObjectId(input.pageId),
       admin: userId,
+    });
+  }
+
+  async searchPage(input: SearchPageInput) {
+    const aggregation = this.pageSchema.aggregate([
+      {
+        $match: {
+          name: { $regex: input.keyword, $options: 'i' },
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
+    return await this.pageSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
     });
   }
 }

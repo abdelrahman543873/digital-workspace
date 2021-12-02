@@ -12,6 +12,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   UsePipes,
+  Delete,
 } from '@nestjs/common';
 import { AddUserInput } from './inputs/add-user.input';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
@@ -33,6 +34,7 @@ import { AddUserSwagger } from './swagger/add-user.swagger';
 import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 import { UpdateUserByIdSwagger } from './swagger/update-user-by-id.swagger';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
+import { DeleteUserInput } from './inputs/delete-user-by-id.input';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -198,5 +200,13 @@ export class UserController {
   @Get('byBirthday')
   async getUserByBirthday(@Query() input: GetUserByBirthDate) {
     return await this.userService.getUserByBirthDate(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @UseGuards(AuthGuard)
+  @Delete('delete')
+  async deleteUserById(@Body() input: DeleteUserInput) {
+    return await this.userService.deleteUserById(input);
   }
 }
