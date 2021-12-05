@@ -72,9 +72,6 @@ export class User {
   @Prop()
   fullName: string;
 
-  @Prop()
-  currentPosition: string;
-
   @Prop({ type: [ExperienceSchema] })
   experience: Experience[];
 
@@ -116,6 +113,9 @@ export class User {
 
   @Prop({ type: [Types.ObjectId] })
   hiddenPosts: ObjectId[];
+
+  @Prop()
+  position: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

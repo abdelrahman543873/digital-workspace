@@ -41,8 +41,8 @@ export interface UserType {
   following?: ObjectId[];
   followers?: ObjectId[];
   hiddenPosts?: ObjectId[];
-  currentPosition?: string;
   nationality?: string;
+  position?: string;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -90,8 +90,8 @@ export const buildUserParams = (obj: UserType = {}): User => {
     following: obj.following || [],
     education: obj.education || [buildEducationParams()],
     skill: obj.skill || [buildSkillParams()],
-    currentPosition: obj.currentPosition || name.jobTitle(),
     nationality: obj.nationality || address.countryCode(),
     hiddenPosts: obj.hiddenPosts || [],
+    position: obj.position || name.jobTitle(),
   };
 };
