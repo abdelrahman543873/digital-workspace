@@ -76,8 +76,8 @@ export class PageController {
   @ApiBearerAuth()
   @ApiTags('page')
   @UseGuards(AuthGuard)
-  @Get('search/:keyword')
-  async searchPages(@Param() input: SearchPageInput) {
+  @Get('search')
+  async searchPages(@Query() input: SearchPageInput) {
     return await this.pageService.searchPages(input);
   }
 
