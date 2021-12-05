@@ -12,12 +12,6 @@ export const UpdateUserByIdSwagger: ApiBodyOptions = {
         type: 'string',
         format: 'date',
       },
-      password: {
-        type: 'string',
-      },
-      newPassword: {
-        type: 'string',
-      },
       experience: {
         type: 'string',
       },
