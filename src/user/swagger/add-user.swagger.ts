@@ -16,6 +16,12 @@ export const AddUserSwagger: ApiBodyOptions = {
       experience: {
         type: 'string',
       },
+      birthDate: {
+        type: 'string',
+      },
+      position: {
+        type: 'string',
+      },
       description: { type: 'string' },
       directManagerId: { type: 'string' },
       profilePic: {

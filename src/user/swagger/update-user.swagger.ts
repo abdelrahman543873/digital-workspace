@@ -7,6 +7,12 @@ export const UpdateUserSwagger: ApiBodyOptions = {
       fullName: {
         type: 'string',
       },
+      position: {
+        type: 'string',
+      },
+      email: {
+        type: 'string',
+      },
       birthDate: {
         type: 'string',
         format: 'date',
