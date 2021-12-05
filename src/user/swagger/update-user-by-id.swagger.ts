@@ -21,6 +21,12 @@ export const UpdateUserByIdSwagger: ApiBodyOptions = {
       experience: {
         type: 'string',
       },
+      email: {
+        type: 'string',
+      },
+      position: {
+        type: 'string',
+      },
       description: { type: 'string' },
       directManagerId: { type: 'string' },
       profilePic: {

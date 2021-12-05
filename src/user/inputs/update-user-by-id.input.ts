@@ -4,12 +4,12 @@ import {
   ArrayNotEmpty,
   IsArray,
   IsDateString,
+  IsEmail,
   IsISO31661Alpha3,
   IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
-  Min,
   ValidateNested,
 } from 'class-validator';
 import { Experience, Skill, Education } from '../schema/user.schema';
@@ -36,6 +36,15 @@ export class UpdateUserByIdInput {
   @ValidateNested({ each: true })
   @Type(() => Skill)
   skill?: Skill[];
+
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  position?: string;
 
   @IsOptional()
   @IsArray()
