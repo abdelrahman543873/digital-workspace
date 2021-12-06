@@ -132,6 +132,7 @@ export class PostRepository extends BaseRepository<Post> {
               },
             },
             { $unwind: '$commenter' },
+            { $sort: { createdAt: -1 } },
           ],
         },
       },
