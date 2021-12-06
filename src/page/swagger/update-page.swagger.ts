@@ -4,6 +4,9 @@ export const UpdatePageSwagger: ApiBodyOptions = {
   schema: {
     type: 'object',
     properties: {
+      pageId: {
+        type: 'string',
+      },
       name: {
         type: 'string',
       },
