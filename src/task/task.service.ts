@@ -45,4 +45,8 @@ export class TaskService {
       input,
     );
   }
+
+  async getTaskStats() {
+    return await this.taskRepository.getTaskStats(this.request.currentUser._id);
+  }
 }

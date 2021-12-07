@@ -1,4 +1,4 @@
-import { LookupSchemasEnum } from './../app.const';
+import { LookupSchemasEnum, TASK_STATUS } from './../app.const';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AggregatePaginateModel, ObjectId, SchemaTypes, Types } from 'mongoose';
@@ -106,5 +106,112 @@ export class TaskRepository extends BaseRepository<Task> {
       },
       { new: true },
     );
+  }
+
+  async getTaskStats(userId: ObjectId) {
+    return (
+      await this.taskSchema.aggregate([
+        {
+          $match: {
+            $expr: {
+              $eq: [userId, '$assignee'],
+            },
+          },
+        },
+        { $limit: 1 },
+        {
+          $lookup: {
+            from: LookupSchemasEnum.tasks,
+            let: { members: '$tasks' },
+            as: 'done',
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: [userId, '$assignee'] },
+                      { $eq: [TASK_STATUS[0], '$status'] },
+                    ],
+                  },
+                },
+              },
+            ],
+          },
+        },
+        {
+          $lookup: {
+            from: LookupSchemasEnum.tasks,
+            let: { members: '$tasks' },
+            as: 'pending',
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: [userId, '$assignee'] },
+                      { $eq: [TASK_STATUS[1], '$status'] },
+                    ],
+                  },
+                },
+              },
+            ],
+          },
+        },
+        {
+          $lookup: {
+            from: LookupSchemasEnum.tasks,
+            let: { members: '$tasks' },
+            as: 'rejected',
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: [userId, '$assignee'] },
+                      { $eq: [TASK_STATUS[2], '$status'] },
+                    ],
+                  },
+                },
+              },
+            ],
+          },
+        },
+        {
+          $lookup: {
+            from: LookupSchemasEnum.tasks,
+            let: { members: '$tasks' },
+            as: 'returned',
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: [userId, '$assignee'] },
+                      { $eq: [TASK_STATUS[3], '$status'] },
+                    ],
+                  },
+                },
+              },
+            ],
+          },
+        },
+        {
+          $project: {
+            done: { $size: '$done' },
+            pending: { $size: '$pending' },
+            rejected: { $size: '$rejected' },
+            returned: { $size: '$returned' },
+            _id: 0,
+          },
+        },
+        {
+          $addFields: {
+            total: {
+              $add: ['$done', '$pending', '$rejected', '$returned'],
+            },
+          },
+        },
+      ])
+    )[0];
   }
 }

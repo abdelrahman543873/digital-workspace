@@ -58,6 +58,14 @@ export class TaskController {
   @ApiBearerAuth()
   @ApiTags('task')
   @UseGuards(AuthGuard)
+  @Get('taskStats')
+  async getTaskStats() {
+    return await this.taskService.getTaskStats();
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('task')
+  @UseGuards(AuthGuard)
   @Get(':taskId')
   async getTask(@Param() input: GetTaskByIdInput) {
     return await this.taskService.getTask(input);
