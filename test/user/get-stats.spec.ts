@@ -17,7 +17,7 @@ describe('get stats suite case', () => {
       url: STATS,
       token: user.token,
     });
-    expect(res.body.likes).toBe(1);
+    expect(res.body.pages).toBe(1);
     expect(res.body.groups).toBe(1);
     expect(res.body.posts).toBe(1);
     expect(res.body.followers).toBe(1);
@@ -34,7 +34,7 @@ describe('get stats suite case', () => {
       url: `${STATS}?userId=${user._id}`,
       token: user.token,
     });
-    expect(res.body.likes).toBe(1);
+    expect(res.body.pages).toBe(1);
     expect(res.body.groups).toBe(1);
     expect(res.body.posts).toBe(1);
     expect(res.body.followers).toBe(1);

@@ -362,11 +362,11 @@ export class UserRepository extends BaseRepository<User> {
           },
         },
         {
-          $addFields: { likes: { $size: '$likes' } },
+          $addFields: { pages: { $size: '$likes' } },
         },
         {
           $project: {
-            likes: 1,
+            pages: 1,
             groups: 1,
             posts: 1,
             followers: 1,
