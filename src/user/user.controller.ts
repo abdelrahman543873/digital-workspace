@@ -143,6 +143,14 @@ export class UserController {
   @ApiBearerAuth()
   @ApiTags('user')
   @UseGuards(AuthGuard)
+  @Get('list')
+  async getUserList(@Query() input: Pagination) {
+    return await this.userService.getUserList(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('user')
+  @UseGuards(AuthGuard)
   @Get('search')
   async searchUser(@Query() input: SearchUserInput) {
     return await this.userService.searchUser(input);

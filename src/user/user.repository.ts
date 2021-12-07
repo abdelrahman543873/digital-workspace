@@ -468,4 +468,12 @@ export class UserRepository extends BaseRepository<User> {
       _id: new Types.ObjectId(input.userId),
     });
   }
+
+  async getUserList(input: Pagination) {
+    const aggregation = this.userSchema.aggregate([{ $match: {} }]);
+    return await this.userSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
+    });
+  }
 }

@@ -114,6 +114,10 @@ export class UserService {
     return await this.userRepo.getUserById(input);
   }
 
+  async getUserList(input: Pagination) {
+    return await this.userRepo.getUserList(input);
+  }
+
   async recommendUsers(pagination: Pagination) {
     return await this.userRepo.recommendUsers(
       this.request.currentUser._id,
