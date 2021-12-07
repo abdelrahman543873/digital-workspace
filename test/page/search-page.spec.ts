@@ -9,7 +9,7 @@ describe('search pages suite case', () => {
     const page = await pageFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${SEARCH_PAGES}/${page.name.substring(0, 2)}`,
+      url: `${SEARCH_PAGES}?keyword=${page.name.substring(0, 2)}`,
       token: user.token,
     });
     expect(res.body.docs.length).toBeGreaterThanOrEqual(1);

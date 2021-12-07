@@ -132,6 +132,23 @@ export class PageRepository extends BaseRepository<Page> {
           name: { $regex: input.keyword, $options: 'i' },
         },
       },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          let: { likes: '$likes' },
+          as: 'likes',
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: ['$_id', '$$likes'],
+                },
+              },
+            },
+            { $project: { profilePic: 1, fullName: 1 } },
+          ],
+        },
+      },
       { $sort: { createdAt: -1 } },
     ]);
     return await this.pageSchema.aggregatePaginate(aggregation, {
