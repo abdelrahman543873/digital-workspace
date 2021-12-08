@@ -472,6 +472,25 @@ export class UserRepository extends BaseRepository<User> {
   async getUserList(input: Pagination) {
     const aggregation = this.userSchema.aggregate([
       { $match: {} },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          foreignField: '_id',
+          localField: 'directManagerId',
+          as: 'directManager',
+        },
+      },
+      {
+        $addFields: {
+          directManager: {
+            $cond: {
+              if: { $eq: [{ $size: '$directManager' }, 1] },
+              then: { $arrayElemAt: ['$directManager', 0] },
+              else: {},
+            },
+          },
+        },
+      },
       { $sort: { createdAt: -1 } },
     ]);
     return await this.userSchema.aggregatePaginate(aggregation, {
