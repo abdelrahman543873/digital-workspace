@@ -470,7 +470,10 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   async getUserList(input: Pagination) {
-    const aggregation = this.userSchema.aggregate([{ $match: {} }]);
+    const aggregation = this.userSchema.aggregate([
+      { $match: {} },
+      { $sort: { createdAt: -1 } },
+    ]);
     return await this.userSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
       limit: input.limit,
