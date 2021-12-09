@@ -48,6 +48,22 @@ describe('update user by id case', () => {
     expect(res.body.statusCode).toBe(602);
   });
 
+  it('should update user direct manager', async () => {
+    const user = await userFactory();
+    const managed = await userFactory();
+    const manager = await userFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: UPDATE_USER_BY_ID,
+      token: user.token,
+      variables: {
+        userId: managed._id.toString(),
+        directManagerId: manager._id.toString(),
+      },
+    });
+    expect(res.body.directManagerId.toString()).toBe(manager._id.toString());
+  });
+
   it('should throw error if manager id equal to employee id', async () => {
     const user = await userFactory();
     const res = await testRequest({
