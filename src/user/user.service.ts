@@ -70,8 +70,6 @@ export class UserService {
       !(await this.userRepo.checkUserExists(input.directManagerId))
     )
       throw new BaseHttpException(this.request.lang, 602);
-    if (input?.directManagerId === this.request.currentUser._id.toString())
-      throw new BaseHttpException(this.request.lang, 607);
     return await this.userRepo.updateUserById(input, files);
   }
 
