@@ -5,7 +5,7 @@ import {
   IsArray,
   IsDateString,
   IsEmail,
-  IsISO31661Alpha3,
+  IsISO31661Alpha2,
   IsMongoId,
   IsNotEmpty,
   IsOptional,
@@ -68,7 +68,7 @@ export class UpdateUserInput {
   directManagerId?: string;
 
   @IsOptional()
-  @IsISO31661Alpha3()
+  @IsISO31661Alpha2()
   nationality?: string;
 
   @IsOptional()
