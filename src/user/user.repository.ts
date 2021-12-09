@@ -41,6 +41,9 @@ export class UserRepository extends BaseRepository<User> {
     return (
       await this.userSchema.create({
         ...input,
+        ...(input.directManagerId && {
+          directManagerId: new Types.ObjectId(input.directManagerId),
+        }),
         password: await hashPass(input.password),
         ...(files?.coverPic && {
           coverPic: `${process.env.HOST}pictures/${files.coverPic[0].filename}`,
