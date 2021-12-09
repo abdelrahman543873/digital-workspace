@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  digital-workspace:
+    image: digital-workspace
+    build: .
+    env_file: .env
+    restart: always
+    volumes:
+      - client:/app/client
+    ports:
+      - '3000:3000'
+volumes:
+  client:
