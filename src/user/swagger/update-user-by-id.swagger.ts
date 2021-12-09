@@ -8,6 +8,9 @@ export const UpdateUserByIdSwagger: ApiBodyOptions = {
       fullName: {
         type: 'string',
       },
+      nationality: {
+        type: 'string',
+      },
       birthDate: {
         type: 'string',
         format: 'date',

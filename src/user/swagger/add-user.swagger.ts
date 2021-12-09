@@ -10,6 +10,9 @@ export const AddUserSwagger: ApiBodyOptions = {
       fullName: {
         type: 'string',
       },
+      nationality: {
+        type: 'string',
+      },
       password: {
         type: 'string',
       },
