@@ -21,6 +21,7 @@ import { HidePostInput } from './inputs/hide-post.input';
 import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
 import { DeleteUserInput } from './inputs/delete-user-by-id.input';
+import xlsx from 'node-xlsx';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -500,5 +501,25 @@ export class UserRepository extends BaseRepository<User> {
       offset: input.offset * input.limit,
       limit: input.limit,
     });
+  }
+
+  async loadUser() {
+    const parsedSheet = xlsx.parse(`./doc.xlsx`);
+    const users = parsedSheet[0].data.filter((array) => array.length);
+    const columns = users.shift();
+    for await (const user of users) {
+      const userObject = { password: await hashPass('amazingWorkSpace') };
+      columns.forEach((column, index) => {
+        if (['birthDate', 'ID', 'directManagerId'].includes(`${column}`))
+          return;
+        else userObject[`${column}`] = user[index];
+      });
+      await this.userSchema.findOneAndUpdate(
+        { email: userObject['email'] },
+        { ...userObject },
+        { upsert: true },
+      );
+    }
+    return 'users seeded';
   }
 }

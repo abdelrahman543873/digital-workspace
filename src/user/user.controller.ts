@@ -217,4 +217,10 @@ export class UserController {
   async deleteUserById(@Body() input: DeleteUserInput) {
     return await this.userService.deleteUserById(input);
   }
+
+  @ApiTags('user')
+  @Post('load')
+  async loadUser() {
+    return await this.userService.loadUser();
+  }
 }

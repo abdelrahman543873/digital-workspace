@@ -142,4 +142,8 @@ export class UserService {
   async deleteUserById(input: DeleteUserInput) {
     return await this.userRepo.deleteUserById(input);
   }
+
+  async loadUser() {
+    return await this.userRepo.loadUser();
+  }
 }

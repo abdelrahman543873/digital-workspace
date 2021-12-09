@@ -15,3 +15,4 @@ export const UPDATE_USER_BY_ID = '/user/updateById';
 export const GET_USER_BY_BIRTH_DATE = '/user/byBirthday';
 export const DELETE_USER_BY_ID = '/user/delete';
 export const GET_USER_LIST = '/user/list';
+export const LOAD_USER = '/user/load';
