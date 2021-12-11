@@ -33,6 +33,20 @@ describe('update user by id case', () => {
     expect(res.body.fullName).toBe('something');
   });
 
+  it('should update user isCompany', async () => {
+    const user = await userFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: UPDATE_USER_BY_ID,
+      token: user.token,
+      variables: {
+        userId: user._id.toString(),
+        isCompany: true,
+      },
+    });
+    expect(res.body.isCompany).toBe(true);
+  });
+
   it("should throw error if manager id doesn't exist", async () => {
     const user = await userFactory();
     const randomId = (await postFactory())._id;
