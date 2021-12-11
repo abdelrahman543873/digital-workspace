@@ -3,6 +3,7 @@ import {
   Allow,
   ArrayNotEmpty,
   IsArray,
+  IsBoolean,
   IsDateString,
   IsEmail,
   IsISO31661Alpha2,
@@ -75,4 +76,12 @@ export class UpdateUserByIdInput {
 
   @Allow()
   coverPic: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isCompany?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isAdmin?: boolean;
 }

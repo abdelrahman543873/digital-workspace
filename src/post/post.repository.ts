@@ -97,10 +97,27 @@ export class PostRepository extends BaseRepository<Post> {
   async getNewsFeed(user: User, pagination: Pagination) {
     const aggregation = this.postSchema.aggregate([
       {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          as: 'company',
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ['$isCompany', true] },
+              },
+            },
+            {
+              $project: { _id: 1 },
+            },
+          ],
+        },
+      },
+      {
         $match: {
           $and: [
             {
               $or: [
+                { $expr: { $in: ['$userId', '$company._id'] } },
                 { $expr: { $in: ['$userId', user.following] } },
                 { userId: user._id },
               ],

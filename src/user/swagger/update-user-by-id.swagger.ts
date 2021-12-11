@@ -4,6 +4,12 @@ export const UpdateUserByIdSwagger: ApiBodyOptions = {
   schema: {
     type: 'object',
     properties: {
+      isAdmin: {
+        type: 'boolean',
+      },
+      isCompany: {
+        type: 'boolean',
+      },
       userId: { type: 'string' },
       fullName: {
         type: 'string',

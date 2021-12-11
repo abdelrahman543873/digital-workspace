@@ -116,6 +116,12 @@ export class User {
 
   @Prop()
   position: string;
+
+  @Prop({ default: false })
+  isCompany: boolean;
+
+  @Prop({ default: false })
+  isAdmin: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

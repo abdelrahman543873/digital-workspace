@@ -43,6 +43,8 @@ export interface UserType {
   hiddenPosts?: ObjectId[];
   nationality?: string;
   position?: string;
+  isCompany?: boolean;
+  isAdmin?: boolean;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -93,5 +95,7 @@ export const buildUserParams = (obj: UserType = {}): User => {
     nationality: obj.nationality || address.countryCode(),
     hiddenPosts: obj.hiddenPosts || [],
     position: obj.position || name.jobTitle(),
+    isCompany: obj.isCompany || false,
+    isAdmin: obj.isAdmin || false,
   };
 };

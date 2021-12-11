@@ -3,6 +3,7 @@ import {
   Allow,
   ArrayNotEmpty,
   IsArray,
+  IsBoolean,
   IsDateString,
   IsEmail,
   IsISO31661Alpha2,
@@ -68,6 +69,14 @@ export class AddUserInput {
   @IsString()
   @IsNotEmpty()
   position?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isCompany?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isAdmin?: boolean;
 
   @IsOptional()
   @IsDateString()

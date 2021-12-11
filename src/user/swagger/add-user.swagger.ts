@@ -4,6 +4,12 @@ export const AddUserSwagger: ApiBodyOptions = {
   schema: {
     type: 'object',
     properties: {
+      isAdmin: {
+        type: 'boolean',
+      },
+      isCompany: {
+        type: 'boolean',
+      },
       email: {
         type: 'string',
       },
