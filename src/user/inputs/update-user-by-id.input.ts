@@ -79,9 +79,11 @@ export class UpdateUserByIdInput {
 
   @IsOptional()
   @IsBoolean()
+  @Type(() => Boolean)
   isCompany?: boolean;
 
   @IsOptional()
   @IsBoolean()
+  @Type(() => Boolean)
   isAdmin?: boolean;
 }
