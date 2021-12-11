@@ -203,6 +203,7 @@ export class UserRepository extends BaseRepository<User> {
       {
         $match: {
           _id: userId,
+          isCompany: false,
         },
       },
       {
@@ -422,6 +423,7 @@ export class UserRepository extends BaseRepository<User> {
 
   async getMostFollowed(pagination: Pagination) {
     const aggregation = this.userSchema.aggregate([
+      { $match: { $expr: { $eq: ['$isCompany', false] } } },
       {
         $addFields: { followersSize: { $size: '$followers' } },
       },

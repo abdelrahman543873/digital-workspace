@@ -111,6 +111,7 @@ export class PageRepository extends BaseRepository<Page> {
       {
         $match: {},
       },
+      { $sort: { createdAt: -1 } },
     ]);
     return await this.pageSchema.aggregatePaginate(aggregation, {
       offset: pagination.offset * pagination.limit,

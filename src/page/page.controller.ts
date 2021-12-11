@@ -6,7 +6,6 @@ import {
   Delete,
   Get,
   Post,
-  Param,
   Put,
   Query,
   UploadedFile,
