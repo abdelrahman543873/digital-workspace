@@ -1,9 +1,10 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   Allow,
   ArrayNotEmpty,
   IsArray,
   IsBoolean,
+  IsBooleanString,
   IsDateString,
   IsEmail,
   IsISO31661Alpha2,
@@ -71,13 +72,11 @@ export class AddUserInput {
   position?: string;
 
   @IsOptional()
-  @IsBoolean()
-  @Type(() => Boolean)
+  @IsBooleanString()
   isCompany?: boolean;
 
   @IsOptional()
-  @IsBoolean()
-  @Type(() => Boolean)
+  @IsBooleanString()
   isAdmin?: boolean;
 
   @IsOptional()

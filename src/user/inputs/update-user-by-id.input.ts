@@ -4,6 +4,7 @@ import {
   ArrayNotEmpty,
   IsArray,
   IsBoolean,
+  IsBooleanString,
   IsDateString,
   IsEmail,
   IsISO31661Alpha2,
@@ -78,12 +79,10 @@ export class UpdateUserByIdInput {
   coverPic: string;
 
   @IsOptional()
-  @IsBoolean()
-  @Type(() => Boolean)
+  @IsBooleanString()
   isCompany?: boolean;
 
   @IsOptional()
-  @IsBoolean()
-  @Type(() => Boolean)
+  @IsBooleanString({})
   isAdmin?: boolean;
 }
