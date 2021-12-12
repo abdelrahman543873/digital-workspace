@@ -17,6 +17,24 @@ describe('register user suite case', () => {
     expect(res.body.email).toBe(params.email.toLowerCase());
   });
 
+  it('should register user that is company and not admin', async () => {
+    const params = buildUserParams();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_USER,
+      variables: {
+        email: params.email,
+        password: params.password,
+        isAdmin: false,
+        isCompany: true,
+      },
+    });
+    expect(res.body.isCompany).toBe(true);
+    expect(res.body.isAdmin).toBe(false);
+    expect(res.body.token).toBeTruthy();
+    expect(res.body.email).toBe(params.email.toLowerCase());
+  });
+
   it('should add user with cover pic', async () => {
     const params = buildUserParams();
     const testFiles = process.cwd();
