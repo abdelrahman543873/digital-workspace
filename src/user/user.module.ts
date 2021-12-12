@@ -8,7 +8,8 @@ import { TestUser, TestUserSchema } from './schema/test-user.schema';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { filename } from '../shared/utils/multer-file-name copy';
-
+import { HttpModule } from '@nestjs/axios';
+import { Agent } from 'https';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -21,6 +22,9 @@ import { filename } from '../shared/utils/multer-file-name copy';
         destination: './client/pictures',
         filename,
       }),
+    }),
+    HttpModule.register({
+      httpsAgent: new Agent({ rejectUnauthorized: false }),
     }),
   ],
   controllers: [UserController],

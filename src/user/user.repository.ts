@@ -22,12 +22,16 @@ import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
 import { DeleteUserInput } from './inputs/delete-user-by-id.input';
 import xlsx from 'node-xlsx';
+import fs from 'fs';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
     @InjectModel(User.name)
     private userSchema: AggregatePaginateModel<UserDocument>,
     @InjectModel(TestUser.name) private testUserSchema: Model<TestUserDocument>,
+    private httpService: HttpService,
   ) {
     super(userSchema);
   }
@@ -506,11 +510,22 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   async loadUser() {
+    const file = fs.createWriteStream('doc.xlsx');
+    await firstValueFrom(
+      this.httpService.get(
+        'https://docs.google.com/spreadsheets/d/1ex-ke3Sg7GvqF0T6sVFhv2d2qoeo8aWf/edit?usp=drivesdk&ouid=107769045719946575466&rtpof=true&sd=true',
+      ),
+    ).then((response) => {
+      response.data.pipe(file);
+    });
     const parsedSheet = xlsx.parse(`./doc.xlsx`);
     const users = parsedSheet[0].data.filter((array) => array.length);
     const columns = users.shift();
     for await (const user of users) {
-      const userObject = { password: await hashPass('amazingWorkSpace') };
+      const userObject = {
+        password: await hashPass('amazingWorkSpace'),
+        isAdmin: true,
+      };
       columns.forEach((column, index) => {
         if (['birthDate', 'ID', 'directManagerId'].includes(`${column}`))
           return;
