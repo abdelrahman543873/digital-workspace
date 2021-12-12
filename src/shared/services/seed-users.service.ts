@@ -5,6 +5,6 @@ import { UserRepository } from '../../user/user.repository';
 export class SeedUsersServices implements OnApplicationBootstrap {
   constructor(private userRepo: UserRepository) {}
   async onApplicationBootstrap() {
-    await this.userRepo.seedUsers();
+    await this.userRepo.loadUser();
   }
 }
