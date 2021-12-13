@@ -16,8 +16,7 @@ export class TeamsRepository {
           client_id: process.env.CLIENT_ID,
           scope: 'user.read',
           code: input.code,
-          redirect_uri:
-            'https://digital-workspace-api.azurewebsites.net/teams/events',
+          redirect_uri: 'https://digital-workspace.azurewebsites.net/home',
           grant_type: 'authorization_code',
           client_secret: process.env.CLIENT_SECRET,
         }),
