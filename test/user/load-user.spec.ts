@@ -10,5 +10,6 @@ describe('load user suite case', () => {
       url: LOAD_USER,
       token: user.token,
     });
+    console.log(res.body);
   });
 });

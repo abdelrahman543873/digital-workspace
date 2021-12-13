@@ -513,7 +513,8 @@ export class UserRepository extends BaseRepository<User> {
     const file = fs.createWriteStream('doc.xlsx');
     await firstValueFrom(
       this.httpService.get(
-        'https://docs.google.com/spreadsheets/d/1ex-ke3Sg7GvqF0T6sVFhv2d2qoeo8aWf/edit?usp=drivesdk&ouid=107769045719946575466&rtpof=true&sd=true',
+        'https://drive.google.com/uc?id=1ex-ke3Sg7GvqF0T6sVFhv2d2qoeo8aWf&export=download',
+        { responseType: 'stream' },
       ),
     ).then((response) => {
       response.data.pipe(file);
