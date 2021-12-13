@@ -117,6 +117,12 @@ export class User {
   @Prop()
   position: string;
 
+  @Prop()
+  linkedin: string;
+
+  @Prop()
+  twitter: string;
+
   @Prop({ default: false })
   isCompany: boolean;
 

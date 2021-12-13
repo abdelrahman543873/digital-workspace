@@ -11,6 +11,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUrl,
   ValidateNested,
 } from 'class-validator';
 import { Experience, Skill, Education } from '../schema/user.schema';
@@ -84,4 +85,12 @@ export class UpdateUserByIdInput {
   @IsOptional()
   @IsBooleanString({})
   isAdmin?: boolean;
+
+  @IsOptional()
+  @IsUrl()
+  linkedin?: string;
+
+  @IsOptional()
+  @IsUrl()
+  twitter?: string;
 }

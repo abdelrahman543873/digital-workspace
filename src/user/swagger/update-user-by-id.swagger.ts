@@ -10,6 +10,12 @@ export const UpdateUserByIdSwagger: ApiBodyOptions = {
       isCompany: {
         type: 'boolean',
       },
+      twitter: {
+        type: 'string',
+      },
+      linkedin: {
+        type: 'string',
+      },
       userId: { type: 'string' },
       fullName: {
         type: 'string',

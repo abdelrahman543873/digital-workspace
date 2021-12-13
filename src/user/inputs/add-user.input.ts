@@ -12,6 +12,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUrl,
   MaxLength,
   MinLength,
   ValidateNested,
@@ -74,6 +75,14 @@ export class AddUserInput {
   @IsOptional()
   @IsBooleanString()
   isCompany?: boolean;
+
+  @IsOptional()
+  @IsUrl()
+  linkedin?: string;
+
+  @IsOptional()
+  @IsUrl()
+  twitter?: string;
 
   @IsOptional()
   @IsBooleanString()

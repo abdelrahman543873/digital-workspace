@@ -45,6 +45,8 @@ export interface UserType {
   position?: string;
   isCompany?: boolean;
   isAdmin?: boolean;
+  twitter?: string;
+  linkedin?: string;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -97,5 +99,7 @@ export const buildUserParams = (obj: UserType = {}): User => {
     position: obj.position || name.jobTitle(),
     isCompany: obj.isCompany || false,
     isAdmin: obj.isAdmin || false,
+    linkedin: obj.linkedin || internet.url(),
+    twitter: obj.twitter || internet.url(),
   };
 };

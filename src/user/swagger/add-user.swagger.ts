@@ -10,6 +10,12 @@ export const AddUserSwagger: ApiBodyOptions = {
       isCompany: {
         type: 'boolean',
       },
+      twitter: {
+        type: 'string',
+      },
+      linkedin: {
+        type: 'string',
+      },
       email: {
         type: 'string',
       },

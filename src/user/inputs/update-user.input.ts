@@ -10,6 +10,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUrl,
   Min,
   ValidateNested,
 } from 'class-validator';
@@ -85,4 +86,12 @@ export class UpdateUserInput {
 
   @Allow()
   coverPic: string;
+
+  @IsOptional()
+  @IsUrl()
+  linkedin?: string;
+
+  @IsOptional()
+  @IsUrl()
+  twitter?: string;
 }

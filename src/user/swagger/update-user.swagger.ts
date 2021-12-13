@@ -7,6 +7,12 @@ export const UpdateUserSwagger: ApiBodyOptions = {
       fullName: {
         type: 'string',
       },
+      twitter: {
+        type: 'string',
+      },
+      linkedin: {
+        type: 'string',
+      },
       position: {
         type: 'string',
       },
