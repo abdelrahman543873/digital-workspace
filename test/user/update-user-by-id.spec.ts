@@ -41,7 +41,7 @@ describe('update user by id case', () => {
       token: user.token,
       variables: {
         userId: user._id.toString(),
-        isCompany: true,
+        isCompany: 'true',
       },
     });
     expect(res.body.isCompany).toBe(true);
@@ -59,7 +59,7 @@ describe('update user by id case', () => {
         directManagerId: randomId.toString(),
       },
     });
-    expect(res.body.statusCode).toBe(602);
+    expect(res.body.statusCode).toBe(608);
   });
 
   it('should update user direct manager', async () => {
@@ -76,19 +76,5 @@ describe('update user by id case', () => {
       },
     });
     expect(res.body.directManagerId.toString()).toBe(manager._id.toString());
-  });
-
-  it('should throw error if manager id equal to employee id', async () => {
-    const user = await userFactory();
-    const res = await testRequest({
-      method: HTTP_METHODS_ENUM.PUT,
-      url: UPDATE_USER_BY_ID,
-      token: user.token,
-      variables: {
-        userId: user._id.toString(),
-        directManagerId: user._id.toString(),
-      },
-    });
-    expect(res.body.statusCode).toBe(607);
   });
 });

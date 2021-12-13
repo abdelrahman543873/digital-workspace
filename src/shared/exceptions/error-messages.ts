@@ -27,4 +27,8 @@ export const LocalizedErrorMessages: IErrorMessage = {
     EN: "your id can't be the direct manager id",
     AR: "your id can't be the direct manager id",
   },
+  608: {
+    EN: "direct manager id provided doesn't exist",
+    AR: "direct manager id provided doesn't exist",
+  },
 };

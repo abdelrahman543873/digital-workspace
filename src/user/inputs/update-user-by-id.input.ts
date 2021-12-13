@@ -3,7 +3,6 @@ import {
   Allow,
   ArrayNotEmpty,
   IsArray,
-  IsBoolean,
   IsBooleanString,
   IsDateString,
   IsEmail,
