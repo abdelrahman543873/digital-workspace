@@ -29,7 +29,7 @@ describe('get users by most followed suite case', () => {
     });
     expect(
       res.body.docs.map((doc) => {
-        return doc._id.toString;
+        return doc._id.toString();
       }),
     ).not.toContain(mostFollowed._id.toString());
   });

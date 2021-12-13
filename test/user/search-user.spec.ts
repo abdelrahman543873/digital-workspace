@@ -50,4 +50,18 @@ describe('search user suite case', () => {
     });
     expect(res.body.docs[0]._id.toString()).toBe(user._id.toString());
   });
+
+  it("shouldn't return company users", async () => {
+    const user = await userFactory({ isCompany: true });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${SEARCH_USER}?keyword=${user.fullName}`,
+      token: user.token,
+    });
+    expect(
+      res.body.docs.map((doc) => {
+        return doc._id.toString();
+      }),
+    ).not.toContain(user._id.toString());
+  });
 });

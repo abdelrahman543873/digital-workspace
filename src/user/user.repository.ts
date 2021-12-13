@@ -104,6 +104,7 @@ export class UserRepository extends BaseRepository<User> {
           ],
         },
       },
+      { $match: { isCompany: false } },
       {
         $lookup: {
           from: LookupSchemasEnum.users,
