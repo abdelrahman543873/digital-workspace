@@ -1,7 +1,16 @@
-import { Controller, Get, Redirect, Query } from '@nestjs/common';
-import { ApiExcludeEndpoint } from '@nestjs/swagger';
+import { AuthGuard } from './../shared/guards/auth.guard';
+import {
+  Controller,
+  Get,
+  Redirect,
+  Query,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiExcludeEndpoint } from '@nestjs/swagger';
 import { TeamsService } from './teams.service';
-import { LogUserInput } from './log-user.input';
+import { RegisterUserTokenInput } from './inputs/register-user-token.input';
+import { Body } from '@nestjs/common';
 
 @Controller('teams')
 export class TeamsController {
@@ -18,9 +27,17 @@ export class TeamsController {
     };
   }
 
-  @ApiExcludeEndpoint()
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @Get('events')
-  async logUser(@Query() input: LogUserInput) {
-    return await this.teamsService.logUser(input);
+  async events() {
+    return await this.teamsService.events();
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  @Post('registerUserMicrosoftToken')
+  async registerUserMicrosoft(@Body() input: RegisterUserTokenInput) {
+    return await this.teamsService.registerUserMicrosoft(input);
   }
 }

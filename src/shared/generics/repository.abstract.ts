@@ -36,6 +36,6 @@ export abstract class BaseRepository<T> implements Repository<T> {
     filter: FilterQuery<T & Document<any>>,
     update: UpdateQuery<T & Document<any, any>>,
   ): Promise<Record<any, any>> {
-    return await this._model.updateOne(filter, update);
+    return await this._model.findOneAndUpdate(filter, update, { new: true });
   }
 }

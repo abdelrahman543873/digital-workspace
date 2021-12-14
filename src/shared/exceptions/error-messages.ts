@@ -31,4 +31,8 @@ export const LocalizedErrorMessages: IErrorMessage = {
     EN: "direct manager id provided doesn't exist",
     AR: "direct manager id provided doesn't exist",
   },
+  609: {
+    EN: "user doesn't have microsoft token",
+    AR: "user doesn't have microsoft token",
+  },
 };

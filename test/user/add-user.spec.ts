@@ -25,8 +25,8 @@ describe('register user suite case', () => {
       variables: {
         email: params.email,
         password: params.password,
-        isAdmin: false,
-        isCompany: true,
+        isAdmin: 'false',
+        isCompany: 'true',
       },
     });
     expect(res.body.isCompany).toBe(true);

@@ -47,6 +47,7 @@ export interface UserType {
   isAdmin?: boolean;
   twitter?: string;
   linkedin?: string;
+  microsoftToken?: string;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -101,5 +102,6 @@ export const buildUserParams = (obj: UserType = {}): User => {
     isAdmin: obj.isAdmin || false,
     linkedin: obj.linkedin || internet.url(),
     twitter: obj.twitter || internet.url(),
+    microsoftToken: obj.microsoftToken || '',
   };
 };

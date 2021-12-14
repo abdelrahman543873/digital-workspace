@@ -123,6 +123,9 @@ export class User {
   @Prop()
   twitter: string;
 
+  @Prop()
+  microsoftToken: string;
+
   @Prop({ default: false })
   isCompany: boolean;
 
