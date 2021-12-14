@@ -539,6 +539,6 @@ export class UserRepository extends BaseRepository<User> {
         { upsert: true },
       );
     }
-    return 'users seeded';
+    return users;
   }
 }
