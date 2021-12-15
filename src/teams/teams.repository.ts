@@ -19,9 +19,7 @@ export class TeamsRepository {
     const today = new Date();
     const response = await firstValueFrom(
       this.httpService.get(
-        `https://graph.microsoft.com/v1.0/me/calendarView?startDateTime=${today.toISOString()}&endDateTime=${new Date(
-          today.setDate(today.getDate() + 1),
-        ).toISOString()}&$select=subject,organizer,onlineMeeting,attendees,start,end`,
+        `https://graph.microsoft.com/v1.0/me/calendarView?startDateTime=${today.toISOString()}&endDateTime=${today.toISOString()}&$select=subject,organizer,onlineMeeting,attendees,start,end`,
         {
           headers: { Authorization: `Bearer ${user.microsoftToken}` },
         },
