@@ -35,7 +35,9 @@ export class TeamsRepository {
           { email: attendee.emailAddress.address.toLowerCase() },
           { profilePic: 1, fullName: 1, email: 1 },
         );
-        valueWithAttendeesArray.push(dbAttendee || attendee);
+        dbAttendee
+          ? valueWithAttendeesArray.unshift(dbAttendee)
+          : valueWithAttendeesArray.push(attendee);
       }
       value.attendees = valueWithAttendeesArray;
     }
