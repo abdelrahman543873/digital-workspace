@@ -6,6 +6,7 @@ import { RegisterUserTokenInput } from './inputs/register-user-token.input';
 import { UserRepository } from '../user/user.repository';
 import { ObjectId } from 'mongoose';
 import { User } from '../user/schema/user.schema';
+import { TeamsResponse } from '../shared/interfaces/teams-response.interface';
 
 @Injectable()
 export class TeamsRepository {
@@ -26,7 +27,22 @@ export class TeamsRepository {
         },
       ),
     );
-    return response.data.value;
+    const teamsResponse: TeamsResponse = response.data;
+    for await (const value of teamsResponse.value) {
+      const valueWithAttendeesArray = [];
+      for await (const attendee of value.attendees) {
+        valueWithAttendeesArray.push(
+          await this.userRepository.findOne(
+            {
+              email: attendee.status.emailAddress.name,
+            },
+            { profilePic: 1, fullName: 1, email: 1 },
+          ),
+        );
+      }
+      value.attendees = valueWithAttendeesArray;
+    }
+    return teamsResponse.value;
   }
 
   async registerUserMicrosoft(userId: ObjectId, input: RegisterUserTokenInput) {
