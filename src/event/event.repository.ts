@@ -122,7 +122,26 @@ export class EventRepository extends BaseRepository<Event> {
   }
 
   async getAllEvents(input: Pagination) {
-    const aggregation = this.eventSchema.aggregate([{ $match: {} }]);
+    const aggregation = this.eventSchema.aggregate([
+      { $match: {} },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          let: { attendees: '$attendees' },
+          as: 'attendees',
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: ['$_id', '$$attendees'],
+                },
+              },
+            },
+            { $project: { profilePic: 1, fullName: 1 } },
+          ],
+        },
+      },
+    ]);
     return await this.eventSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
       limit: input.limit,
