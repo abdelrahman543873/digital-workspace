@@ -31,14 +31,11 @@ export class TeamsRepository {
     for await (const value of teamsResponse.value) {
       const valueWithAttendeesArray = [];
       for await (const attendee of value.attendees) {
-        valueWithAttendeesArray.push(
-          await this.userRepository.findOne(
-            {
-              email: attendee.status.emailAddress.name,
-            },
-            { profilePic: 1, fullName: 1, email: 1 },
-          ),
+        const dbAttendee = await this.userRepository.findOne(
+          { email: attendee.emailAddress.address.toLowerCase() },
+          { profilePic: 1, fullName: 1, email: 1 },
         );
+        valueWithAttendeesArray.push(dbAttendee || attendee);
       }
       value.attendees = valueWithAttendeesArray;
     }

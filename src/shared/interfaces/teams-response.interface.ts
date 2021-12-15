@@ -3,10 +3,10 @@ interface Attendee {
   status: {
     response: string;
     time: string;
-    emailAddress: {
-      name: string;
-      address: string;
-    };
+  };
+  emailAddress: {
+    name: string;
+    address: string;
   };
 }
 export interface Value {
@@ -24,5 +24,6 @@ export interface Value {
   attendees: Array<Attendee>;
 }
 export interface TeamsResponse {
+  '@odata.context': string;
   value: Array<Value>;
 }
