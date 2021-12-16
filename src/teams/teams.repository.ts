@@ -7,6 +7,7 @@ import { UserRepository } from '../user/user.repository';
 import { ObjectId } from 'mongoose';
 import { User } from '../user/schema/user.schema';
 import { TeamsResponse } from '../shared/interfaces/teams-response.interface';
+import { EventsInput } from './inputs/events.input';
 
 @Injectable()
 export class TeamsRepository {
@@ -15,11 +16,15 @@ export class TeamsRepository {
     private userRepository: UserRepository,
   ) {}
 
-  async events(user: User) {
-    const today = new Date();
+  async events(user: User, input: EventsInput) {
+    const date = input.date || Date.now();
+    const todayNight = new Date(date);
+    const todayMorning = new Date(date);
+    todayNight.setHours(25);
+    todayMorning.setHours(2);
     const response = await firstValueFrom(
       this.httpService.get(
-        `https://graph.microsoft.com/v1.0/me/calendarView?startDateTime=${today.toISOString()}&endDateTime=${today.toISOString()}&$select=subject,organizer,onlineMeeting,attendees,start,end`,
+        `https://graph.microsoft.com/v1.0/me/calendarView?startDateTime=${todayMorning.toISOString()}&endDateTime=${todayNight.toISOString()}&$select=subject,organizer,onlineMeeting,attendees,start,end`,
         {
           headers: { Authorization: `Bearer ${user.microsoftToken}` },
         },
