@@ -11,6 +11,7 @@ import { ApiBearerAuth, ApiExcludeEndpoint } from '@nestjs/swagger';
 import { TeamsService } from './teams.service';
 import { RegisterUserTokenInput } from './inputs/register-user-token.input';
 import { Body } from '@nestjs/common';
+import { EventsInput } from './inputs/events.input';
 
 @Controller('teams')
 export class TeamsController {
@@ -30,8 +31,8 @@ export class TeamsController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Get('events')
-  async events() {
-    return await this.teamsService.events();
+  async events(@Query() input: EventsInput) {
+    return await this.teamsService.events(input);
   }
 
   @ApiBearerAuth()
