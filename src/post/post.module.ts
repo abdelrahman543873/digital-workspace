@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Post, PostSchema } from './schema/post.schema';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { filename } from '../shared/utils/multer-file-name copy';
+import { filename } from '../shared/utils/multer-file-name';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Post.name, schema: PostSchema }]),

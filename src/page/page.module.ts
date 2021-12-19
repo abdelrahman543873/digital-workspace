@@ -6,7 +6,7 @@ import { PageController } from './page.controller';
 import { PageRepository } from './page.repository';
 import { PageService } from './page.service';
 import { Page, PageSchema } from './schema/page.schema';
-import { filename } from '../shared/utils/multer-file-name copy';
+import { filename } from '../shared/utils/multer-file-name';
 
 @Module({
   imports: [
