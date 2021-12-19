@@ -32,12 +32,12 @@ export class TaskRepository extends BaseRepository<Task> {
       assignee: new Types.ObjectId(input.assignee),
       ...(files?.attachments && {
         attachments: files.attachments.map((file) => {
-          return `${process.env.HOST}tasks/${file.filename}`;
+          return `${process.env.HOST}${file.filename}`;
         }),
       }),
       ...(files?.logo && {
         logo: files.logo.map((file) => {
-          return `${process.env.HOST}tasks/${file.filename}`;
+          return `${process.env.HOST}${file.filename}`;
         })[0],
       }),
     });

@@ -31,7 +31,7 @@ export class PostRepository extends BaseRepository<Post> {
       // refactor
       ...(attachments && {
         attachments: attachments.map((attachment) => {
-          return `${process.env.HOST}posts/${attachment.filename}`;
+          return `${process.env.HOST}${attachment.filename}`;
         }),
       }),
     });

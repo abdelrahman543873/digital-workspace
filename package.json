@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "'": "nestjs/axios",
+    "@azure/storage-blob": "^12.8.0",
     "@nestjs/axios": "^0.0.2",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.0.2",

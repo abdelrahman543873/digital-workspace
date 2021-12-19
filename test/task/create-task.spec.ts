@@ -45,6 +45,6 @@ describe('create task suite case', () => {
       filePath,
       fileParam: 'logo',
     });
-    expect(res.body.logo).toContain('tasks');
+    expect(res.body.logo).toContain(process.env.HOST);
   });
 });

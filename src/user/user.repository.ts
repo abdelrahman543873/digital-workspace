@@ -51,10 +51,10 @@ export class UserRepository extends BaseRepository<User> {
         }),
         password: await hashPass(input.password),
         ...(files?.coverPic && {
-          coverPic: `${process.env.HOST}pictures/${files.coverPic[0].filename}`,
+          coverPic: `${process.env.HOST}${files.coverPic[0].filename}`,
         }),
         ...(files?.profilePic && {
-          profilePic: `${process.env.HOST}pictures/${files.profilePic[0].filename}`,
+          profilePic: `${process.env.HOST}${files.profilePic[0].filename}`,
         }),
       })
     ).toJSON();
@@ -274,10 +274,10 @@ export class UserRepository extends BaseRepository<User> {
         directManagerId: new Types.ObjectId(input.directManagerId),
         ...(newPassword && { password: hashPassSync(newPassword) }),
         ...(files?.coverPic && {
-          coverPic: `${process.env.HOST}pictures/${files.coverPic[0].filename}`,
+          coverPic: `${process.env.HOST}${files.coverPic[0].filename}`,
         }),
         ...(files?.profilePic && {
-          profilePic: `${process.env.HOST}pictures/${files.profilePic[0].filename}`,
+          profilePic: `${process.env.HOST}${files.profilePic[0].filename}`,
         }),
       },
       { new: true },
@@ -298,10 +298,10 @@ export class UserRepository extends BaseRepository<User> {
         ...filteredInput,
         directManagerId: new Types.ObjectId(input.directManagerId),
         ...(files?.coverPic && {
-          coverPic: `${process.env.HOST}pictures/${files.coverPic[0].filename}`,
+          coverPic: `${process.env.HOST}${files.coverPic[0].filename}`,
         }),
         ...(files?.profilePic && {
-          profilePic: `${process.env.HOST}pictures/${files.profilePic[0].filename}`,
+          profilePic: `${process.env.HOST}${files.profilePic[0].filename}`,
         }),
       },
       { new: true },

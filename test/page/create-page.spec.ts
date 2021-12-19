@@ -56,6 +56,6 @@ describe('create page suite case', () => {
       fileParam: 'logo',
     });
     expect(res.body.name).toBe(page.name);
-    expect(res.body.logo).toContain('pages');
+    expect(res.body.logo).toContain(process.env.HOST);
   });
 });

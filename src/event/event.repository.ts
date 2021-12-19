@@ -29,7 +29,7 @@ export class EventRepository extends BaseRepository<Event> {
     return await this.eventSchema.create({
       host: userId,
       ...input,
-      ...(logo && { logo: `${process.env.HOST}events/${logo.filename}` }),
+      ...(logo && { logo: `${process.env.HOST}${logo.filename}` }),
     });
   }
 
@@ -153,7 +153,7 @@ export class EventRepository extends BaseRepository<Event> {
       { _id: new Types.ObjectId(input.eventId) },
       {
         ...input,
-        ...(logo && { logo: `${process.env.HOST}events/${logo.filename}` }),
+        ...(logo && { logo: `${process.env.HOST}${logo.filename}` }),
       },
       { new: true },
     );

@@ -1,3 +1,4 @@
+import { FileCloudUploadInterceptor } from './../shared/interceptors/file-cloud-upload.interceptor';
 import { Pagination } from './../shared/utils/pagination.input';
 import { PostService } from './post.service';
 import { AddPostInput } from './inputs/add-post.input';
@@ -32,6 +33,7 @@ export class PostController {
   @ApiConsumes('multipart/form-data')
   @ApiBody(AddPostSwagger)
   @UseGuards(AuthGuard)
+  @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(FilesInterceptor('attachments'))
   @Post()
   async addPost(
