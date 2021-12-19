@@ -1,3 +1,4 @@
+import { FileCloudUploadInterceptor } from './../shared/interceptors/file-cloud-upload.interceptor';
 import { AuthGuard } from './../shared/guards/auth.guard';
 import { TaskService } from './task.service';
 import {
@@ -29,6 +30,7 @@ export class TaskController {
   @UseGuards(AuthGuard)
   @ApiBody(CreateTaskSwagger)
   @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'attachments', maxCount: 10 },

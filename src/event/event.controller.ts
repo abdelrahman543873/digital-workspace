@@ -24,6 +24,7 @@ import { UpdateEventInput } from './inputs/update-event.input';
 import { UpdateEventSwagger } from './swagger/update-event.swagger';
 import { SearchEventInput } from './inputs/search-events.input';
 import { Param } from '@nestjs/common';
+import { FileCloudUploadInterceptor } from '../shared/interceptors/file-cloud-upload.interceptor';
 
 @Controller('event')
 export class EventController {
@@ -34,6 +35,7 @@ export class EventController {
   @UseGuards(AuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody(CreateEventSwagger)
+  @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(FileInterceptor('logo'))
   @Post('create')
   async createEvent(
@@ -96,6 +98,7 @@ export class EventController {
   @UseGuards(AuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody(UpdateEventSwagger)
+  @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(FileInterceptor('logo'))
   @Put('update')
   async updateEvent(

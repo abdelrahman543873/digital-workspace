@@ -18,6 +18,6 @@ describe('create event suite case', () => {
       fileParam: 'logo',
     });
     expect(res.body.title).toBe(event.title);
-    expect(res.body.logo).toContain('events');
+    expect(res.body.logo).toContain(process.env.HOST);
   });
 });

@@ -53,7 +53,7 @@ export class PageRepository extends BaseRepository<Page> {
     return await this.pageSchema.create({
       admin: userId,
       ...input,
-      ...(logo && { logo: `${process.env.HOST}pages/${logo.filename}` }),
+      ...(logo && { logo: `${process.env.HOST}${logo.filename}` }),
     });
   }
 
@@ -66,7 +66,7 @@ export class PageRepository extends BaseRepository<Page> {
       { _id: new Types.ObjectId(input.pageId), admin: userId },
       {
         name: input.name,
-        ...(logo && { logo: `${process.env.HOST}pages/${logo.filename}` }),
+        ...(logo && { logo: `${process.env.HOST}${logo.filename}` }),
       },
       { new: true },
     );

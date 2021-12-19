@@ -49,7 +49,7 @@ describe('register user suite case', () => {
       filePath,
       fileParam: 'coverPic',
     });
-    expect(res.body.coverPic).toContain('pictures');
+    expect(res.body.coverPic).toContain(process.env.HOST);
     expect(res.body.token).toBeTruthy();
     expect(res.body.email).toBe(params.email.toLowerCase());
   });

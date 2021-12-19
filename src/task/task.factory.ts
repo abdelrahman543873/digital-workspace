@@ -26,7 +26,7 @@ export const buildTaskParams = async (obj: TaskType = {}): Promise<Task> => {
     priority: obj.priority || random.arrayElement(PRIORITIES),
     status: obj.status || random.arrayElement(TASK_STATUS),
     attachments: obj.attachments || [],
-    logo: obj.logo || `${process.env.HOST}defaults/avatar.jpg`,
+    logo: obj.logo || `${process.env.HOST}avatar.jpg`,
   };
 };
 

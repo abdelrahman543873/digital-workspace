@@ -1,3 +1,4 @@
+import { FileCloudUploadInterceptor } from './../shared/interceptors/file-cloud-upload.interceptor';
 import { JoiValidationPipe } from './../shared/pipes/joi.pipe';
 import { AuthGuard } from './../shared/guards/auth.guard';
 import { UserService } from './user.service';
@@ -42,6 +43,7 @@ export class UserController {
   @ApiTags('user')
   @ApiConsumes('multipart/form-data')
   @ApiBody(AddUserSwagger)
+  @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'profilePic', maxCount: 1 },
@@ -65,6 +67,7 @@ export class UserController {
   @ApiConsumes('multipart/form-data')
   @ApiBody(UpdateUserSwagger)
   @UseGuards(AuthGuard)
+  @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'profilePic', maxCount: 1 },
@@ -89,6 +92,7 @@ export class UserController {
   @ApiConsumes('multipart/form-data')
   @ApiBody(UpdateUserByIdSwagger)
   @UseGuards(AuthGuard)
+  @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'profilePic', maxCount: 1 },

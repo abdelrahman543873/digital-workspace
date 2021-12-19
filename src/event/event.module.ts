@@ -4,7 +4,7 @@ import { EventController } from './event.controller';
 import { EventRepository } from './event.repository';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { filename } from '../shared/utils/multer-file-name copy';
+import { filename } from '../shared/utils/multer-file-name';
 import { EventSchema, Event } from './schema/event.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 

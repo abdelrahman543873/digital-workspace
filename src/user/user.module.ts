@@ -7,7 +7,7 @@ import { User, UserSchema } from './schema/user.schema';
 import { TestUser, TestUserSchema } from './schema/test-user.schema';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { filename } from '../shared/utils/multer-file-name copy';
+import { filename } from '../shared/utils/multer-file-name';
 import { HttpModule } from '@nestjs/axios';
 import { Agent } from 'https';
 @Module({

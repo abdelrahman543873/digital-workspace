@@ -1,3 +1,4 @@
+import { FileCloudUploadInterceptor } from './../shared/interceptors/file-cloud-upload.interceptor';
 import { Pagination } from './../shared/utils/pagination.input';
 import { AuthGuard } from './../shared/guards/auth.guard';
 import {
@@ -41,6 +42,7 @@ export class PageController {
   @UseGuards(AuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody(CreatePageSwagger)
+  @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(FileInterceptor('logo'))
   @Post('create')
   async createPage(
@@ -55,6 +57,7 @@ export class PageController {
   @UseGuards(AuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody(UpdatePageSwagger)
+  @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(FileInterceptor('logo'))
   @Put('update')
   async updatePage(

@@ -17,7 +17,7 @@ export const buildPageParams = async (obj: PageType = {}): Promise<Page> => {
     name: obj.name || name.title(),
     admin: obj.admin || userId,
     likes: obj.likes || [userId],
-    logo: obj.logo || `${process.env.HOST}defaults/avatar.jpg`,
+    logo: obj.logo || `${process.env.HOST}/defaults/avatar.jpg`,
   };
 };
 

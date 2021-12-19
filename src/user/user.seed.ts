@@ -53,7 +53,7 @@ export interface UserType {
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
   return {
     name: obj.name || name.title(),
-    logo: obj.logo || `${process.env.HOST}defaults/avatar.jpg`,
+    logo: obj.logo || `${process.env.HOST}avatar.jpg`,
     position: obj.position || name.jobTitle(),
     endDate: obj.endDate || date.future(),
     startDate: obj.startDate || date.past(),
@@ -63,7 +63,7 @@ const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
 const buildEducationParams = (obj: EducationType = {}): Education => {
   return {
     name: obj.name || name.title(),
-    logo: obj.logo || `${process.env.HOST}defaults/avatar.jpg`,
+    logo: obj.logo || `${process.env.HOST}avatar.jpg`,
     level: obj.level || name.jobTitle(),
     endDate: obj.endDate || date.future(),
     startDate: obj.startDate || date.past(),
@@ -85,8 +85,8 @@ export const buildUserParams = (obj: UserType = {}): User => {
     phone: obj.phone || phone.phoneNumber(),
     experience: obj.experience || [buildExperienceParams()],
     description: obj.description || name.jobDescriptor(),
-    profilePic: obj.profilePic || `${process.env.HOST}defaults/avatar.jpg`,
-    coverPic: obj.coverPic || `${process.env.HOST}defaults/avatar.jpg`,
+    profilePic: obj.profilePic || `${process.env.HOST}avatar.jpg`,
+    coverPic: obj.coverPic || `${process.env.HOST}avatar.jpg`,
     gender: obj.gender || random.arrayElement(GENDER),
     birthDate: obj.birthDate || date.past().toISOString(),
     directManagerId: obj.directManagerId || null,
