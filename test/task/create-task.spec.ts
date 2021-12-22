@@ -6,7 +6,7 @@ import { buildTaskParams } from '../../src/task/task.factory';
 describe('create task suite case', () => {
   it('should create task', async () => {
     const user = await userFactory();
-    const { assigner, status, ...params } = await buildTaskParams();
+    const { assigner, status, leaveDays, ...params } = await buildTaskParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: CREATE_TASK,
@@ -18,7 +18,7 @@ describe('create task suite case', () => {
 
   it('should create task with uploaded attachments', async () => {
     const user = await userFactory();
-    const { assigner, status, ...params } = await buildTaskParams();
+    const { assigner, status, leaveDays, ...params } = await buildTaskParams();
     const testFiles = process.cwd();
     const filePath = `${testFiles}/test/test-files/test-duck.jpeg`;
     const res = await testRequest({
@@ -34,7 +34,7 @@ describe('create task suite case', () => {
 
   it('should create task with uploaded logo', async () => {
     const user = await userFactory();
-    const { assigner, status, ...params } = await buildTaskParams();
+    const { assigner, status, leaveDays, ...params } = await buildTaskParams();
     const testFiles = process.cwd();
     const filePath = `${testFiles}/test/test-files/test-duck.jpeg`;
     const res = await testRequest({

@@ -6,7 +6,7 @@ import { buildTaskParams, taskFactory } from '../../src/task/task.factory';
 describe('update task suite case', () => {
   it('should update task', async () => {
     const user = await userFactory();
-    const { assigner, ...params } = await buildTaskParams();
+    const { assigner, leaveDays, ...params } = await buildTaskParams();
     const task = await taskFactory({ assigner: user._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
