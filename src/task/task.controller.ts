@@ -20,6 +20,7 @@ import { UpdateTaskInput } from './inputs/update-task.input';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CreateTaskSwagger } from './swagger/create-task.swagger';
 import { GetTaskByIdInput } from './inputs/get-task-by-id.input';
+import { ApplyForLeaveInput } from './inputs/apply-for-leave.input';
 
 @Controller('task')
 export class TaskController {
@@ -79,5 +80,23 @@ export class TaskController {
   @Put('update')
   async updateTask(@Body() input: UpdateTaskInput) {
     return await this.taskService.updateTask(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('task')
+  @UseGuards(AuthGuard)
+  @Post('applyForLeave')
+  @UseInterceptors(FileCloudUploadInterceptor)
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'attachments', maxCount: 10 }]),
+  )
+  async applyForLeave(
+    @Body() input: ApplyForLeaveInput,
+    @UploadedFiles()
+    files: {
+      attachments?: Express.Multer.File[];
+    },
+  ) {
+    return await this.taskService.applyForLeave(input, files);
   }
 }

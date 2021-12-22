@@ -31,6 +31,9 @@ export class Task {
 
   @Prop({ type: String })
   logo: string;
+
+  @Prop()
+  leaveDays: number;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

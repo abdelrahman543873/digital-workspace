@@ -1,5 +1,5 @@
 import { LookupSchemasEnum, TASK_STATUS } from './../app.const';
-import { Injectable } from '@nestjs/common';
+import { Body, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AggregatePaginateModel, ObjectId, SchemaTypes, Types } from 'mongoose';
 import { BaseRepository } from '../shared/generics/repository.abstract';
@@ -8,6 +8,7 @@ import { CreateTaskInput } from './inputs/create-task.input';
 import { GetTasksInput } from './inputs/get-tasks.input';
 import { UpdateTaskInput } from './inputs/update-task.input';
 import { GetTaskByIdInput } from './inputs/get-task-by-id.input';
+import { ApplyForLeaveInput } from './inputs/apply-for-leave.input';
 
 @Injectable()
 export class TaskRepository extends BaseRepository<Task> {
@@ -213,5 +214,23 @@ export class TaskRepository extends BaseRepository<Task> {
         },
       ])
     )[0];
+  }
+
+  async applyForLeave(
+    @Body() input: ApplyForLeaveInput,
+    files: {
+      attachments?: Express.Multer.File[];
+    },
+  ) {
+    return await this.taskSchema.create({
+      ...input,
+      title: 'leave request',
+      logo: `${process.env.WEBSITE_HOST}defaults/logo.png`,
+      ...(files?.attachments && {
+        attachments: files.attachments.map((file) => {
+          return `${process.env.HOST}${file.filename}`;
+        }),
+      }),
+    });
   }
 }

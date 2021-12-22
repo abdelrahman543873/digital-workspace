@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongoose';
 import { userFactory } from '../user/user.factory';
-import { commerce, name, random } from 'faker';
+import { commerce, name, random, datatype } from 'faker';
 import { Task } from './schema/task.schema';
 import { PRIORITIES, TASK_STATUS } from '../app.const';
 import { TaskRepo } from '../../test/task/task-test-repo';
@@ -14,6 +14,7 @@ interface TaskType {
   status?: string;
   attachments?: string[];
   logo?: string;
+  leaveDays?: number;
 }
 
 export const buildTaskParams = async (obj: TaskType = {}): Promise<Task> => {
@@ -27,6 +28,7 @@ export const buildTaskParams = async (obj: TaskType = {}): Promise<Task> => {
     status: obj.status || random.arrayElement(TASK_STATUS),
     attachments: obj.attachments || [],
     logo: obj.logo || `${process.env.HOST}avatar.jpg`,
+    leaveDays: obj.leaveDays || datatype.number(),
   };
 };
 

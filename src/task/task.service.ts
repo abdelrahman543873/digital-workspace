@@ -6,6 +6,7 @@ import { RequestContext } from 'src/shared/request.interface';
 import { GetTasksInput } from './inputs/get-tasks.input';
 import { UpdateTaskInput } from './inputs/update-task.input';
 import { GetTaskByIdInput } from './inputs/get-task-by-id.input';
+import { ApplyForLeaveInput } from './inputs/apply-for-leave.input';
 
 @Injectable()
 export class TaskService {
@@ -48,5 +49,14 @@ export class TaskService {
 
   async getTaskStats() {
     return await this.taskRepository.getTaskStats(this.request.currentUser._id);
+  }
+
+  async applyForLeave(
+    input: ApplyForLeaveInput,
+    files: {
+      attachments?: Express.Multer.File[];
+    },
+  ) {
+    return await this.taskRepository.applyForLeave(input, files);
   }
 }
