@@ -3,10 +3,13 @@ import { HTTP_METHODS_ENUM } from '../request.methods.enum';
 import { userFactory } from '../../src/user/user.factory';
 import { APPLY_FOR_LEAVE } from '../endpoints/task.endpoints';
 import { buildTaskParams } from '../../src/task/task.factory';
+import { Types } from 'mongoose';
 describe('apply for leave suite case', () => {
   it('should add leave', async () => {
-    const user = await userFactory();
-    const { assigner, status, title, logo, ...params } =
+    const user = await userFactory({
+      directManagerId: new Types.ObjectId((await userFactory())._id.toString()),
+    });
+    const { assigner, status, title, logo, assignee, ...params } =
       await buildTaskParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
@@ -18,8 +21,10 @@ describe('apply for leave suite case', () => {
   });
 
   it('should apply for leave with uploaded attachments', async () => {
-    const user = await userFactory();
-    const { assigner, status, title, logo, ...params } =
+    const user = await userFactory({
+      directManagerId: new Types.ObjectId((await userFactory())._id.toString()),
+    });
+    const { assigner, status, title, logo, assignee, ...params } =
       await buildTaskParams();
     const testFiles = process.cwd();
     const filePath = `${testFiles}/test/test-files/test-duck.jpeg`;

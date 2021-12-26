@@ -35,4 +35,8 @@ export const LocalizedErrorMessages: IErrorMessage = {
     EN: "user doesn't have microsoft token",
     AR: "user doesn't have microsoft token",
   },
+  610: {
+    EN: "user doesn't have direct manager",
+    AR: "user doesn't have direct manager",
+  },
 };

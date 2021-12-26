@@ -12,9 +12,6 @@ import {
 import { PRIORITIES } from '../../app.const';
 
 export class ApplyForLeaveInput {
-  @IsMongoId()
-  assignee: string;
-
   @IsString()
   @IsNotEmpty()
   description: string;

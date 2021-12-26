@@ -218,12 +218,14 @@ export class TaskRepository extends BaseRepository<Task> {
 
   async applyForLeave(
     @Body() input: ApplyForLeaveInput,
+    directManagerId: Types.ObjectId,
     files: {
       attachments?: Express.Multer.File[];
     },
   ) {
     return await this.taskSchema.create({
       ...input,
+      assignee: directManagerId,
       title: 'leave request',
       logo: `${process.env.WEBSITE_HOST}defaults/logo.png`,
       ...(files?.attachments && {

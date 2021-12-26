@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { filename } from '../shared/utils/multer-file-name';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { filename } from '../shared/utils/multer-file-name';
         filename,
       }),
     }),
+    UserModule,
   ],
   providers: [TaskService, TaskRepository],
   controllers: [TaskController],
