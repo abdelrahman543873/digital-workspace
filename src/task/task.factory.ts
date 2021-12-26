@@ -28,7 +28,7 @@ export const buildTaskParams = async (obj: TaskType = {}): Promise<Task> => {
     status: obj.status || random.arrayElement(TASK_STATUS),
     attachments: obj.attachments || [],
     logo: obj.logo || `${process.env.HOST}avatar.jpg`,
-    leaveDays: obj.leaveDays || datatype.number(),
+    leaveDays: obj.leaveDays || datatype.number(25),
   };
 };
 
