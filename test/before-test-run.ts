@@ -5,11 +5,18 @@ import { AppModule } from '../src/app.module';
 import { SeedUsersServices } from '../src/shared/services/seed-users.service';
 import { APP_FILTER } from '@nestjs/core';
 import { BaseHttpExceptionFilter } from '../src/shared/exceptions/base-http-exception-filter';
+import { FileCloudUploadInterceptor } from '../src/shared/interceptors/file-cloud-upload.interceptor';
 import compression from 'compression';
 export let app: INestApplication;
 
 const seedUsersServices = {
   onApplicationBootstrap: jest.fn(async () => {
+    //mocking purposes
+  }),
+};
+
+const fileUploadInterceptor = {
+  NestInterceptor: jest.fn(async () => {
     //mocking purposes
   }),
 };
@@ -30,6 +37,8 @@ export const moduleRef = async (): Promise<TestingModule> => {
   })
     .overrideProvider(SeedUsersServices)
     .useValue(seedUsersServices)
+    .overrideInterceptor(FileCloudUploadInterceptor)
+    .useValue(fileUploadInterceptor)
     .compile();
 };
 

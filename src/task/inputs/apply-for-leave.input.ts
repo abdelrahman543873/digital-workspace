@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   Allow,
   IsIn,
@@ -6,13 +7,11 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
+  Max,
 } from 'class-validator';
 import { PRIORITIES } from '../../app.const';
 
 export class ApplyForLeaveInput {
-  @IsMongoId()
-  assignee: string;
-
   @IsString()
   @IsNotEmpty()
   description: string;
@@ -24,7 +23,8 @@ export class ApplyForLeaveInput {
   @Allow()
   attachments: string[];
 
-  @IsNumber()
+  @Max(25)
   @IsInt()
+  @Type(() => Number)
   leaveDays: number;
 }
