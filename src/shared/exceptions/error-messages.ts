@@ -39,4 +39,12 @@ export const LocalizedErrorMessages: IErrorMessage = {
     EN: "user doesn't have direct manager",
     AR: "user doesn't have direct manager",
   },
+  611: {
+    EN: "leave request doesn't exist",
+    AR: "leave request doesn't exist",
+  },
+  612: {
+    EN: 'not enough leave days',
+    AR: 'not enough leave days',
+  },
 };

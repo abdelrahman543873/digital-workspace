@@ -131,6 +131,9 @@ export class User {
 
   @Prop({ default: false })
   isAdmin: boolean;
+
+  @Prop()
+  leaveBalance: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

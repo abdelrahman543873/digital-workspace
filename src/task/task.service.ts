@@ -9,6 +9,8 @@ import { GetTaskByIdInput } from './inputs/get-task-by-id.input';
 import { ApplyForLeaveInput } from './inputs/apply-for-leave.input';
 import { UserRepository } from '../user/user.repository';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
+import { ManageLeaveInput } from './inputs/manage-leave.input';
+import { TASK_STATUS } from '../app.const';
 
 @Injectable()
 export class TaskService {
@@ -60,6 +62,8 @@ export class TaskService {
       attachments?: Express.Multer.File[];
     },
   ) {
+    if (input.leaveDays > this.request.currentUser.leaveBalance)
+      throw new BaseHttpException(this.request.lang, 612);
     if (!this.request.currentUser.directManagerId)
       throw new BaseHttpException(this.request.lang, 610);
     const directManager = await this.userRepository.getUserById({
@@ -71,5 +75,19 @@ export class TaskService {
       this.request.currentUser.directManagerId,
       files,
     );
+  }
+
+  async manageLeave(input: ManageLeaveInput) {
+    const leave = await this.taskRepository.manageLeave(
+      this.request.currentUser._id,
+      input,
+    );
+    if (!leave) throw new BaseHttpException(this.request.lang, 611);
+    if (input.status === TASK_STATUS[0])
+      await this.userRepository.subtractLeaveDays(
+        leave.assigner,
+        leave.leaveDays,
+      );
+    return leave;
   }
 }

@@ -48,6 +48,7 @@ export interface UserType {
   twitter?: string;
   linkedin?: string;
   microsoftToken?: string;
+  leaveBalance?: number;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -103,5 +104,6 @@ export const buildUserParams = (obj: UserType = {}): User => {
     linkedin: obj.linkedin || internet.url(),
     twitter: obj.twitter || internet.url(),
     microsoftToken: obj.microsoftToken || '',
+    leaveBalance: obj.leaveBalance || datatype.number(25),
   };
 };
