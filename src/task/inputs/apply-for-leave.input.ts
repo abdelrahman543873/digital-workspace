@@ -10,6 +10,7 @@ import {
   Max,
 } from 'class-validator';
 import { PRIORITIES } from '../../app.const';
+import { Min } from 'class-validator';
 
 export class ApplyForLeaveInput {
   @IsString()
@@ -24,6 +25,7 @@ export class ApplyForLeaveInput {
   attachments: string[];
 
   @Max(25)
+  @Min(1)
   @IsInt()
   @Type(() => Number)
   leaveDays: number;

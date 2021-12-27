@@ -28,7 +28,8 @@ export const buildTaskParams = async (obj: TaskType = {}): Promise<Task> => {
     status: obj.status || random.arrayElement(TASK_STATUS),
     attachments: obj.attachments || [],
     logo: obj.logo || `${process.env.HOST}avatar.jpg`,
-    leaveDays: obj.leaveDays || datatype.number(25),
+    // 25 is the max number of leave days allowed for an employee
+    leaveDays: obj.leaveDays || datatype.number({ min: 0, max: 25 }),
   };
 };
 

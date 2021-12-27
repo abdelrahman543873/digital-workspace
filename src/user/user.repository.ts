@@ -541,4 +541,14 @@ export class UserRepository extends BaseRepository<User> {
     }
     return users;
   }
+
+  async subtractLeaveDays(_id: ObjectId, leaveDays: number) {
+    return await this.userSchema.updateOne({ _id }, [
+      {
+        $set: {
+          leaveBalance: { $subtract: ['$leaveBalance', leaveDays] },
+        },
+      },
+    ]);
+  }
 }
