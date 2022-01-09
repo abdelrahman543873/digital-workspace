@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /node_modules
+*.xlsx
 
 # Logs
 logs
@@ -41,4 +42,3 @@ client/pictures
 client/tasks
 client/pages
 client/events
-doc.xlsx
