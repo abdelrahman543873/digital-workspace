@@ -511,16 +511,15 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   async loadUser() {
-    const file = fs.createWriteStream('doc.xlsx');
-    await firstValueFrom(
-      this.httpService.get(
-        'https://drive.google.com/uc?id=1ex-ke3Sg7GvqF0T6sVFhv2d2qoeo8aWf&export=download',
-        { responseType: 'stream' },
-      ),
-    ).then((response) => {
-      response.data.pipe(file);
-    });
-    const parsedSheet = xlsx.parse(`./doc.xlsx`);
+    const file = fs.createWriteStream(`users.xlsx`);
+    const response = await firstValueFrom(
+      this.httpService.get(process.env.USER_XCEL_STORE, {
+        responseType: 'stream',
+      }),
+    );
+    response.data.pipe(file);
+    await new Promise((fulfill) => file.on('finish', fulfill));
+    const parsedSheet = xlsx.parse('users.xlsx');
     const users = parsedSheet[0].data.filter((array) => array.length);
     const columns = users.shift();
     for await (const user of users) {
