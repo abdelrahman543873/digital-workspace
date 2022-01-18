@@ -36,7 +36,7 @@ export interface UserType {
   coverPic?: string;
   gender?: string;
   birthDate?: string;
-  directManagerId?: Types.ObjectId;
+  directManagerId?: Types.ObjectId | ObjectId;
   widgets?: string[];
   following?: ObjectId[];
   followers?: ObjectId[];

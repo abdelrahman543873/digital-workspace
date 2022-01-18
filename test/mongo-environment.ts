@@ -1,9 +1,13 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const NodeEnvironment = require('jest-environment-node');
-const fileSystem = require('fs');
-const pathSystem = require('path');
-
-const globalConfigPathData = pathSystem.join(__dirname, 'globalConfig.json');
+import { TestingModule } from '@nestjs/testing';
+import { PostRepository } from '../src/post/post.repository';
+import { PageRepository } from '../src/page/page.repository';
+import { UserRepository } from '../src/user/user.repository';
+import { EventRepository } from '../src/event/event.repository';
+import { GroupRepository } from '../src/group/group.repository';
+import { CommentRepository } from '../src/comment/comment.repository';
+import { TaskRepository } from '../src/task/task.repository';
+import { TeamRepository } from '../src/team/team.repository';
+import NodeEnvironment from 'jest-environment-node';
 
 class MongoEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -11,20 +15,24 @@ class MongoEnvironment extends NodeEnvironment {
   }
 
   async setup() {
-    const globalConfig = JSON.parse(
-      fileSystem.readFileSync(globalConfigPathData, 'utf-8'),
-    );
-    this.global.__MONGO_URI__ = globalConfig.mongoUri;
-    this.global.__MONGO_DB_NAME__ = globalConfig.mongoDBName;
     await super.setup();
+    this.global.__MONGO_URI__ = global.mongoUri;
+    this.global.__MONGO_DB_NAME__ = global.mongoDBName;
+    this.global.app = global.app;
+    const app: TestingModule = <TestingModule>this.global.app;
+    this.global.userRepository = app.get<UserRepository>(UserRepository);
+    this.global.pageRepository = app.get<PageRepository>(PageRepository);
+    this.global.postRepository = app.get<PostRepository>(PostRepository);
+    this.global.eventRepository = app.get<EventRepository>(EventRepository);
+    this.global.groupRepository = app.get<GroupRepository>(GroupRepository);
+    this.global.commentRepository =
+      app.get<CommentRepository>(CommentRepository);
+    this.global.taskRepository = app.get<TaskRepository>(TaskRepository);
+    this.global.teamRepository = app.get<TeamRepository>(TeamRepository);
   }
 
   async teardown() {
     await super.teardown();
-  }
-
-  runScript(script) {
-    return super.runScript(script);
   }
 }
 module.exports = MongoEnvironment;

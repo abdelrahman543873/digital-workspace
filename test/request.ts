@@ -1,5 +1,4 @@
 import request from 'supertest';
-import { app } from './before-test-run';
 import { HTTP_METHODS_ENUM } from './request.methods.enum';
 import { BaseHttpException } from './../src/shared/exceptions/base-http-exception';
 
@@ -18,7 +17,7 @@ interface testRequestInput {
 export const testRequest = async (
   input: testRequestInput,
 ): Promise<request.Test> => {
-  const server = request(app.getHttpServer());
+  const server = request(global.app.getHttpServer());
   let req: request.Test;
   input.method === HTTP_METHODS_ENUM.POST && (req = server.post(input.url));
   input.method === HTTP_METHODS_ENUM.GET && (req = server.get(input.url));

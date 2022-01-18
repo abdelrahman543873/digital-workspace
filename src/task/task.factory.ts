@@ -41,10 +41,10 @@ export const tasksFactory = async (
   for (let i = 0; i < count; i++) {
     tasks.push(await buildTaskParams(obj));
   }
-  return (await TaskRepo()).addMany(tasks);
+  return await TaskRepo().addMany(tasks);
 };
 
 export const taskFactory = async (obj: TaskType = {}): Promise<Task> => {
   const params: Task = await buildTaskParams(obj);
-  return (await TaskRepo()).add(params);
+  return await TaskRepo().add(params);
 };

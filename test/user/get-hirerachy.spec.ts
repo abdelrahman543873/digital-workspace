@@ -7,10 +7,10 @@ describe('get hierarchy suite case', () => {
   it('should get hierarchy', async () => {
     const manager = await userFactory();
     const lowerManager = await userFactory({
-      directManagerId: new Types.ObjectId(manager._id.toString()),
+      directManagerId: manager._id,
     });
     const subordinate = await userFactory({
-      directManagerId: new Types.ObjectId(lowerManager._id.toString()),
+      directManagerId: lowerManager._id,
     });
     await userFactory();
     const res = await testRequest({

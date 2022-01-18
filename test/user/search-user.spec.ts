@@ -2,7 +2,6 @@ import { testRequest } from '../request';
 import { HTTP_METHODS_ENUM } from '../request.methods.enum';
 import { SEARCH_USER } from '../endpoints/user.endpoints';
 import { userFactory } from '../../src/user/user.factory';
-import { Types } from 'mongoose';
 describe('search user suite case', () => {
   it('should search user by email', async () => {
     const user = await userFactory();
@@ -18,7 +17,7 @@ describe('search user suite case', () => {
   it('should search user by email and get direct manager', async () => {
     const manager = await userFactory();
     const user = await userFactory({
-      directManagerId: new Types.ObjectId(manager._id.toString()),
+      directManagerId: manager._id,
     });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,

@@ -11,6 +11,7 @@ import { UserRepository } from '../user/user.repository';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
 import { ManageLeaveInput } from './inputs/manage-leave.input';
 import { TASK_STATUS } from '../app.const';
+import { ObjectId } from 'mongoose';
 
 @Injectable()
 export class TaskService {
@@ -72,7 +73,7 @@ export class TaskService {
     if (!directManager) throw new BaseHttpException(this.request.lang, 608);
     return await this.taskRepository.applyForLeave(
       input,
-      this.request.currentUser.directManagerId,
+      this.request.currentUser.directManagerId as ObjectId,
       files,
     );
   }

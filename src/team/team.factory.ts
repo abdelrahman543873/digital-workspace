@@ -27,10 +27,10 @@ export const teamsFactory = async (
   for (let i = 0; i < count; i++) {
     teams.push(await buildTeamParams(obj));
   }
-  return (await TeamRepo()).addMany(teams);
+  return await TeamRepo().addMany(teams);
 };
 
 export const teamFactory = async (obj: TeamType = {}): Promise<Team> => {
   const params: Team = await buildTeamParams(obj);
-  return (await TeamRepo()).add(params);
+  return await TeamRepo().add(params);
 };

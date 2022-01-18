@@ -24,9 +24,10 @@ describe('recommend users suite case', () => {
     const followed = await userFactory();
     const follower = await userFactory({ following: [followed._id] });
     // updating followed user followers to have the follower id
-    await (
-      await UserRepo()
-    ).updateOne({ _id: followed._id }, { followers: [follower._id] });
+    await UserRepo().updateOne(
+      { _id: followed._id },
+      { followers: [follower._id] },
+    );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: RECOMMEND_USERS,

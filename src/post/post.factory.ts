@@ -41,10 +41,10 @@ export const postsFactory = async (
   for (let i = 0; i < count; i++) {
     posts.push(await buildPostParams(obj));
   }
-  return (await PostRepo()).addMany(posts);
+  return await PostRepo().addMany(posts);
 };
 
 export const postFactory = async (obj: PostType = {}): Promise<Post> => {
   const params: Post = await buildPostParams(obj);
-  return (await PostRepo()).add(params);
+  return await PostRepo().add(params);
 };

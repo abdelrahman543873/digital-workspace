@@ -1,7 +1,15 @@
 import path from 'path';
 import fs from 'fs';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-const globalConfigPath = path.join(__dirname, 'globalConfig.json');
+import { Test } from '@nestjs/testing';
+import { AppModule } from '../src/app.module';
+import { APP_FILTER } from '@nestjs/core';
+import { BaseHttpExceptionFilter } from '../src/shared/exceptions/base-http-exception-filter';
+import { MongooseExceptionFilter } from '../src/shared/exceptions/mongo-exception-filter';
+import { FileCloudUploadInterceptor } from '../src/shared/interceptors/file-cloud-upload.interceptor';
+import { SeedUsersServices } from '../src/shared/services/seed-users.service';
+import compression from 'compression';
+import { ValidationPipe } from '@nestjs/common';
 
 const mongod = new MongoMemoryServer({ binary: { version: '4.2.8' } });
 module.exports = async (): Promise<void> => {
@@ -10,8 +18,49 @@ module.exports = async (): Promise<void> => {
     mongoDBName: 'jest',
     mongoUri: await mongod.getUri(),
   };
-  // Write global config to disk because all tests run in different contexts.
-  fs.writeFileSync(globalConfigPath, JSON.stringify(mongoConfig));
-  // Set reference to mongod in order to close the server during teardown.
-  global['__MONGOD__'] = mongod;
+  fs.writeFileSync('globalConfig.json', JSON.stringify(mongoConfig));
+  global.__MONGOD__ = mongod;
+  global.mongoUri = mongoConfig.mongoUri;
+  global.mongoDBName = mongoConfig.mongoDBName;
+  const seedUsersServices = {
+    onApplicationBootstrap: async () => {
+      //mocking purposes
+    },
+  };
+
+  const fileUploadInterceptor = {
+    NestInterceptor: async () => {
+      //mocking purposes
+    },
+  };
+  const module = await Test.createTestingModule({
+    imports: [AppModule],
+    providers: [
+      {
+        provide: APP_FILTER,
+        useClass: BaseHttpExceptionFilter,
+      },
+      {
+        provide: APP_FILTER,
+        useClass: MongooseExceptionFilter,
+      },
+    ],
+  })
+    .overrideProvider(SeedUsersServices)
+    .useValue(seedUsersServices)
+    .overrideInterceptor(FileCloudUploadInterceptor)
+    .useValue(fileUploadInterceptor)
+    .compile();
+
+  const app = module.createNestApplication();
+  app.use(compression());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+  await app.init();
+  global.app = app;
 };

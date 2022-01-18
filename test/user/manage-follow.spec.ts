@@ -15,9 +15,7 @@ describe('follow user suite case', () => {
       token: follower.token,
     });
     expect(res.body.following[0]).toBe(followed._id.toString());
-    const updatedFollowedUser = await (
-      await UserRepo()
-    ).findOne({
+    const updatedFollowedUser = await UserRepo().findOne({
       _id: followed._id,
     });
     expect(updatedFollowedUser.followers[0].toString()).toBe(
@@ -35,9 +33,7 @@ describe('follow user suite case', () => {
       token: follower.token,
     });
     expect(res.body.following[0]).toBe(followed._id.toString());
-    const updatedFollowedUser = await (
-      await UserRepo()
-    ).findOne({
+    const updatedFollowedUser = await UserRepo().findOne({
       _id: followed._id,
     });
     expect(updatedFollowedUser.followers[0].toString()).toBe(
@@ -65,9 +61,7 @@ describe('follow user suite case', () => {
       token: follower.token,
     });
     expect(res.body.following[0]).toBe(followed._id.toString());
-    const updatedFollowedUser = await (
-      await UserRepo()
-    ).findOne({
+    const updatedFollowedUser = await UserRepo().findOne({
       _id: followed._id,
     });
     expect(updatedFollowedUser.followers[0].toString()).toBe(

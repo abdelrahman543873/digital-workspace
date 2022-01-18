@@ -15,7 +15,7 @@ describe('manage leave suite case', () => {
       status: TASK_STATUS[1],
     });
     const leaveBalanceBeforeAcceptance = (
-      await (await UserRepo()).findOne({ _id: employee._id })
+      await UserRepo().findOne({ _id: employee._id })
     ).leaveBalance;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
@@ -24,7 +24,7 @@ describe('manage leave suite case', () => {
       token: manager.token,
     });
     const leaveBalanceAfterAcceptance = (
-      await (await UserRepo()).findOne({ _id: employee._id })
+      await UserRepo().findOne({ _id: employee._id })
     ).leaveBalance;
     expect(res.body.status).toBe(TASK_STATUS[0]);
     expect(

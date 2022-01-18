@@ -99,8 +99,8 @@ export class User {
   @Prop({ type: Date })
   birthDate: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'User' })
-  directManagerId: Types.ObjectId;
+  @Prop({ type: Types.ObjectId })
+  directManagerId: Types.ObjectId | ObjectId;
 
   @Prop({ type: [Types.ObjectId] })
   followers: ObjectId[];

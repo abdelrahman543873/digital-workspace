@@ -232,7 +232,7 @@ export class TaskRepository extends BaseRepository<Task> {
 
   async applyForLeave(
     @Body() input: ApplyForLeaveInput,
-    directManagerId: Types.ObjectId,
+    directManagerId: ObjectId,
     files: {
       attachments?: Express.Multer.File[];
     },

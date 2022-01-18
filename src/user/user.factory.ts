@@ -12,14 +12,15 @@ export const usersFactory = async (
   for (let i = 0; i < count; i++) {
     users.push(buildUserParams(obj));
   }
-  return (await UserRepo()).addMany(users);
+  return await UserRepo().addMany(users);
 };
 
 export const userFactory = async (obj: UserType = {}): Promise<User> => {
   const params: User = buildUserParams(obj);
-  const user = await (
-    await UserRepo()
-  ).add({ ...params, password: await hashPass(params.password) });
+  const user = await UserRepo().add({
+    ...params,
+    password: await hashPass(params.password),
+  });
   user.token = generateAuthToken(user._id);
   return user;
 };

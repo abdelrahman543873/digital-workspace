@@ -27,10 +27,10 @@ export const groupsFactory = async (
   for (let i = 0; i < count; i++) {
     groups.push(await buildGroupParams(obj));
   }
-  return (await GroupRepo()).addMany(groups);
+  return await GroupRepo().addMany(groups);
 };
 
 export const groupFactory = async (obj: GroupType = {}): Promise<Group> => {
   const params: Group = await buildGroupParams(obj);
-  return (await GroupRepo()).add(params);
+  return await GroupRepo().add(params);
 };

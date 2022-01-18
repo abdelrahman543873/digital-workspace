@@ -29,10 +29,10 @@ export const pagesFactory = async (
   for (let i = 0; i < count; i++) {
     pages.push(await buildPageParams(obj));
   }
-  return (await PageRepo()).addMany(pages);
+  return await PageRepo().addMany(pages);
 };
 
 export const pageFactory = async (obj: PageType = {}): Promise<Page> => {
   const params: Page = await buildPageParams(obj);
-  return (await PageRepo()).add(params);
+  return await PageRepo().add(params);
 };

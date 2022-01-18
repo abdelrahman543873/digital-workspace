@@ -33,10 +33,10 @@ export const eventsFactory = async (
   for (let i = 0; i < count; i++) {
     pages.push(await buildEventParams(obj));
   }
-  return (await EventRepo()).addMany(pages);
+  return await EventRepo().addMany(pages);
 };
 
 export const eventFactory = async (obj: EventType = {}): Promise<Event> => {
   const params: Event = await buildEventParams(obj);
-  return (await EventRepo()).add(params);
+  return await EventRepo().add(params);
 };
