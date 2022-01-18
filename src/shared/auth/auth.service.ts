@@ -18,7 +18,7 @@ export class AuthService {
 
   async login(input: LoginInput): Promise<User> {
     const user = await this.helperService.getExistingUser({
-      email: input.email,
+      email: input.email.toLowerCase(),
     });
     if (!user) throw new BaseHttpException(this.request.lang, 602);
     const userPassword =
