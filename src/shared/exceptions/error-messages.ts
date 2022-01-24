@@ -47,4 +47,8 @@ export const LocalizedErrorMessages: IErrorMessage = {
     EN: 'not enough leave days',
     AR: 'not enough leave days',
   },
+  613: {
+    EN: "can't fetch user cheat",
+    AR: "can't fetch user cheat",
+  },
 };

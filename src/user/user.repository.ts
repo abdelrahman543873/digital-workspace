@@ -25,6 +25,7 @@ import xlsx from 'node-xlsx';
 import fs from 'fs';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { BaseHttpException } from '../shared/exceptions/base-http-exception';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -516,7 +517,9 @@ export class UserRepository extends BaseRepository<User> {
       this.httpService.get(process.env.USER_XCEL_STORE, {
         responseType: 'stream',
       }),
-    );
+    ).catch(() => {
+      throw new BaseHttpException('EN', 613);
+    });
     response.data.pipe(file);
     await new Promise((fulfill) => file.on('finish', fulfill));
     const parsedSheet = xlsx.parse('users.xlsx');
