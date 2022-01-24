@@ -12,8 +12,8 @@ import { ENV_VARIABLE_NAMES } from '../../app.const';
         uri:
           (existsSync('globalConfig.json') &&
             JSON.parse(readFileSync('globalConfig.json', 'utf-8')).mongoUri) ||
-          configService.get<string>(ENV_VARIABLE_NAMES.LOCAL_MONGO_DB) ||
-          configService.get<string>(ENV_VARIABLE_NAMES.MONGO_DB),
+          configService.get<string>(ENV_VARIABLE_NAMES.MONGO_DB) ||
+          configService.get<string>(ENV_VARIABLE_NAMES.LOCAL_MONGO_DB),
         connectionFactory: (connection) => {
           // eslint-disable-next-line @typescript-eslint/no-var-requires
           connection.plugin(require('mongoose-aggregate-paginate-v2'));
