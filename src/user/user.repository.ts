@@ -533,6 +533,7 @@ export class UserRepository extends BaseRepository<User> {
         isAdmin: true,
       };
       columns.forEach((column, index) => {
+        // skipping those columns from the excel sheet , to not pollute db data
         if (['birthDate', 'ID', 'directManagerId'].includes(`${column}`))
           return;
         else userObject[`${column}`] = user[index];
