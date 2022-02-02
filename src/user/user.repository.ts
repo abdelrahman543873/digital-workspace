@@ -1,7 +1,7 @@
 import { Pagination } from './../shared/utils/pagination.input';
 import { LookupSchemasEnum } from './../app.const';
 import { hashPass } from './../shared/utils/bcryptHelper';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AggregatePaginateModel, Model, ObjectId, Types } from 'mongoose';
 import { User, UserDocument } from './schema/user.schema';
@@ -33,6 +33,7 @@ export class UserRepository extends BaseRepository<User> {
     private userSchema: AggregatePaginateModel<UserDocument>,
     @InjectModel(TestUser.name) private testUserSchema: Model<TestUserDocument>,
     private httpService: HttpService,
+    private logger: Logger,
   ) {
     super(userSchema);
   }
@@ -517,7 +518,8 @@ export class UserRepository extends BaseRepository<User> {
       this.httpService.get(process.env.USER_XCEL_STORE, {
         responseType: 'stream',
       }),
-    ).catch(() => {
+    ).catch((error) => {
+      this.logger.error(error.message);
       throw new BaseHttpException('EN', 613);
     });
     response.data.pipe(file);

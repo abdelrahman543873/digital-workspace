@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { UserRepository } from './user.repository';
@@ -28,7 +28,7 @@ import { Agent } from 'https';
     }),
   ],
   controllers: [UserController],
-  providers: [UserService, UserRepository],
+  providers: [UserService, UserRepository, Logger],
   exports: [UserRepository],
 })
 export class UserModule {}
