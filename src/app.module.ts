@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './post/post.module';
 import { WeatherModule } from './weather/weather.module';
@@ -18,6 +18,7 @@ import { TeamModule } from './team/team.module';
 import { TaskModule } from './task/task.module';
 import { EventModule } from './event/event.module';
 import { TeamsModule } from './teams/teams.module';
+import { CorrelationIdMiddleware } from './shared/middlewares/correlation-id.middleware';
 
 @Module({
   imports: [
@@ -44,4 +45,8 @@ import { TeamsModule } from './teams/teams.module';
     TeamsModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CorrelationIdMiddleware).forRoutes('*');
+  }
+}

@@ -1,29 +1,48 @@
 import 'winston-mongodb';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { utilities, WinstonModule } from 'nest-winston';
+import { WinstonModule } from 'nest-winston';
 import { format, transports } from 'winston';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { BaseHttpExceptionFilter } from './shared/exceptions/base-http-exception-filter';
 import compression from 'compression';
 import { MongooseExceptionFilter } from './shared/exceptions/mongo-exception-filter';
 import { Cluster } from './cluster';
+import morganBody from 'morgan-body';
+import correlationId from 'express-correlation-id';
+import { logTransform } from './shared/utils/transformer.print';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger({
       transports: [
         new transports.Console({
-          level: 'info',
+          handleExceptions: true,
           format: format.combine(
+            format.errors({ stack: true }),
             format.timestamp(),
-            format.ms(),
-            utilities.format.nestLike(),
+            format.uncolorize(),
+            format.splat(),
+            format.printf(logTransform),
           ),
         }),
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore: Unreachable code error
+        new transports.MongoDB({
+          db: process.env.MONGO_DB,
+          options: {
+            useUnifiedTopology: true,
+          },
+          decolorize: true,
+          tryReconnect: true,
+          handleExceptions: true,
+        }),
       ],
+      exitOnError: false,
     }),
   });
+  const logger = new Logger();
   const options = new DocumentBuilder()
     .setTitle('🚀digital work space🚀')
     .setDescription('digital workspace API description')
@@ -44,6 +63,23 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   app.use(compression());
+  app.use(correlationId({ header: 'id' }));
+  morganBody(app.getHttpAdapter().getInstance(), {
+    skip: (req) =>
+      req.method === 'OPTIONS' || req.originalUrl.startsWith('/api'),
+    logIP: true,
+    logRequestId: true,
+    logReqDateTime: true,
+    logReqUserAgent: false,
+    includeNewLine: false,
+    prettify: false,
+    stream: {
+      write: (message) => {
+        logger.warn(message);
+        return true;
+      },
+    },
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
