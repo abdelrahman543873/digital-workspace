@@ -38,7 +38,7 @@ async function bootstrap() {
     .addTag('page', 'page routes')
     .addTag('comment', 'comment routes')
     .addTag('weather', 'weather api routes')
-    .addTag('prayer', 'prayer api route')
+    .addTag('prayer', 'prayer api routes')
     .addTag('teams', 'teams endpoints')
     .addBearerAuth()
     .build();
