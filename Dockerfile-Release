@@ -6,7 +6,9 @@ COPY ./ /app
 
 RUN yarn
 
-ENV MONGO_DB=mongodb://root:example@valsquad-mongodb.uaenorth.azurecontainer.io:27017
+# ENV MONGO_DB=mongodb://root:example@valsquad-mongodb.uaenorth.azurecontainer.io:27017
+
+ENV MONGO_DB=mongodb+srv://bodi:vindiesel3@cluster0.dd7up.mongodb.net/digital-workspace?retryWrites=true&w=majority
 
 EXPOSE 3000
 
