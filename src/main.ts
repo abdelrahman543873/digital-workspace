@@ -30,7 +30,7 @@ async function bootstrap() {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore: Unreachable code error
         new transports.MongoDB({
-          db: process.env.MONGO_DB,
+          db: process.env.MONGO_DB || process.env.LOCAL_MONGO_DB,
           options: {
             useUnifiedTopology: true,
           },
