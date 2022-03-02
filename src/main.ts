@@ -59,6 +59,7 @@ async function bootstrap() {
     .addTag('weather', 'weather api routes')
     .addTag('prayer', 'prayer api routes')
     .addTag('teams', 'teams endpoints')
+    .addTag('country', 'country endpoints')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);

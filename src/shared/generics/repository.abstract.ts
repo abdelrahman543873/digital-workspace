@@ -1,11 +1,5 @@
 import { Repository } from '../interfaces/repository.interface';
-import {
-  Model,
-  Document,
-  FilterQuery,
-  UpdateQuery,
-  UpdateWithAggregationPipeline,
-} from 'mongoose';
+import { Model, Document, FilterQuery, UpdateQuery } from 'mongoose';
 
 export abstract class BaseRepository<T> implements Repository<T> {
   // creating a property to use your code in all instances
@@ -17,11 +11,11 @@ export abstract class BaseRepository<T> implements Repository<T> {
     this._model = schemaModel;
   }
 
-  async add(item: T): Promise<T & Document> {
+  async add(item): Promise<T & Document> {
     return await this._model.create(item);
   }
 
-  async addMany(item: T[]): Promise<Array<T & Document>> {
+  async addMany(item): Promise<Array<T & Document>> {
     return await this._model.insertMany(item);
   }
 

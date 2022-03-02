@@ -10,13 +10,13 @@ export const usersFactory = async (
 ): Promise<User[]> => {
   const users: User[] = [];
   for (let i = 0; i < count; i++) {
-    users.push(buildUserParams(obj));
+    users.push(await buildUserParams(obj));
   }
   return await UserRepo().addMany(users);
 };
 
 export const userFactory = async (obj: UserType = {}): Promise<User> => {
-  const params: User = buildUserParams(obj);
+  const params: User = await buildUserParams(obj);
   const user = await UserRepo().add({
     ...params,
     password: await hashPass(params.password),
