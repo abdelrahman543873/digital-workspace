@@ -19,6 +19,7 @@ import { FileCloudUploadInterceptor } from '../shared/interceptors/file-cloud-up
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateCountryInput } from './inputs/update-country.input';
 import { Put } from '@nestjs/common';
+import { DeleteCountryInput } from './inputs/delete-country.input';
 
 @Controller('country')
 export class CountryController {
@@ -50,5 +51,12 @@ export class CountryController {
     @UploadedFile() logo: Express.Multer.File,
   ) {
     return await this.countryService.updateCountry(input, logo);
+  }
+
+  @ApiTags('country')
+  @UseGuards(AuthGuard)
+  @Delete()
+  async deleteCountry(@Body() input: DeleteCountryInput) {
+    return await this.countryService.deleteCountry(input);
   }
 }

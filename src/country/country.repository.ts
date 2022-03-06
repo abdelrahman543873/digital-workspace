@@ -1,3 +1,4 @@
+import { DeleteCountryInput } from './inputs/delete-country.input';
 import { Injectable } from '@nestjs/common';
 import { CreateCountryInput } from './inputs/create-country.input';
 import { Country, CountryDocument } from './schema/country.schema';
@@ -26,5 +27,9 @@ export class CountryRepository extends BaseRepository<Country> {
       ...input,
       ...(logo && { logo: `${process.env.HOST}${logo.filename}` }),
     });
+  }
+
+  async deleteCountry(input: DeleteCountryInput) {
+    return await this.countrySchema.deleteOne({ name: input.name });
   }
 }
