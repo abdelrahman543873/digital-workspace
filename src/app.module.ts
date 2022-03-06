@@ -19,6 +19,7 @@ import { TaskModule } from './task/task.module';
 import { EventModule } from './event/event.module';
 import { TeamsModule } from './teams/teams.module';
 import { CorrelationIdMiddleware } from './shared/middlewares/correlation-id.middleware';
+import { CountryModule } from './country/country.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { CorrelationIdMiddleware } from './shared/middlewares/correlation-id.mid
     TaskModule,
     EventModule,
     TeamsModule,
+    CountryModule,
   ],
 })
 export class AppModule implements NestModule {

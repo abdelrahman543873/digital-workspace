@@ -44,11 +44,9 @@ export const testRequest = async (
       })
     : null;
   if (input.token) req.set('Authorization', `Bearer ${input.token}`);
-  if (input.headers) {
-    if (input.headers.timezone) req.set('timezone', input.headers.timezone);
-    if (input.headers.lang) return req.set('lang', input.headers.lang);
-    if (input.headers.long) req.set('long', input.headers.long);
-    if (input.headers.lat) req.set('lat', input.headers.lat);
-  }
+  if (input.headers)
+    Object.keys(input.headers).forEach((header) => {
+      req.set(header, input.headers[header]);
+    });
   return req;
 };

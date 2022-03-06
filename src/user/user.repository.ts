@@ -71,7 +71,7 @@ export class UserRepository extends BaseRepository<User> {
     if (verifyExistingTestUsers) return await this.testUserSchema.find();
     const users: User[] = [];
     for (let i = 0; i < 10; i++) {
-      const params = buildUserParams();
+      const params = await buildUserParams();
       users.push(params);
     }
     await this.testUserSchema.deleteMany({});

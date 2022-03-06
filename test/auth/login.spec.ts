@@ -5,7 +5,7 @@ import { buildUserParams } from '../../src/user/user.seed';
 import { userFactory } from '../../src/user/user.factory';
 describe('login suite case', () => {
   it('should login successfully', async () => {
-    const params = buildUserParams();
+    const params = await buildUserParams();
     await userFactory({ ...params });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,

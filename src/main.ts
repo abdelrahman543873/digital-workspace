@@ -30,7 +30,7 @@ async function bootstrap() {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore: Unreachable code error
         new transports.MongoDB({
-          db: process.env.MONGO_DB,
+          db: process.env.MONGO_DB || process.env.LOCAL_MONGO_DB,
           options: {
             useUnifiedTopology: true,
           },
@@ -59,6 +59,7 @@ async function bootstrap() {
     .addTag('weather', 'weather api routes')
     .addTag('prayer', 'prayer api routes')
     .addTag('teams', 'teams endpoints')
+    .addTag('country', 'country endpoints')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
