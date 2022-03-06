@@ -4,12 +4,11 @@ import {
   Get,
   Post,
   Body,
-  Patch,
-  Param,
   Delete,
   UploadedFile,
   UseInterceptors,
   UseGuards,
+  Param,
 } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { CountryService } from './country.service';
@@ -20,6 +19,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateCountryInput } from './inputs/update-country.input';
 import { Put } from '@nestjs/common';
 import { DeleteCountryInput } from './inputs/delete-country.input';
+import { Pagination } from '../shared/utils/pagination.input';
 
 @Controller('country')
 export class CountryController {
@@ -58,5 +58,12 @@ export class CountryController {
   @Delete()
   async deleteCountry(@Body() input: DeleteCountryInput) {
     return await this.countryService.deleteCountry(input);
+  }
+
+  @ApiTags('country')
+  @UseGuards(AuthGuard)
+  @Get()
+  async getCountries(@Param() input: Pagination) {
+    return await this.countryService.getCountries(input);
   }
 }

@@ -11,7 +11,7 @@ interface CountryType {
 export const buildCountryParams = (obj: CountryType = {}): CountryType => {
   return {
     name: obj.name || address.countryCode(),
-    logo: obj.logo || `${process.env.HOST}/defaults/avatar.jpg`,
+    logo: obj.logo || `${process.env.HOST}defaults/avatar.jpg`,
   };
 };
 
