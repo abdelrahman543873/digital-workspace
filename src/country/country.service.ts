@@ -1,8 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CountryRepository } from './country.repository';
-import { REQUEST } from '@nestjs/core';
-import { RequestContext } from '../shared/request.interface';
 import { CreateCountryInput } from './inputs/create-country.input';
+import { UpdateCountryInput } from './inputs/update-country.input';
 @Injectable()
 export class CountryService {
   constructor(private readonly countryRepository: CountryRepository) {}
@@ -11,19 +10,7 @@ export class CountryService {
     return await this.countryRepository.create(input, logo);
   }
 
-  findAll() {
-    return `This action returns all country`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} country`;
-  }
-
-  update(id: number, updateCountryDto) {
-    return `This action updates a #${id} country`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} country`;
+  async updateCountry(input: UpdateCountryInput, logo: Express.Multer.File) {
+    return await this.countryRepository.updateCountry(input, logo);
   }
 }

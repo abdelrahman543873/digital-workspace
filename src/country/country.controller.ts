@@ -17,6 +17,8 @@ import { CreateCountryInput } from './inputs/create-country.input';
 import { CreateCountrySwagger } from './swagger/create-country.schema';
 import { FileCloudUploadInterceptor } from '../shared/interceptors/file-cloud-upload.interceptor';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UpdateCountryInput } from './inputs/update-country.input';
+import { Put } from '@nestjs/common';
 
 @Controller('country')
 export class CountryController {
@@ -36,23 +38,17 @@ export class CountryController {
     return await this.countryService.create(input, logo);
   }
 
-  @Get()
-  findAll() {
-    return this.countryService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.countryService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, updateCountryDto) {
-    return this.countryService.update(+id, updateCountryDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.countryService.remove(+id);
+  @ApiTags('country')
+  @ApiConsumes('multipart/form-data')
+  @UseGuards(AuthGuard)
+  @ApiBody(CreateCountrySwagger)
+  @UseInterceptors(FileCloudUploadInterceptor)
+  @UseInterceptors(FileInterceptor('logo'))
+  @Put()
+  async updateCountry(
+    @Body() input: UpdateCountryInput,
+    @UploadedFile() logo: Express.Multer.File,
+  ) {
+    return await this.countryService.updateCountry(input, logo);
   }
 }
