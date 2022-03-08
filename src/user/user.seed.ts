@@ -2,6 +2,7 @@ import { User, Experience, Skill, Education } from './schema/user.schema';
 import { ObjectId, Types } from 'mongoose';
 import { address, datatype, date, internet, name, phone, random } from 'faker';
 import { GENDER, WIDGETS } from '../app.const';
+import { countryFactory } from '../country/country.factory';
 interface ExperienceType {
   startDate?: Date;
   endDate?: Date;
@@ -49,6 +50,7 @@ export interface UserType {
   linkedin?: string;
   microsoftToken?: string;
   leaveBalance?: number;
+  country?: ObjectId;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -78,7 +80,7 @@ const buildSkillParams = (obj: SkillType = {}): Skill => {
   };
 };
 
-export const buildUserParams = (obj: UserType = {}): User => {
+export const buildUserParams = async (obj: UserType = {}): Promise<User> => {
   return {
     email: obj.email || internet.email(),
     password: obj.password || internet.password(),
@@ -105,5 +107,6 @@ export const buildUserParams = (obj: UserType = {}): User => {
     twitter: obj.twitter || internet.url(),
     microsoftToken: obj.microsoftToken || '',
     leaveBalance: obj.leaveBalance || datatype.number(25),
+    country: obj.country || (await countryFactory())._id,
   };
 };
