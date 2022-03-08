@@ -9,9 +9,6 @@ export class Country {
 
   @Prop({ unique: true })
   name: string;
-
-  @Prop()
-  logo: string;
 }
 
 export const CountrySchema = SchemaFactory.createForClass(Country);

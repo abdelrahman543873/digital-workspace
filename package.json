@@ -54,6 +54,7 @@
     "express": "^4.17.1",
     "express-correlation-id": "^2.0.1",
     "faker": "^5.5.3",
+    "i18n-iso-countries": "^7.3.0",
     "jest-environment-node": "^27.3.1",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",

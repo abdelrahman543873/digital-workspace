@@ -1,17 +1,15 @@
 import { PageRepo } from '../../test/page/page-test-repo';
-import { name, address } from 'faker';
+import { address } from 'faker';
 import { CountryRepo } from '../../test/country/country-test-repo';
 import { Country } from './schema/country.schema';
 
 interface CountryType {
   name?: string;
-  logo?: string;
 }
 
 export const buildCountryParams = (obj: CountryType = {}): CountryType => {
   return {
-    name: obj.name || address.countryCode(),
-    logo: obj.logo || `${process.env.HOST}defaults/avatar.jpg`,
+    name: obj.name || address.country(),
   };
 };
 
