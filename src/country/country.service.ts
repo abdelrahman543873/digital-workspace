@@ -3,6 +3,7 @@ import { CountryRepository } from './country.repository';
 import { CreateCountryInput } from './inputs/create-country.input';
 import { DeleteCountryInput } from './inputs/delete-country.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { SearchCountryInput } from './inputs/search-country.input';
 @Injectable()
 export class CountryService {
   constructor(private readonly countryRepository: CountryRepository) {}
@@ -17,5 +18,9 @@ export class CountryService {
 
   async getCountries(input: Pagination) {
     return await this.countryRepository.getCountries(input);
+  }
+
+  async searchCountries(input: SearchCountryInput) {
+    return await this.countryRepository.searchCountries(input);
   }
 }

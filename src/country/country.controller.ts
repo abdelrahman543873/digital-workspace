@@ -11,10 +11,9 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CountryService } from './country.service';
 import { CreateCountryInput } from './inputs/create-country.input';
-import { UpdateCountryInput } from './inputs/update-country.input';
-import { Put } from '@nestjs/common';
 import { DeleteCountryInput } from './inputs/delete-country.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { SearchCountryInput } from './inputs/search-country.input';
 @Controller('country')
 export class CountryController {
   constructor(private readonly countryService: CountryService) {}
@@ -38,5 +37,12 @@ export class CountryController {
   @Get()
   async getCountries(@Param() input: Pagination) {
     return await this.countryService.getCountries(input);
+  }
+
+  @ApiTags('country')
+  @UseGuards(AuthGuard)
+  @Get('search/:name')
+  async searchCountries(@Param() input: SearchCountryInput) {
+    return await this.countryService.searchCountries(input);
   }
 }
