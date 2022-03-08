@@ -6,7 +6,6 @@ import { Country, CountryDocument } from './schema/country.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { InjectModel } from '@nestjs/mongoose';
 import { AggregatePaginateModel } from 'mongoose';
-import { UpdateCountryInput } from './inputs/update-country.input';
 import { LookupSchemasEnum } from '../app.const';
 
 @Injectable()
@@ -18,16 +17,9 @@ export class CountryRepository extends BaseRepository<Country> {
     super(countrySchema);
   }
 
-  async create(input: CreateCountryInput, logo: Express.Multer.File) {
+  async create(input: CreateCountryInput) {
     return await this.countrySchema.create({
       ...input,
-      ...(logo && { logo: `${process.env.HOST}${logo.filename}` }),
-    });
-  }
-  async updateCountry(input: UpdateCountryInput, logo: Express.Multer.File) {
-    return await this.countrySchema.create({
-      ...input,
-      ...(logo && { logo: `${process.env.HOST}${logo.filename}` }),
     });
   }
 
