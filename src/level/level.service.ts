@@ -1,13 +1,12 @@
+import { RequestContext } from './../shared/request.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateLevelInput } from './inputs/create-level.input';
 import { LevelRepository } from './level.repository';
 import { DeleteLevelInput } from './inputs/delete-level.input';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
 import { REQUEST } from '@nestjs/core';
-import { RequestContext } from '../../dist/src/shared/request.interface';
 import { UserRepository } from '../user/user.repository';
 import { UpdateLevelInput } from './inputs/update-level.input';
-import { Types } from 'mongoose';
 import { Pagination } from '../shared/utils/pagination.input';
 
 @Injectable()
