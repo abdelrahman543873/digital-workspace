@@ -6,6 +6,8 @@ import { BaseHttpException } from '../shared/exceptions/base-http-exception';
 import { REQUEST } from '@nestjs/core';
 import { RequestContext } from '../../dist/src/shared/request.interface';
 import { UserRepository } from '../user/user.repository';
+import { UpdateLevelInput } from './inputs/update-level.input';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class LevelService {
@@ -25,5 +27,9 @@ export class LevelService {
     const usersCount = await this.userRepository.getLevelUsers(level._id);
     if (usersCount) throw new BaseHttpException(this.request.lang, 615);
     return await this.levelRepository.deleteLevel(input);
+  }
+
+  async updateLevel(input: UpdateLevelInput) {
+    return await this.levelRepository.updateLevel(input.id, input);
   }
 }

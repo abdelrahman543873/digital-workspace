@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Level, LevelDocument } from './schema/level.schema';
-import { AggregatePaginateModel, ObjectId } from 'mongoose';
+import { AggregatePaginateModel, ObjectId, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { CreateLevelInput } from './inputs/create-level.input';
 import { DeleteLevelInput } from './inputs/delete-level.input';
+import { UpdateLevelInput } from './inputs/update-level.input';
 
 @Injectable()
 export class LevelRepository extends BaseRepository<Level> {
@@ -25,5 +26,15 @@ export class LevelRepository extends BaseRepository<Level> {
 
   async getLevelByName(name: string) {
     return await this.levelSchema.findOne({ name });
+  }
+
+  async updateLevel(_id: string, input: UpdateLevelInput) {
+    return await this.levelSchema.findOneAndUpdate(
+      { _id: new Types.ObjectId(_id) },
+      input,
+      {
+        new: true,
+      },
+    );
   }
 }
