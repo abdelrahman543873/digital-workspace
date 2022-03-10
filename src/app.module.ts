@@ -20,6 +20,7 @@ import { EventModule } from './event/event.module';
 import { TeamsModule } from './teams/teams.module';
 import { CorrelationIdMiddleware } from './shared/middlewares/correlation-id.middleware';
 import { CountryModule } from './country/country.module';
+import { LevelModule } from './level/level.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { CountryModule } from './country/country.module';
     EventModule,
     TeamsModule,
     CountryModule,
+    LevelModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -9,6 +9,7 @@ import { TaskRepository } from '../src/task/task.repository';
 import { TeamRepository } from '../src/team/team.repository';
 import NodeEnvironment from 'jest-environment-node';
 import { CountryRepository } from '../src/country/country.repository';
+import { LevelRepository } from '../src/level/level.repository';
 
 class MongoEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -32,6 +33,7 @@ class MongoEnvironment extends NodeEnvironment {
     this.global.teamRepository = app.get<TeamRepository>(TeamRepository);
     this.global.countryRepository =
       app.get<CountryRepository>(CountryRepository);
+    this.global.levelRepository = app.get<LevelRepository>(LevelRepository);
   }
 
   async teardown() {
