@@ -60,6 +60,7 @@ async function bootstrap() {
     .addTag('prayer', 'prayer api routes')
     .addTag('teams', 'teams endpoints')
     .addTag('country', 'country endpoints')
+    .addTag('level', 'level endpoints')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
