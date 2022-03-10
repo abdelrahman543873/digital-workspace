@@ -8,6 +8,7 @@ import { RequestContext } from '../../dist/src/shared/request.interface';
 import { UserRepository } from '../user/user.repository';
 import { UpdateLevelInput } from './inputs/update-level.input';
 import { Types } from 'mongoose';
+import { Pagination } from '../shared/utils/pagination.input';
 
 @Injectable()
 export class LevelService {
@@ -19,6 +20,10 @@ export class LevelService {
 
   async createLevel(input: CreateLevelInput) {
     return await this.levelRepository.createLevel(input);
+  }
+
+  async getLevels(input: Pagination) {
+    return await this.levelRepository.getLevels(input);
   }
 
   async deleteLevel(input: DeleteLevelInput) {

@@ -1,10 +1,20 @@
-import { Body, Controller, Post, UseGuards, Delete, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  Delete,
+  Put,
+  Get,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { LevelService } from './level.service';
 import { CreateLevelInput } from './inputs/create-level.input';
 import { DeleteLevelInput } from './inputs/delete-level.input';
 import { UpdateLevelInput } from './inputs/update-level.input';
+import { Pagination } from '../shared/utils/pagination.input';
+import { Query } from '@nestjs/common';
 
 @Controller('level')
 export class LevelController {
@@ -16,6 +26,14 @@ export class LevelController {
   @Post()
   async createLevel(@Body() input: CreateLevelInput) {
     return await this.levelService.createLevel(input);
+  }
+
+  @ApiTags('level')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  @Get()
+  async getLevels(@Query() input: Pagination) {
+    return await this.levelService.getLevels(input);
   }
 
   @ApiTags('level')

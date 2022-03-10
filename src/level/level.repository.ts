@@ -6,6 +6,8 @@ import { BaseRepository } from '../shared/generics/repository.abstract';
 import { CreateLevelInput } from './inputs/create-level.input';
 import { DeleteLevelInput } from './inputs/delete-level.input';
 import { UpdateLevelInput } from './inputs/update-level.input';
+import { Pagination } from '../shared/utils/pagination.input';
+import { LookupSchemasEnum } from '../app.const';
 
 @Injectable()
 export class LevelRepository extends BaseRepository<Level> {
@@ -18,6 +20,44 @@ export class LevelRepository extends BaseRepository<Level> {
 
   async createLevel(input: CreateLevelInput) {
     return await this.levelSchema.create(input);
+  }
+
+  async getLevels(input: Pagination) {
+    const aggregation = this.levelSchema.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          as: 'levelMembers',
+          let: { levelId: '$_id' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$$levelId', '$level'],
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $addFields: {
+          members: { $size: '$levelMembers' },
+        },
+      },
+      {
+        $project: {
+          levelMembers: 0,
+        },
+      },
+    ]);
+    return await this.levelSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
+    });
   }
 
   async deleteLevel(input: DeleteLevelInput) {
