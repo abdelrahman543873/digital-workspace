@@ -1,5 +1,5 @@
 import { Body, Controller, Post, UseGuards, Delete, Put } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { LevelService } from './level.service';
 import { CreateLevelInput } from './inputs/create-level.input';
@@ -11,6 +11,7 @@ export class LevelController {
   constructor(private readonly levelService: LevelService) {}
 
   @ApiTags('level')
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Post()
   async createLevel(@Body() input: CreateLevelInput) {
@@ -18,6 +19,7 @@ export class LevelController {
   }
 
   @ApiTags('level')
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Delete()
   async deleteLevel(@Body() input: DeleteLevelInput) {
@@ -25,6 +27,7 @@ export class LevelController {
   }
 
   @ApiTags('level')
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Put()
   async updateLevel(@Body() input: UpdateLevelInput) {
