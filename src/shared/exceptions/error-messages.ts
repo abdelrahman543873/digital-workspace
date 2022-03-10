@@ -51,4 +51,12 @@ export const LocalizedErrorMessages: IErrorMessage = {
     EN: "can't fetch user cheat",
     AR: "can't fetch user cheat",
   },
+  614: {
+    EN: 'level not found',
+    AR: 'level not found',
+  },
+  615: {
+    EN: "you can't delete level as it has users",
+    AR: "you can't delete level as it has users",
+  },
 };

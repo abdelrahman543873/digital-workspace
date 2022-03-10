@@ -556,4 +556,8 @@ export class UserRepository extends BaseRepository<User> {
       },
     ]);
   }
+
+  async getLevelUsers(level: ObjectId) {
+    return await this.userSchema.find({ level }).count();
+  }
 }

@@ -1,4 +1,4 @@
-import { LEVEL } from './../endpoints/level.endpionts';
+import { LEVEL } from '../endpoints/level.endpoints';
 import { userFactory } from './../../src/user/user.factory';
 import { testRequest } from '../request';
 import { HTTP_METHODS_ENUM } from '../request.methods.enum';
