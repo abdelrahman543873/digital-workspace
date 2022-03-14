@@ -246,6 +246,23 @@ export class PostRepository extends BaseRepository<Post> {
           ],
         },
       },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          let: { likes: '$likes' },
+          as: 'likes',
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: ['$_id', '$$likes'],
+                },
+              },
+            },
+            { $project: { profilePic: 1, fullName: 1 } },
+          ],
+        },
+      },
       { $sort: { createdAt: -1 } },
     ]);
     return await this.postSchema.aggregatePaginate(aggregation, {
