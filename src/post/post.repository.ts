@@ -129,6 +129,23 @@ export class PostRepository extends BaseRepository<Post> {
       },
       {
         $lookup: {
+          from: LookupSchemasEnum.users,
+          let: { likes: '$likes' },
+          as: 'likes',
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: ['$_id', '$$likes'],
+                },
+              },
+            },
+            { $project: { profilePic: 1, fullName: 1 } },
+          ],
+        },
+      },
+      {
+        $lookup: {
           from: LookupSchemasEnum.comments,
           let: { postId: '$_id' },
           as: 'comments',

@@ -1,4 +1,4 @@
-import { name } from 'faker';
+import { name, datatype } from 'faker';
 import { Level } from './schema/level.schema';
 import { LevelRepo } from '../../test/level/level-test-repo';
 
@@ -9,7 +9,7 @@ interface LevelType {
 
 export const buildLevelParams = (obj: LevelType = {}): LevelType => {
   return {
-    name: obj.name || name.jobType(),
+    name: obj.name || datatype.uuid(),
     description: obj.description || name.jobDescriptor(),
   };
 };

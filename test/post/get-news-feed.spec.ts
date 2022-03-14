@@ -7,7 +7,7 @@ import { NEWS_FEED } from '../endpoints/post.endpoints';
 import { postFactory } from '../../src/post/post.factory';
 import { commentFactory } from '../../src/comment/comment.factory';
 describe('get news feed suite case', () => {
-  it('should get news feed', async () => {
+  it('should get news feed and like with profile pic', async () => {
     const followed = await userFactory();
     const follower = await userFactory({ following: [followed._id] });
     const post = await postFactory({ userId: followed._id });
@@ -16,6 +16,7 @@ describe('get news feed suite case', () => {
       url: NEWS_FEED,
       token: follower.token,
     });
+    expect(res.body.docs[0].likes[0].profilePic).toBeTruthy();
     expect(res.body.docs[0]._id).toBe(post._id.toString());
   });
 
