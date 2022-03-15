@@ -1,16 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { DepartmentRepository } from './department.repository';
-import { DepartmentInput } from './inputs/department.input';
+import { CreateDepartmentInput } from './inputs/create-department.input';
+import { UpdateDepartmentInput } from './inputs/update-department.input';
 
 @Injectable()
 export class DepartmentService {
   constructor(private readonly departmentRepository: DepartmentRepository) {}
 
-  async findDepartmentByName(name: string) {
-    return await this.departmentRepository.findDepartmentByName(name);
+  async findDepartment(input: { name?: string; id?: string }) {
+    return await this.departmentRepository.findDepartment(input);
   }
 
-  async createDepartment(input: DepartmentInput) {
+  async createDepartment(input: CreateDepartmentInput) {
     return await this.departmentRepository.createDepartment(input);
+  }
+
+  async updateDepartment(input: UpdateDepartmentInput) {
+    return await this.departmentRepository.updateDepartment(input);
   }
 }

@@ -7,19 +7,19 @@ import {
 } from 'class-validator';
 
 @Injectable()
-@ValidatorConstraint({ name: 'UniqueDepartmentName', async: true })
-export class UniqueDepartmentName implements ValidatorConstraintInterface {
+@ValidatorConstraint({ name: 'ExistingDepartmentId', async: true })
+export class ExistingDepartmentId implements ValidatorConstraintInterface {
   constructor(private departmentService: DepartmentService) {}
 
   async validate(text: string): Promise<boolean> {
     const department = await this.departmentService.findDepartment({
-      name: text,
+      id: text,
     });
-    if (department) return false;
-    return true;
+    if (department) return true;
+    return false;
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `${args.value} department already exists`;
+    return `department id ${args.value} doesn't exist`;
   }
 }

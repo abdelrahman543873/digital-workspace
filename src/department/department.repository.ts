@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { AggregatePaginateModel } from 'mongoose';
+import { AggregatePaginateModel, Types } from 'mongoose';
 import { BaseRepository } from '../shared/generics/repository.abstract';
-import { DepartmentInput } from './inputs/department.input';
+import { CreateDepartmentInput } from './inputs/create-department.input';
+import { UpdateDepartmentInput } from './inputs/update-department.input';
 import {
   Department,
   DepartmentDocument,
@@ -17,11 +18,24 @@ export class DepartmentRepository extends BaseRepository<Department> {
     super(departmentSchema);
   }
 
-  async findDepartmentByName(name: string) {
-    return await this.departmentSchema.findOne({ name });
+  async findDepartment(input: { name?: string; id?: string }) {
+    return await this.departmentSchema.findOne({
+      ...input,
+      ...(input.id && { _id: new Types.ObjectId(input.id) }),
+    });
   }
 
-  async createDepartment(input: DepartmentInput) {
+  async createDepartment(input: CreateDepartmentInput) {
     return await this.departmentSchema.create(input);
+  }
+
+  async updateDepartment(input: UpdateDepartmentInput) {
+    return await this.departmentSchema.findOneAndUpdate(
+      {
+        _id: new Types.ObjectId(input.id),
+      },
+      input,
+      { new: true },
+    );
   }
 }

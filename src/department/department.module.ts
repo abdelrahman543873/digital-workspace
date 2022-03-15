@@ -5,6 +5,7 @@ import { DepartmentRepository } from './department.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Department, DepartmentSchema } from './schema/department.schema.input';
 import { UniqueDepartmentName } from './validators/unique-department-name.validator';
+import { ExistingDepartmentId } from './validators/existing-department-id.validator';
 
 @Module({
   imports: [
@@ -13,6 +14,11 @@ import { UniqueDepartmentName } from './validators/unique-department-name.valida
     ]),
   ],
   controllers: [DepartmentController],
-  providers: [DepartmentService, DepartmentRepository, UniqueDepartmentName],
+  providers: [
+    DepartmentService,
+    DepartmentRepository,
+    UniqueDepartmentName,
+    ExistingDepartmentId,
+  ],
 })
 export class DepartmentModule {}

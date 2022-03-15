@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { UniqueDepartmentName } from '../validators/unique-department-name.validator';
 
-export class DepartmentInput {
+export class CreateDepartmentInput {
   @IsString()
   @MaxLength(50)
   @MinLength(5)

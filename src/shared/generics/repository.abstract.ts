@@ -23,6 +23,10 @@ export abstract class BaseRepository<T> implements Repository<T> {
     return await this._model.deleteMany({});
   }
 
+  async deleteOne(filter?: FilterQuery<T & Document<any, any, any>>) {
+    return await this._model.deleteOne(filter);
+  }
+
   async findOne(
     filter: FilterQuery<T & Document<any>>,
     projection?: any,
