@@ -1,9 +1,10 @@
-import { Body, Controller, Post, UseGuards, Put } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Put, Delete } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateDepartmentInput } from './inputs/create-department.input';
 import { DepartmentService } from './department.service';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { UpdateDepartmentInput } from './inputs/update-department.input';
+import { DeleteDepartmentInput } from './inputs/delete-department.input';
 
 @Controller('department')
 export class DepartmentController {
@@ -23,5 +24,13 @@ export class DepartmentController {
   @Put()
   async updateDepartment(@Body() input: UpdateDepartmentInput) {
     return await this.departmentService.updateDepartment(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('department')
+  @UseGuards(AuthGuard)
+  @Delete()
+  async deleteDepartment(@Body() input: DeleteDepartmentInput) {
+    return await this.departmentService.deleteDepartment(input);
   }
 }

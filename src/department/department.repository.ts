@@ -4,6 +4,7 @@ import { AggregatePaginateModel, Types } from 'mongoose';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { CreateDepartmentInput } from './inputs/create-department.input';
 import { UpdateDepartmentInput } from './inputs/update-department.input';
+import { DeleteDepartmentInput } from './inputs/delete-department.input';
 import {
   Department,
   DepartmentDocument,
@@ -37,5 +38,11 @@ export class DepartmentRepository extends BaseRepository<Department> {
       input,
       { new: true },
     );
+  }
+
+  async deleteDepartment(input: DeleteDepartmentInput) {
+    return await this.departmentSchema.findOneAndDelete({
+      _id: new Types.ObjectId(input.id),
+    });
   }
 }
