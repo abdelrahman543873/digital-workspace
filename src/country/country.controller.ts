@@ -8,7 +8,7 @@ import {
   UseGuards,
   Param,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CountryService } from './country.service';
 import { CreateCountryInput } from './inputs/create-country.input';
 import { DeleteCountryInput } from './inputs/delete-country.input';
@@ -19,6 +19,7 @@ export class CountryController {
   constructor(private readonly countryService: CountryService) {}
 
   @ApiTags('country')
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Post()
   async create(@Body() input: CreateCountryInput) {
@@ -26,6 +27,7 @@ export class CountryController {
   }
 
   @ApiTags('country')
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Delete()
   async deleteCountry(@Body() input: DeleteCountryInput) {
@@ -33,6 +35,7 @@ export class CountryController {
   }
 
   @ApiTags('country')
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Get()
   async getCountries(@Param() input: Pagination) {
@@ -40,6 +43,7 @@ export class CountryController {
   }
 
   @ApiTags('country')
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Get('search/:name')
   async searchCountries(@Param() input: SearchCountryInput) {

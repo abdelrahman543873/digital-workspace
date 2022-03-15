@@ -1,5 +1,5 @@
 import { PageRepo } from '../../test/page/page-test-repo';
-import { address } from 'faker';
+import { datatype } from 'faker';
 import { CountryRepo } from '../../test/country/country-test-repo';
 import { Country } from './schema/country.schema';
 
@@ -9,7 +9,7 @@ interface CountryType {
 
 export const buildCountryParams = (obj: CountryType = {}): CountryType => {
   return {
-    name: obj.name || address.country(),
+    name: obj.name || datatype.uuid(),
   };
 };
 

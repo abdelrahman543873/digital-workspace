@@ -12,6 +12,7 @@ import { Cluster } from './cluster';
 import morganBody from 'morgan-body';
 import correlationId from 'express-correlation-id';
 import { logTransform } from './shared/utils/transformer.print';
+import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -42,6 +43,7 @@ async function bootstrap() {
       exitOnError: false,
     }),
   });
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
   const logger = new Logger();
   const options = new DocumentBuilder()
     .setTitle('🚀digital work space🚀')
@@ -60,6 +62,8 @@ async function bootstrap() {
     .addTag('prayer', 'prayer api routes')
     .addTag('teams', 'teams endpoints')
     .addTag('country', 'country endpoints')
+    .addTag('level', 'level endpoints')
+    .addTag('department', 'department endpoints')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);

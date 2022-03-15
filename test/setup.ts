@@ -10,6 +10,7 @@ import { FileCloudUploadInterceptor } from '../src/shared/interceptors/file-clou
 import { SeedUsersServices } from '../src/shared/services/seed-users.service';
 import compression from 'compression';
 import { ValidationPipe } from '@nestjs/common';
+import { useContainer } from 'class-validator';
 
 const mongod = new MongoMemoryServer({ binary: { version: '4.2.8' } });
 module.exports = async (): Promise<void> => {
@@ -53,6 +54,7 @@ module.exports = async (): Promise<void> => {
     .compile();
 
   const app = module.createNestApplication();
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.use(compression());
   app.useGlobalPipes(
     new ValidationPipe({

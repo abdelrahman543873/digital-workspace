@@ -10,12 +10,14 @@ describe('get my posts suite case', () => {
     const user = await userFactory();
     const post = await postFactory({
       userId: user._id,
+      likes: [user._id],
     });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: GET_MY_POSTS,
       token: user.token,
     });
+    expect(res.body.docs[0].likes[0].profilePic).toBeTruthy();
     expect(res.body.docs[0]._id.toString()).toBe(post._id.toString());
   });
 

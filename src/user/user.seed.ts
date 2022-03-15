@@ -3,6 +3,7 @@ import { ObjectId, Types } from 'mongoose';
 import { address, datatype, date, internet, name, phone, random } from 'faker';
 import { GENDER, WIDGETS } from '../app.const';
 import { countryFactory } from '../country/country.factory';
+import { levelFactory } from '../level/level.factory';
 interface ExperienceType {
   startDate?: Date;
   endDate?: Date;
@@ -51,6 +52,7 @@ export interface UserType {
   microsoftToken?: string;
   leaveBalance?: number;
   country?: ObjectId;
+  level?: ObjectId;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -108,5 +110,6 @@ export const buildUserParams = async (obj: UserType = {}): Promise<User> => {
     microsoftToken: obj.microsoftToken || '',
     leaveBalance: obj.leaveBalance || datatype.number(25),
     country: obj.country || (await countryFactory())._id,
+    level: obj.level || (await levelFactory())._id,
   };
 };
