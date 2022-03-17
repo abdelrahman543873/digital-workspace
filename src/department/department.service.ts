@@ -3,6 +3,7 @@ import { DepartmentRepository } from './department.repository';
 import { CreateDepartmentInput } from './inputs/create-department.input';
 import { UpdateDepartmentInput } from './inputs/update-department.input';
 import { DeleteDepartmentInput } from './inputs/delete-department.input';
+import { Pagination } from '../shared/utils/pagination.input';
 
 @Injectable()
 export class DepartmentService {
@@ -14,6 +15,10 @@ export class DepartmentService {
 
   async createDepartment(input: CreateDepartmentInput) {
     return await this.departmentRepository.createDepartment(input);
+  }
+
+  async getDepartmentList(input: Pagination) {
+    return await this.departmentRepository.getDepartmentList(input);
   }
 
   async updateDepartment(input: UpdateDepartmentInput) {

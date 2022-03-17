@@ -108,6 +108,9 @@ export class User {
   @Prop({ type: Types.ObjectId, ref: 'Country' })
   country: ObjectId;
 
+  @Prop({ type: Types.ObjectId, ref: 'Department' })
+  department: ObjectId;
+
   @Prop({ type: [Types.ObjectId] })
   followers: ObjectId[];
 
