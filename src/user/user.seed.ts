@@ -4,6 +4,7 @@ import { address, datatype, date, internet, name, phone, random } from 'faker';
 import { GENDER, WIDGETS } from '../app.const';
 import { countryFactory } from '../country/country.factory';
 import { levelFactory } from '../level/level.factory';
+import { departmentFactory } from '../../test/department/department.factory';
 interface ExperienceType {
   startDate?: Date;
   endDate?: Date;
@@ -53,6 +54,7 @@ export interface UserType {
   leaveBalance?: number;
   country?: ObjectId;
   level?: ObjectId;
+  department?: ObjectId;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -111,5 +113,6 @@ export const buildUserParams = async (obj: UserType = {}): Promise<User> => {
     leaveBalance: obj.leaveBalance || datatype.number(25),
     country: obj.country || (await countryFactory())._id,
     level: obj.level || (await levelFactory())._id,
+    department: obj.department || (await departmentFactory())._id,
   };
 };

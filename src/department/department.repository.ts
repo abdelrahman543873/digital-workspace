@@ -5,6 +5,8 @@ import { BaseRepository } from '../shared/generics/repository.abstract';
 import { CreateDepartmentInput } from './inputs/create-department.input';
 import { UpdateDepartmentInput } from './inputs/update-department.input';
 import { DeleteDepartmentInput } from './inputs/delete-department.input';
+import { Pagination } from '../shared/utils/pagination.input';
+import { LookupSchemasEnum } from '../app.const';
 import {
   Department,
   DepartmentDocument,
@@ -28,6 +30,44 @@ export class DepartmentRepository extends BaseRepository<Department> {
 
   async createDepartment(input: CreateDepartmentInput) {
     return await this.departmentSchema.create(input);
+  }
+
+  async getDepartmentList(input: Pagination) {
+    const aggregation = this.departmentSchema.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          as: 'departmentMembers',
+          let: { departmentId: '$_id' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$$departmentId', '$department'],
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $addFields: {
+          members: { $size: '$departmentMembers' },
+        },
+      },
+      {
+        $project: {
+          departmentMembers: 0,
+        },
+      },
+    ]);
+    return await this.departmentSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
+    });
   }
 
   async updateDepartment(input: UpdateDepartmentInput) {

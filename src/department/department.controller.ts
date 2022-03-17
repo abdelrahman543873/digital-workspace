@@ -1,14 +1,23 @@
-import { Body, Controller, Post, UseGuards, Put, Delete } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Put, Delete, Get, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateDepartmentInput } from './inputs/create-department.input';
 import { DepartmentService } from './department.service';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { UpdateDepartmentInput } from './inputs/update-department.input';
 import { DeleteDepartmentInput } from './inputs/delete-department.input';
+import { Pagination } from '../shared/utils/pagination.input';
 
 @Controller('department')
 export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}
+
+  @ApiBearerAuth()
+  @ApiTags('department')
+  @UseGuards(AuthGuard)
+  @Get('list')
+  async getDepartmentList(@Query() input: Pagination) {
+    return await this.departmentService.getDepartmentList(input);
+  }
 
   @ApiBearerAuth()
   @ApiTags('department')
