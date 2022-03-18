@@ -53,6 +53,7 @@ export class LevelRepository extends BaseRepository<Level> {
           levelMembers: 0,
         },
       },
+      { $sort: { createdAt: -1 } },
     ]);
     return await this.levelSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
