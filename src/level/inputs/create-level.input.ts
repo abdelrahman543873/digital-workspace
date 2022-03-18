@@ -1,11 +1,12 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 export class CreateLevelInput {
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  description: string;
+  description?: string;
 }
