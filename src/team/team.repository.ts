@@ -74,4 +74,8 @@ export class TeamRepository extends BaseRepository<Team> {
       limit: input.limit,
     });
   }
+
+  findTeamByName(name: string) {
+    return this.teamSchema.findOne({ name });
+  }
 }

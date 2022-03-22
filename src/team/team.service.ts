@@ -12,6 +12,7 @@ export class TeamService {
     private teamRepository: TeamRepository,
     @Inject(REQUEST) private readonly request: RequestContext,
   ) {}
+
   async createTeam(input: CreateTeamInput) {
     return await this.teamRepository.createTeam(
       this.request.currentUser._id,

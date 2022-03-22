@@ -8,12 +8,14 @@ interface TeamType {
   admin?: ObjectId;
   name?: string;
   members?: ObjectId[];
+  description?: string;
 }
 
 export const buildTeamParams = async (obj: TeamType = {}): Promise<Team> => {
   const userId = (await userFactory())._id;
   return {
     name: obj.name || name.title(),
+    description: obj.description || name.title(),
     admin: obj.admin || userId,
     members: obj.members || [userId],
   };

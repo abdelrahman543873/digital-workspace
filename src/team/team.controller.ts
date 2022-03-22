@@ -13,7 +13,7 @@ export class TeamController {
   @ApiBearerAuth()
   @ApiTags('team')
   @UseGuards(AuthGuard)
-  @Post('create')
+  @Post()
   async createTeam(@Body() input: CreateTeamInput) {
     return await this.teamService.createTeam(input);
   }
