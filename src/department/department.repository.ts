@@ -63,6 +63,7 @@ export class DepartmentRepository extends BaseRepository<Department> {
           departmentMembers: 0,
         },
       },
+      { $sort: { createdAt: -1 } },
     ]);
     return await this.departmentSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
