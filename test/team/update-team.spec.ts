@@ -3,8 +3,8 @@ import { testRequest } from '../request';
 import { HTTP_METHODS_ENUM } from '../request.methods.enum';
 import { userFactory } from '../../src/user/user.factory';
 import { teamFactory, buildTeamParams } from '../../src/team/team.factory';
-describe('create team suite case', () => {
-  it('should create team', async () => {
+describe('update team suite case', () => {
+  it('should update team', async () => {
     const user = await userFactory();
     const params = await buildTeamParams();
     const team = await teamFactory({ admin: user._id });

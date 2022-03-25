@@ -14,6 +14,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AddTeamMemberInput } from './inputs/manage-team-member.input';
 import { MyTeamsInput } from './inputs/get-my-teams.input';
 import { UpdateTeamInput } from './inputs/update-team.input';
+import { Pagination } from '../shared/utils/pagination.input';
 
 @Controller('team')
 export class TeamController {
@@ -25,6 +26,14 @@ export class TeamController {
   @Post()
   async createTeam(@Body() input: CreateTeamInput) {
     return await this.teamService.createTeam(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('team')
+  @UseGuards(AuthGuard)
+  @Get('list')
+  async getTeamsList(@Body() input: Pagination) {
+    return await this.teamService.getTeamsList(input);
   }
 
   @ApiBearerAuth()

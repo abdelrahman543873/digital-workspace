@@ -7,6 +7,8 @@ import { CreateTeamInput } from './inputs/create-team.input';
 import { AddTeamMemberInput } from './inputs/manage-team-member.input';
 import { MyTeamsInput } from './inputs/get-my-teams.input';
 import { UpdateTeamInput } from './inputs/update-team.input';
+import { Pagination } from '../shared/utils/pagination.input';
+import { LookupSchemasEnum } from '../app.const';
 
 @Injectable()
 export class TeamRepository extends BaseRepository<Team> {
@@ -19,6 +21,24 @@ export class TeamRepository extends BaseRepository<Team> {
 
   async createTeam(userId: ObjectId, input: CreateTeamInput) {
     return await this.teamSchema.create({ admin: userId, ...input });
+  }
+
+  getTeamsList(input: Pagination) {
+    const aggregation = this.teamSchema.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $addFields: {
+          membersCount: { $size: '$members' },
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
+    return this.teamSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
+    });
   }
 
   updateTeam(input: UpdateTeamInput) {

@@ -6,6 +6,7 @@ import { RequestContext } from 'src/shared/request.interface';
 import { AddTeamMemberInput } from './inputs/manage-team-member.input';
 import { MyTeamsInput } from './inputs/get-my-teams.input';
 import { UpdateTeamInput } from './inputs/update-team.input';
+import { Pagination } from '../shared/utils/pagination.input';
 
 @Injectable()
 export class TeamService {
@@ -19,6 +20,10 @@ export class TeamService {
       this.request.currentUser._id,
       input,
     );
+  }
+
+  getTeamsList(input: Pagination) {
+    return this.teamRepository.getTeamsList(input);
   }
 
   updateTeam(input: UpdateTeamInput) {
