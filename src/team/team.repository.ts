@@ -6,6 +6,7 @@ import { BaseRepository } from '../shared/generics/repository.abstract';
 import { CreateTeamInput } from './inputs/create-team.input';
 import { AddTeamMemberInput } from './inputs/manage-team-member.input';
 import { MyTeamsInput } from './inputs/get-my-teams.input';
+import { UpdateTeamInput } from './inputs/update-team.input';
 
 @Injectable()
 export class TeamRepository extends BaseRepository<Team> {
@@ -18,6 +19,16 @@ export class TeamRepository extends BaseRepository<Team> {
 
   async createTeam(userId: ObjectId, input: CreateTeamInput) {
     return await this.teamSchema.create({ admin: userId, ...input });
+  }
+
+  updateTeam(input: UpdateTeamInput) {
+    return this.teamSchema.findOneAndUpdate(
+      {
+        _id: new Types.ObjectId(input.id),
+      },
+      input,
+      { new: true },
+    );
   }
 
   async manageTeamMember(userId: ObjectId, input: AddTeamMemberInput) {
@@ -77,5 +88,11 @@ export class TeamRepository extends BaseRepository<Team> {
 
   findTeamByName(name: string) {
     return this.teamSchema.findOne({ name });
+  }
+
+  findTeamById(id: string) {
+    return this.teamSchema.findOne({
+      _id: new Types.ObjectId(id),
+    });
   }
 }
