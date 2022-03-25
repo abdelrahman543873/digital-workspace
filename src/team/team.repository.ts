@@ -9,6 +9,7 @@ import { MyTeamsInput } from './inputs/get-my-teams.input';
 import { UpdateTeamInput } from './inputs/update-team.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { LookupSchemasEnum } from '../app.const';
+import { DeleteTeamInput } from './inputs/delete-team.input';
 
 @Injectable()
 export class TeamRepository extends BaseRepository<Team> {
@@ -113,6 +114,12 @@ export class TeamRepository extends BaseRepository<Team> {
   findTeamById(id: string) {
     return this.teamSchema.findOne({
       _id: new Types.ObjectId(id),
+    });
+  }
+
+  deleteTeam(input: DeleteTeamInput) {
+    return this.teamSchema.findOneAndDelete({
+      _id: new Types.ObjectId(input.id),
     });
   }
 }

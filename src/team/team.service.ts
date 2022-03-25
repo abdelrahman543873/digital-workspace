@@ -7,6 +7,7 @@ import { AddTeamMemberInput } from './inputs/manage-team-member.input';
 import { MyTeamsInput } from './inputs/get-my-teams.input';
 import { UpdateTeamInput } from './inputs/update-team.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { DeleteTeamInput } from './inputs/delete-team.input';
 
 @Injectable()
 export class TeamService {
@@ -42,5 +43,9 @@ export class TeamService {
       this.request.currentUser._id,
       input,
     );
+  }
+
+  deleteTeam(input: DeleteTeamInput) {
+    return this.teamRepository.deleteTeam(input);
   }
 }

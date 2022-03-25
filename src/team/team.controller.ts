@@ -7,6 +7,7 @@ import {
   UseGuards,
   Get,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { CreateTeamInput } from './inputs/create-team.input';
@@ -15,6 +16,7 @@ import { AddTeamMemberInput } from './inputs/manage-team-member.input';
 import { MyTeamsInput } from './inputs/get-my-teams.input';
 import { UpdateTeamInput } from './inputs/update-team.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { DeleteTeamInput } from './inputs/delete-team.input';
 
 @Controller('team')
 export class TeamController {
@@ -58,5 +60,13 @@ export class TeamController {
   @Get('myTeams')
   async getMyTeams(@Query() input: MyTeamsInput) {
     return await this.teamService.getMyTeams(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('team')
+  @UseGuards(AuthGuard)
+  @Delete()
+  async deleteTeam(@Body() input: DeleteTeamInput) {
+    return await this.teamService.deleteTeam(input);
   }
 }
