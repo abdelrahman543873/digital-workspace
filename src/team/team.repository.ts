@@ -8,7 +8,6 @@ import { AddTeamMemberInput } from './inputs/manage-team-member.input';
 import { MyTeamsInput } from './inputs/get-my-teams.input';
 import { UpdateTeamInput } from './inputs/update-team.input';
 import { Pagination } from '../shared/utils/pagination.input';
-import { LookupSchemasEnum } from '../app.const';
 import { DeleteTeamInput } from './inputs/delete-team.input';
 
 @Injectable()
@@ -100,6 +99,7 @@ export class TeamRepository extends BaseRepository<Team> {
           },
         },
       },
+      { $sort: { createdAt: -1 } },
     ]);
     return await this.teamSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
