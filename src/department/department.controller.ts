@@ -1,4 +1,13 @@
-import { Body, Controller, Post, UseGuards, Put, Delete, Get, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  Put,
+  Delete,
+  Get,
+  Query,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateDepartmentInput } from './inputs/create-department.input';
 import { DepartmentService } from './department.service';
