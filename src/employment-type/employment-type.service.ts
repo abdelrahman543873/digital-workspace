@@ -3,6 +3,7 @@ import { EmploymentTypeRepository } from './employment-type.repository';
 import { CreateEmploymentTypeInput } from './inputs/create-employment-type.input';
 import { UpdateEmploymentTypeInput } from './inputs/update-employment-type.input';
 import { DeleteEmploymentTypeInput } from './inputs/delete-employment-type.input';
+import { Pagination } from '../shared/utils/pagination.input';
 
 @Injectable()
 export class EmploymentTypeService {
@@ -18,5 +19,9 @@ export class EmploymentTypeService {
 
   deleteEmploymentType(input: DeleteEmploymentTypeInput) {
     return this.employmentTypeRepository.deleteEmploymentType(input);
+  }
+
+  getEmploymentTypesList(input: Pagination) {
+    return this.employmentTypeRepository.getEmploymentTypesList(input);
   }
 }

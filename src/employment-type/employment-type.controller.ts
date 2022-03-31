@@ -1,10 +1,20 @@
 import { AuthGuard } from './../shared/guards/auth.guard';
-import { Body, Controller, Post, UseGuards, Put, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  Put,
+  Delete,
+  Get,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { EmploymentTypeService } from './employment-type.service';
 import { CreateEmploymentTypeInput } from './inputs/create-employment-type.input';
 import { UpdateEmploymentTypeInput } from './inputs/update-employment-type.input';
 import { DeleteEmploymentTypeInput } from './inputs/delete-employment-type.input';
+import { Query } from '@nestjs/common';
+import { Pagination } from '../shared/utils/pagination.input';
 
 @Controller('employment-type')
 export class EmploymentTypeController {
@@ -32,5 +42,13 @@ export class EmploymentTypeController {
   @Delete()
   async deleteEmploymentType(@Body() input: DeleteEmploymentTypeInput) {
     return await this.employmentTypeService.deleteEmploymentType(input);
+  }
+
+  @ApiBearerAuth()
+  @ApiTags('employment-type')
+  @UseGuards(AuthGuard)
+  @Get('list')
+  async getEmploymentTypesList(@Query() input: Pagination) {
+    return await this.employmentTypeService.getEmploymentTypesList(input);
   }
 }

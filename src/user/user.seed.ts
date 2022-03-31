@@ -5,6 +5,7 @@ import { GENDER, WIDGETS } from '../app.const';
 import { countryFactory } from '../country/country.factory';
 import { levelFactory } from '../level/level.factory';
 import { departmentFactory } from '../../test/department/department.factory';
+import { EmploymentTypeFactory } from '../employment-type/employment-type.factory';
 interface ExperienceType {
   startDate?: Date;
   endDate?: Date;
@@ -55,6 +56,7 @@ export interface UserType {
   country?: ObjectId;
   level?: ObjectId;
   department?: ObjectId;
+  employmentType?: ObjectId;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -114,5 +116,6 @@ export const buildUserParams = async (obj: UserType = {}): Promise<User> => {
     country: obj.country || (await countryFactory())._id,
     level: obj.level || (await levelFactory())._id,
     department: obj.department || (await departmentFactory())._id,
+    employmentType: obj.employmentType || (await EmploymentTypeFactory())._id,
   };
 };

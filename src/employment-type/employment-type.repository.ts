@@ -9,6 +9,8 @@ import { AggregatePaginateModel, Types } from 'mongoose';
 import { CreateEmploymentTypeInput } from './inputs/create-employment-type.input';
 import { UpdateEmploymentTypeInput } from './inputs/update-employment-type.input';
 import { DeleteEmploymentTypeInput } from './inputs/delete-employment-type.input';
+import { Pagination } from '../shared/utils/pagination.input';
+import { LookupSchemasEnum } from '../app.const';
 
 @Injectable()
 export class EmploymentTypeRepository extends BaseRepository<EmploymentType> {
@@ -33,6 +35,40 @@ export class EmploymentTypeRepository extends BaseRepository<EmploymentType> {
   deleteEmploymentType(input: DeleteEmploymentTypeInput) {
     return this.employmentTypeSchema.findOneAndDelete({
       _id: new Types.ObjectId(input.id),
+    });
+  }
+
+  getEmploymentTypesList(input: Pagination) {
+    const aggregation = this.employmentTypeSchema.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          as: 'members',
+          let: { employmentType: '$_id' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$$employmentType', '$employmentType'],
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $addFields: {
+          members: { $size: '$members' },
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
+    return this.employmentTypeSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
     });
   }
 
