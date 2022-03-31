@@ -8,7 +8,7 @@ describe('get currency suite case', () => {
       url: `${GET_CURRENCY}?base=EGP&amount=10`,
     });
     expect(res.body.length).toBeGreaterThan(10);
-    expect(res.body[0].conversionRate).toBe('2.33');
+    expect(res.body[0].conversionRate).toBe('2.00');
   });
 
   it("shouldn't base invalid currencies", async () => {

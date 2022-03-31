@@ -27,6 +27,9 @@ describe('search events suite case', () => {
       url: `${SEARCH_EVENTS}/${event.title.substring(0, 2)}`,
       token: user.token,
     });
-    expect(res.body.docs[0]._id.toString()).toBe(event._id.toString());
+    const ids = (res.body.docs as Array<any>).map((events) => {
+      return events._id.toString();
+    });
+    expect(ids.includes(event._id.toString())).toBe(true);
   });
 });
