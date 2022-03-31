@@ -7,18 +7,19 @@ import {
 } from 'class-validator';
 
 @Injectable()
-@ValidatorConstraint({ name: 'UniqueEmploymentTypeName', async: true })
-export class UniqueEmploymentTypeName implements ValidatorConstraintInterface {
+@ValidatorConstraint({ name: 'ExistingEmploymentTypeId', async: true })
+export class ExistingEmploymentTypeId implements ValidatorConstraintInterface {
   constructor(private employmentTypeRepository: EmploymentTypeRepository) {}
 
   async validate(text: string): Promise<boolean> {
-    const employmentType =
-      await this.employmentTypeRepository.findEmploymentType({ name: text });
-    if (employmentType) return false;
+    const department = await this.employmentTypeRepository.findEmploymentType({
+      id: text,
+    });
+    if (!department) return false;
     return true;
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `${args.value} employment type already exists`;
+    return `employment type id ${args.value} doesn't exist`;
   }
 }

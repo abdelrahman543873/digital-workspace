@@ -8,6 +8,7 @@ import {
   EmploymentTypeSchema,
 } from './schema/employment-type.schema';
 import { UniqueEmploymentTypeName } from './validators/unique-employment-type-name.validator';
+import { ExistingEmploymentTypeId } from './validators/existing-employment-type-id.validator';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UniqueEmploymentTypeName } from './validators/unique-employment-type-na
     EmploymentTypeService,
     EmploymentTypeRepository,
     UniqueEmploymentTypeName,
+    ExistingEmploymentTypeId,
   ],
 })
 export class EmploymentTypeModule {}
