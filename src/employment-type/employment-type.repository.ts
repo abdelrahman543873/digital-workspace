@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { AggregatePaginateModel, Types } from 'mongoose';
 import { CreateEmploymentTypeInput } from './inputs/create-employment-type.input';
 import { UpdateEmploymentTypeInput } from './inputs/update-employment-type.input';
+import { DeleteEmploymentTypeInput } from './inputs/delete-employment-type.input';
 
 @Injectable()
 export class EmploymentTypeRepository extends BaseRepository<EmploymentType> {
@@ -27,6 +28,12 @@ export class EmploymentTypeRepository extends BaseRepository<EmploymentType> {
 
   createEmploymentType(input: CreateEmploymentTypeInput) {
     return this.employmentTypeSchema.create(input);
+  }
+
+  deleteEmploymentType(input: DeleteEmploymentTypeInput) {
+    return this.employmentTypeSchema.findOneAndDelete({
+      _id: new Types.ObjectId(input.id),
+    });
   }
 
   updateEmploymentType(input: UpdateEmploymentTypeInput) {
