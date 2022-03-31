@@ -1,3 +1,4 @@
+import { EmploymentTypeRepository } from './../src/employment-type/employment-type.repository';
 import { TestingModule } from '@nestjs/testing';
 import { PostRepository } from '../src/post/post.repository';
 import { PageRepository } from '../src/page/page.repository';
@@ -37,6 +38,9 @@ class MongoEnvironment extends NodeEnvironment {
     this.global.levelRepository = app.get<LevelRepository>(LevelRepository);
     this.global.departmentRepository =
       app.get<DepartmentRepository>(DepartmentRepository);
+    this.global.employmentTypeRepository = app.get<EmploymentTypeRepository>(
+      EmploymentTypeRepository,
+    );
   }
 
   async teardown() {

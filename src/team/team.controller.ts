@@ -34,7 +34,7 @@ export class TeamController {
   @ApiTags('team')
   @UseGuards(AuthGuard)
   @Get('list')
-  async getTeamsList(@Body() input: Pagination) {
+  async getTeamsList(@Query() input: Pagination) {
     return await this.teamService.getTeamsList(input);
   }
 
