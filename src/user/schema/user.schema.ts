@@ -114,6 +114,9 @@ export class User {
   @Prop({ type: Types.ObjectId, ref: 'EmploymentType' })
   employmentType: ObjectId;
 
+  @Prop({ type: Types.ObjectId, ref: 'Title' })
+  title: ObjectId;
+
   @Prop({ type: [Types.ObjectId], ref: 'Skill' })
   skills: ObjectId[];
 

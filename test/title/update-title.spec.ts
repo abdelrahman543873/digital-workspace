@@ -1,36 +1,37 @@
 import { userFactory } from '../../src/user/user.factory';
 import { testRequest } from '../request';
 import { HTTP_METHODS_ENUM } from '../request.methods.enum';
-import { skillFactory, buildSkillParams } from '../../src/skill/skill.factory';
-import { SKILL } from '../endpoints/skill.endpoints';
-import { skillTestRepo } from './skill-test-repo';
-describe('update skill case', () => {
-  it('should update skill', async () => {
+import { titleFactory, buildTitleParams } from '../../src/title/title.factory';
+import { TITLE } from '../endpoints/title.endpoints';
+import { titleTestRepo } from './title-test-repo';
+describe('update title case', () => {
+  it('should update title', async () => {
     const user = await userFactory();
-    const skill = await skillFactory();
-    const skillParams = buildSkillParams();
+    const title = await titleFactory();
+    const titleParams = await buildTitleParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
-      url: SKILL,
+      url: TITLE,
       variables: {
-        id: skill._id.toString(),
-        name: skillParams.name,
+        id: title._id.toString(),
+        name: titleParams.name,
+        department: title.department.toString(),
       },
       token: user.token,
     });
-    expect(res.body.name).toBe(skillParams.name);
+    expect(res.body.name).toBe(titleParams.name);
   });
 
   it("should throw error when employment type id doesn't exists", async () => {
     const user = await userFactory();
-    const skill = buildSkillParams();
-    const skillSeeded = await skillFactory();
-    await skillTestRepo().deleteOne({ _id: skillSeeded._id });
+    const skill = await buildTitleParams();
+    const titleSeeded = await titleFactory();
+    await titleTestRepo().deleteOne({ _id: titleSeeded._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
-      url: SKILL,
+      url: TITLE,
       variables: {
-        id: skillSeeded._id.toString(),
+        id: titleSeeded._id.toString(),
         name: skill.name,
         description: skill.description,
       },

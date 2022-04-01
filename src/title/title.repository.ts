@@ -47,12 +47,12 @@ export class TitleRepository extends BaseRepository<Title> {
         $lookup: {
           from: LookupSchemasEnum.users,
           as: 'members',
-          let: { skill: '$_id' },
+          let: { title: '$_id' },
           pipeline: [
             {
               $match: {
                 $expr: {
-                  $in: ['$$skill', '$skills'],
+                  $eq: ['$$title', '$title'],
                 },
               },
             },

@@ -7,6 +7,7 @@ import { levelFactory } from '../level/level.factory';
 import { departmentFactory } from '../../test/department/department.factory';
 import { EmploymentTypeFactory } from '../employment-type/employment-type.factory';
 import { skillFactory } from '../skill/skill.factory';
+import { titleFactory } from '../title/title.factory';
 interface ExperienceType {
   startDate?: Date;
   endDate?: Date;
@@ -59,6 +60,7 @@ export interface UserType {
   department?: ObjectId;
   employmentType?: ObjectId;
   skills?: ObjectId[];
+  title?: ObjectId;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -120,5 +122,6 @@ export const buildUserParams = async (obj: UserType = {}): Promise<User> => {
     department: obj.department || (await departmentFactory())._id,
     employmentType: obj.employmentType || (await EmploymentTypeFactory())._id,
     skills: obj.skills || [(await skillFactory())._id],
+    title: obj.title || (await titleFactory())._id,
   };
 };
