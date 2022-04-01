@@ -4,7 +4,7 @@ import { HTTP_METHODS_ENUM } from '../request.methods.enum';
 import { EMPLOYMENT_TYPE_LIST } from '../endpoints/employment-type.endpoint';
 import { EmploymentTypeFactory } from '../../src/employment-type/employment-type.factory';
 describe('get employment type list case', () => {
-  it('should create employment type', async () => {
+  it('should get employment type list', async () => {
     const employmentType = await EmploymentTypeFactory();
     const user = await userFactory({ employmentType: employmentType._id });
     const res = await testRequest({

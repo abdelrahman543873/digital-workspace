@@ -12,6 +12,7 @@ import NodeEnvironment from 'jest-environment-node';
 import { CountryRepository } from '../src/country/country.repository';
 import { LevelRepository } from '../src/level/level.repository';
 import { DepartmentRepository } from '../src/department/department.repository';
+import { SkillRepository } from '../src/skill/skill.repository';
 
 class MongoEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -41,6 +42,7 @@ class MongoEnvironment extends NodeEnvironment {
     this.global.employmentTypeRepository = app.get<EmploymentTypeRepository>(
       EmploymentTypeRepository,
     );
+    this.global.skillRepository = app.get<SkillRepository>(SkillRepository);
   }
 
   async teardown() {

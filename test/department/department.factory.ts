@@ -1,6 +1,6 @@
 import { DepartmentTestRepo } from './department-test-repo';
 import { name, datatype } from 'faker';
-import { Department } from '../../src/department/schema/department.schema.input';
+import { Department } from '../../src/department/schema/department.schema';
 
 interface DepartmentType {
   name?: string;

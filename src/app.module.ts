@@ -23,6 +23,7 @@ import { CountryModule } from './country/country.module';
 import { LevelModule } from './level/level.module';
 import { DepartmentModule } from './department/department.module';
 import { EmploymentTypeModule } from './employment-type/employment-type.module';
+import { SkillModule } from './skill/skill.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { EmploymentTypeModule } from './employment-type/employment-type.module';
     LevelModule,
     DepartmentModule,
     EmploymentTypeModule,
+    SkillModule,
   ],
 })
 export class AppModule implements NestModule {

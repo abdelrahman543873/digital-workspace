@@ -7,10 +7,7 @@ import { UpdateDepartmentInput } from './inputs/update-department.input';
 import { DeleteDepartmentInput } from './inputs/delete-department.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { LookupSchemasEnum } from '../app.const';
-import {
-  Department,
-  DepartmentDocument,
-} from './schema/department.schema.input';
+import { Department, DepartmentDocument } from './schema/department.schema';
 
 @Injectable()
 export class DepartmentRepository extends BaseRepository<Department> {

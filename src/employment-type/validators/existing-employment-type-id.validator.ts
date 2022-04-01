@@ -12,10 +12,11 @@ export class ExistingEmploymentTypeId implements ValidatorConstraintInterface {
   constructor(private employmentTypeRepository: EmploymentTypeRepository) {}
 
   async validate(text: string): Promise<boolean> {
-    const department = await this.employmentTypeRepository.findEmploymentType({
-      id: text,
-    });
-    if (!department) return false;
+    const employmentType =
+      await this.employmentTypeRepository.findEmploymentType({
+        id: text,
+      });
+    if (!employmentType) return false;
     return true;
   }
 

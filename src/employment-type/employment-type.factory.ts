@@ -1,5 +1,5 @@
 import { name, datatype } from 'faker';
-import { Department } from '../../src/department/schema/department.schema.input';
+import { Department } from '../department/schema/department.schema';
 import { EmploymentTypeTestRepo } from '../../test/employment-type/employment-type-test-repo';
 
 interface EmploymentTypeType {
