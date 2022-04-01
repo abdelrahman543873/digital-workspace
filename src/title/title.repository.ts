@@ -26,7 +26,10 @@ export class TitleRepository extends BaseRepository<Title> {
   }
 
   createTitle(input: CreateTitleInput) {
-    return this.titleSchema.create(input);
+    return this.titleSchema.create({
+      ...input,
+      department: new Types.ObjectId(input.department),
+    });
   }
 
   deleteTitle(input: DeleteTitleInput) {
@@ -74,7 +77,14 @@ export class TitleRepository extends BaseRepository<Title> {
       {
         _id: new Types.ObjectId(input.id),
       },
-      input,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore: Unreachable code error
+      {
+        ...input,
+        ...(input.department && {
+          department: new Types.ObjectId(input.department),
+        }),
+      },
       { new: true },
     );
   }

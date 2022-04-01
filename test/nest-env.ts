@@ -13,6 +13,7 @@ import { CountryRepository } from '../src/country/country.repository';
 import { LevelRepository } from '../src/level/level.repository';
 import { DepartmentRepository } from '../src/department/department.repository';
 import { SkillRepository } from '../src/skill/skill.repository';
+import { TitleRepository } from '../src/title/title.repository';
 
 class MongoEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -43,6 +44,7 @@ class MongoEnvironment extends NodeEnvironment {
       EmploymentTypeRepository,
     );
     this.global.skillRepository = app.get<SkillRepository>(SkillRepository);
+    this.global.titleRepository = app.get<TitleRepository>(TitleRepository);
   }
 
   async teardown() {

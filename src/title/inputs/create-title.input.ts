@@ -1,4 +1,5 @@
 import {
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -6,14 +7,17 @@ import {
   MinLength,
   Validate,
 } from 'class-validator';
-import { ExistingTitleId } from '../validators/existing-title-id.validator';
+import { UniqueTitleName } from '../validators/unique-title-name.validator';
 
 export class CreateTitleInput {
   @IsString()
   @MaxLength(50)
   @MinLength(5)
-  @Validate(ExistingTitleId)
+  @Validate(UniqueTitleName)
   name: string;
+
+  @IsMongoId()
+  department: string;
 
   @IsOptional()
   @IsString()
