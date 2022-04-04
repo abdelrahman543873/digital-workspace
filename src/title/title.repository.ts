@@ -45,6 +45,15 @@ export class TitleRepository extends BaseRepository<Title> {
       },
       {
         $lookup: {
+          from: LookupSchemasEnum.departments,
+          localField: 'department',
+          foreignField: '_id',
+          as: 'department',
+        },
+      },
+      { $unwind: '$department' },
+      {
+        $lookup: {
           from: LookupSchemasEnum.users,
           as: 'members',
           let: { title: '$_id' },

@@ -12,6 +12,7 @@ describe('get title list case', () => {
       url: TITLES_LIST,
       token: user.token,
     });
+    expect(Object.keys(res.body.docs[0].department).length).toBeGreaterThan(0);
     expect(res.body.docs[0].members).toBe(1);
   });
 });
