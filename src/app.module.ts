@@ -25,6 +25,7 @@ import { DepartmentModule } from './department/department.module';
 import { EmploymentTypeModule } from './employment-type/employment-type.module';
 import { SkillModule } from './skill/skill.module';
 import { TitleModule } from './title/title.module';
+import { InterestModule } from './interest/interest.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { TitleModule } from './title/title.module';
     EmploymentTypeModule,
     SkillModule,
     TitleModule,
+    InterestModule,
   ],
 })
 export class AppModule implements NestModule {

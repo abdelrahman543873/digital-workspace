@@ -14,6 +14,7 @@ import { LevelRepository } from '../src/level/level.repository';
 import { DepartmentRepository } from '../src/department/department.repository';
 import { SkillRepository } from '../src/skill/skill.repository';
 import { TitleRepository } from '../src/title/title.repository';
+import { InterestRepository } from '../src/interest/interest.repository';
 
 class MongoEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -45,6 +46,8 @@ class MongoEnvironment extends NodeEnvironment {
     );
     this.global.skillRepository = app.get<SkillRepository>(SkillRepository);
     this.global.titleRepository = app.get<TitleRepository>(TitleRepository);
+    this.global.interestRepository =
+      app.get<InterestRepository>(InterestRepository);
   }
 
   async teardown() {

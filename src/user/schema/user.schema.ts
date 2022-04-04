@@ -120,6 +120,9 @@ export class User {
   @Prop({ type: [Types.ObjectId], ref: 'Skill' })
   skills: ObjectId[];
 
+  @Prop({ type: [Types.ObjectId], ref: 'Interest' })
+  interests: ObjectId[];
+
   @Prop({ type: [Types.ObjectId] })
   followers: ObjectId[];
 
