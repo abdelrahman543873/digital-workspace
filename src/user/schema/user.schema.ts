@@ -117,10 +117,10 @@ export class User {
   @Prop({ type: Types.ObjectId, ref: 'Title' })
   title: ObjectId;
 
-  @Prop({ type: [Types.ObjectId], ref: 'Skill' })
+  @Prop({ type: [Types.ObjectId], ref: 'Skill', default: [] })
   skills: ObjectId[];
 
-  @Prop({ type: [Types.ObjectId], ref: 'Interest' })
+  @Prop({ type: [Types.ObjectId], ref: 'Interest', default: [] })
   interests: ObjectId[];
 
   @Prop({ type: [Types.ObjectId] })
