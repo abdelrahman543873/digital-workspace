@@ -19,6 +19,7 @@ describe('update title case', () => {
       },
       token: user.token,
     });
+    expect(Object.keys(res.body.department).length).toBeGreaterThan(0);
     expect(res.body.name).toBe(titleParams.name);
   });
 

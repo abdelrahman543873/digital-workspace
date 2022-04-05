@@ -94,7 +94,7 @@ export class TitleRepository extends BaseRepository<Title> {
           department: new Types.ObjectId(input.department),
         }),
       },
-      { new: true },
+      { new: true, populate: 'department' },
     );
   }
 }
