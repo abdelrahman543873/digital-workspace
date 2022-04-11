@@ -27,10 +27,7 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
 @Injectable()
-export class UserRepository
-  extends BaseRepository<User>
-  implements OnApplicationBootstrap
-{
+export class UserRepository extends BaseRepository<User> {
   constructor(
     @InjectModel(User.name)
     private userSchema: AggregatePaginateModel<UserDocument>,
@@ -39,17 +36,6 @@ export class UserRepository
     private logger: Logger,
   ) {
     super(userSchema);
-  }
-
-  async onApplicationBootstrap() {
-    await this.userSchema.updateMany(
-      { skills: { $exists: false } },
-      { $set: { skills: [] } },
-    );
-    await this.userSchema.updateMany(
-      { interests: { $exists: false } },
-      { $set: { interests: [] } },
-    );
   }
 
   async addUser(
