@@ -1,7 +1,7 @@
 import { Pagination } from './../shared/utils/pagination.input';
 import { LookupSchemasEnum } from './../app.const';
 import { hashPass } from './../shared/utils/bcryptHelper';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AggregatePaginateModel, Model, ObjectId, Types } from 'mongoose';
 import { User, UserDocument } from './schema/user.schema';
@@ -27,7 +27,10 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
 @Injectable()
-export class UserRepository extends BaseRepository<User> {
+export class UserRepository
+  extends BaseRepository<User>
+  implements OnApplicationBootstrap
+{
   constructor(
     @InjectModel(User.name)
     private userSchema: AggregatePaginateModel<UserDocument>,
@@ -36,6 +39,17 @@ export class UserRepository extends BaseRepository<User> {
     private logger: Logger,
   ) {
     super(userSchema);
+  }
+
+  async onApplicationBootstrap() {
+    await this.userSchema.updateMany(
+      { skills: { $exists: false } },
+      { $set: { skills: [] } },
+    );
+    await this.userSchema.updateMany(
+      { interests: { $exists: false } },
+      { $set: { interests: [] } },
+    );
   }
 
   async addUser(
