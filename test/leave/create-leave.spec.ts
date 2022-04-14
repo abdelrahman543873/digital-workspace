@@ -5,8 +5,8 @@ import { buildLeaveParams } from './leave.factory';
 import { LEAVE } from '../endpoints/leave.endpoints';
 describe('create leave case', () => {
   it('should create leave', async () => {
-    const user = await userFactory();
     const leave = await buildLeaveParams();
+    const user = await userFactory({ leaveBalance: 1000 });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: LEAVE,

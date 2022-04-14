@@ -14,7 +14,6 @@ import { LeaveReason, LeaveReasonSchema } from './schema/reason.schema';
 
 @Module({
   imports: [
-    UserModule,
     MulterModule.register({
       preservePath: true,
       storage: diskStorage({
