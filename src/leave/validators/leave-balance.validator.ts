@@ -20,6 +20,6 @@ export class LeaveBalanceValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `your leave balance is less than the number of days you are requesting`;
+    return 'You don’t have enough balance to complete this request';
   }
 }
