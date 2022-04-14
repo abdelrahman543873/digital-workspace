@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Post,
+  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -27,7 +28,10 @@ export class LeaveController {
   @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(FilesInterceptor('attachments'))
   @Post()
-  async createLeave(@Body() input: CreateLeaveInput) {
-    return await this.leaveService.createLeave(input);
+  async createLeave(
+    @Body() input: CreateLeaveInput,
+    @UploadedFiles() attachments: Array<Express.Multer.File>,
+  ) {
+    return await this.leaveService.createLeave(input, attachments);
   }
 }

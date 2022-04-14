@@ -1,7 +1,6 @@
 import { leaveTestRepo } from './leave-test-repo';
-import { name, datatype, date, random } from 'faker';
+import { date, random } from 'faker';
 import { ObjectId } from 'mongoose';
-import { skillTestRepo } from '../../test/skill/skill-test-repo';
 import { userFactory } from '../../src/user/user.factory';
 import { leaveReasonFactory } from './leave-reason.factory';
 import { Leave } from '../../src/leave/schema/leave.schema';

@@ -7,17 +7,22 @@ describe('create leave case', () => {
   it('should create leave', async () => {
     const leave = await buildLeaveParams();
     const user = await userFactory({ leaveBalance: 1000 });
+    const testFiles = process.cwd();
+    const filePath = `${testFiles}/test/test-files/test-duck.jpeg`;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: LEAVE,
       variables: {
-        startDate: leave.startDate,
-        endDate: leave.endDate,
+        startDate: leave.startDate.toISOString(),
+        endDate: leave.endDate.toISOString(),
         reason: leave.reason.toString(),
         comment: leave.comment,
       },
       token: user.token,
+      filePath,
+      fileParam: 'attachments',
     });
     expect(res.body.reason).toBe(decodeURI(encodeURI(leave.reason.toString())));
+    expect(res.body.attachments.length).toBeGreaterThanOrEqual(1);
   });
 });

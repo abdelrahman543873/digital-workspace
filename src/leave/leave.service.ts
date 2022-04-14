@@ -11,10 +11,14 @@ export class LeaveService {
     @Inject(REQUEST) private readonly request: RequestContext,
   ) {}
 
-  createLeave(input: CreateLeaveInput) {
+  createLeave(
+    input: CreateLeaveInput,
+    attachments: Array<Express.Multer.File>,
+  ) {
     return this.leaveRepository.createLeave(
       this.request.currentUser._id,
       input,
+      attachments,
     );
   }
 }
