@@ -59,4 +59,8 @@ export const LocalizedErrorMessages: IErrorMessage = {
     EN: "you can't delete level as it has users",
     AR: "you can't delete level as it has users",
   },
+  616: {
+    EN: 'file upload failed',
+    AR: 'file upload failed',
+  },
 };
