@@ -1,5 +1,6 @@
 import { Repository } from '../interfaces/repository.interface';
 import { Model, Document, FilterQuery, UpdateQuery } from 'mongoose';
+import { ModelOptions } from 'mongoose';
 
 export abstract class BaseRepository<T> implements Repository<T> {
   // creating a property to use your code in all instances
@@ -15,27 +16,27 @@ export abstract class BaseRepository<T> implements Repository<T> {
     return await this._model.create(item);
   }
 
-  async addMany(item): Promise<Array<T & Document>> {
-    return await this._model.insertMany(item);
+  async addMany(
+    item: any[],
+    options?: { ordered?: boolean; rawResult?: boolean } & ModelOptions,
+  ): Promise<T[]> {
+    return await this._model.insertMany(item, options);
   }
 
   async rawDelete(): Promise<{ deletedCount?: number }> {
     return await this._model.deleteMany({});
   }
 
-  async deleteOne(filter?: FilterQuery<T & Document<any, any, any>>) {
+  async deleteOne(filter?: FilterQuery<T>) {
     return await this._model.deleteOne(filter);
   }
 
-  async findOne(
-    filter: FilterQuery<T & Document<any>>,
-    projection?: any,
-  ): Promise<T> {
+  async findOne(filter: FilterQuery<T>, projection?: any): Promise<T> {
     return await this._model.findOne(filter, projection);
   }
   async updateOne(
-    filter: FilterQuery<T & Document<any>>,
-    update: UpdateQuery<T & Document<any, any>>,
+    filter: FilterQuery<T>,
+    update: UpdateQuery<T>,
   ): Promise<Record<any, any>> {
     return await this._model.findOneAndUpdate(filter, update, { new: true });
   }

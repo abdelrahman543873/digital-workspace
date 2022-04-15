@@ -82,19 +82,19 @@ export class TitleRepository extends BaseRepository<Title> {
   }
 
   updateTitle(input: UpdateTitleInput) {
-    return this.titleSchema.findOneAndUpdate(
-      {
-        _id: new Types.ObjectId(input.id),
-      },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore: Unreachable code error
-      {
-        ...input,
-        ...(input.department && {
-          department: new Types.ObjectId(input.department),
-        }),
-      },
-      { new: true, populate: 'department' },
-    );
+    return this.titleSchema
+      .findOneAndUpdate(
+        {
+          _id: new Types.ObjectId(input.id),
+        },
+        {
+          ...input,
+          ...(input.department && {
+            department: new Types.ObjectId(input.department),
+          }),
+        },
+        { new: true },
+      )
+      .populate('department');
   }
 }

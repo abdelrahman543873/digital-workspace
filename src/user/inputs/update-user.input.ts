@@ -1,97 +1,11 @@
-import { Type } from 'class-transformer';
-import {
-  Allow,
-  ArrayNotEmpty,
-  IsArray,
-  IsDateString,
-  IsEmail,
-  IsISO31661Alpha2,
-  IsMongoId,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUrl,
-  Min,
-  ValidateNested,
-} from 'class-validator';
-import { Experience, Skill, Education } from '../schema/user.schema';
+import { PartialType } from '@nestjs/swagger';
+import { IsOptional, IsString, IsNotEmpty, Min } from 'class-validator';
+import { AddUserInput } from './add-user.input';
 
-export class UpdateUserInput {
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  fullName?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @Min(8)
-  password?: string;
-
+export class UpdateUserInput extends PartialType(AddUserInput) {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
   @Min(8)
   newPassword?: string;
-
-  @IsOptional()
-  @IsDateString()
-  birthDate?: string;
-
-  @IsOptional()
-  @IsArray()
-  @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => Experience)
-  experience?: Experience[];
-
-  @IsOptional()
-  @IsArray()
-  @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => Skill)
-  skill?: Skill[];
-
-  @IsOptional()
-  @IsArray()
-  @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => Education)
-  education?: Education[];
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  description?: string;
-
-  @IsOptional()
-  @IsMongoId()
-  directManagerId?: string;
-
-  @IsOptional()
-  @IsISO31661Alpha2()
-  nationality?: string;
-
-  @IsOptional()
-  @IsEmail()
-  email?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  position?: string;
-
-  @Allow()
-  profilePic: string;
-
-  @Allow()
-  coverPic: string;
-
-  @IsOptional()
-  @IsUrl()
-  linkedin?: string;
-
-  @IsOptional()
-  @IsUrl()
-  twitter?: string;
 }

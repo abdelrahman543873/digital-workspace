@@ -1,4 +1,4 @@
-import { User, Experience, Skill, Education } from './schema/user.schema';
+import { Experience, Education } from './schema/user.schema';
 import { ObjectId, Types } from 'mongoose';
 import { address, datatype, date, internet, name, phone, random } from 'faker';
 import { GENDER, WIDGETS } from '../app.const';
@@ -39,7 +39,6 @@ export interface UserType {
   phone?: string;
   experience?: Experience[];
   education?: Education[];
-  skill?: Skill[];
   description?: string;
   profilePic?: string;
   coverPic?: string;
@@ -97,13 +96,6 @@ const buildEducationParams = (obj: EducationType = {}): Education => {
   };
 };
 
-const buildSkillParams = (obj: SkillType = {}): Skill => {
-  return {
-    name: obj.name || name.jobTitle(),
-    percentage: obj.percentage || datatype.number(100),
-  };
-};
-
 export const buildUserParams = async (
   obj: UserType = {},
 ): Promise<UserType> => {
@@ -123,7 +115,6 @@ export const buildUserParams = async (
     followers: obj.followers || [],
     following: obj.following || [],
     education: obj.education || [buildEducationParams()],
-    skill: obj.skill || [buildSkillParams()],
     nationality: obj.nationality || address.countryCode(),
     hiddenPosts: obj.hiddenPosts || [],
     position: obj.position || name.jobTitle(),

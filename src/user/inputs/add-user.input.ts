@@ -1,15 +1,15 @@
-import { Transform, Type } from 'class-transformer';
+import { Transform, TransformFnParams, Type } from 'class-transformer';
 import {
   Allow,
   ArrayNotEmpty,
+  isArray,
   IsArray,
-  IsBoolean,
   IsBooleanString,
   IsDateString,
   IsEmail,
-  IsEnum,
   IsIn,
   IsISO31661Alpha2,
+  isMongoId,
   IsMongoId,
   IsNotEmpty,
   IsNumber,
@@ -21,14 +21,19 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { Experience, Skill, Education } from '../schema/user.schema';
+import { Experience, Education } from '../schema/user.schema';
 import { getValuesFromEnum } from '../../shared/utils/columnEnum';
 import { STATUS, BLOOD_TYPE, MARTIAL_STATUS } from '../user.enum';
+import { BadRequestException } from '@nestjs/common';
+import { Types, ObjectId } from 'mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class AddUserInput {
+  @ApiProperty()
   @IsEmail()
   email: string;
 
+  @ApiProperty()
   @IsString()
   @MinLength(8)
   @MaxLength(256)
@@ -47,11 +52,21 @@ export class AddUserInput {
   experience?: Experience[];
 
   @IsOptional()
-  @IsArray()
-  @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => Skill)
-  skill?: Skill[];
+  @Transform((params: TransformFnParams) => {
+    const skills: [string] = params.value;
+    const convertedSkillsArray = [];
+    if (!isArray(skills) || !skills.length)
+      throw new BadRequestException(
+        `value of ${params.key} should be an array with mongoIds`,
+      );
+    skills.forEach((skill) => {
+      if (!isMongoId(skill))
+        throw new BadRequestException(`value of ${params.key} isn't a mongoId`);
+      convertedSkillsArray.push(new Types.ObjectId(`${params.value}`));
+    });
+    return convertedSkillsArray;
+  })
+  skills?: ObjectId[];
 
   @IsOptional()
   @IsArray()
@@ -98,9 +113,11 @@ export class AddUserInput {
   @IsDateString()
   birthDate?: string;
 
+  @ApiProperty()
   @IsIn(getValuesFromEnum(STATUS))
   status: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   governmentalId: string;
@@ -117,7 +134,7 @@ export class AddUserInput {
 
   @IsOptional()
   @IsDateString()
-  visaExpiryDate?: string;
+  visaExpiryDate?: Date;
 
   @IsOptional()
   @IsPhoneNumber()
@@ -133,7 +150,7 @@ export class AddUserInput {
 
   @IsOptional()
   @IsDateString()
-  weddingDate?: string;
+  weddingDate?: Date;
 
   @IsOptional()
   @IsNumber()

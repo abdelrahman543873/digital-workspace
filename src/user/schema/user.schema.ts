@@ -45,16 +45,6 @@ export class Education {
 
 const EducationSchema = SchemaFactory.createForClass(Education);
 
-@Schema({ versionKey: false, _id: false })
-export class Skill {
-  @Prop()
-  percentage: number;
-
-  @Prop()
-  name: string;
-}
-
-const SkillSchema = SchemaFactory.createForClass(Skill);
 @Schema({ versionKey: false, timestamps: true })
 export class User {
   _id?: ObjectId;
@@ -81,9 +71,6 @@ export class User {
 
   @Prop({ type: [EducationSchema] })
   education: Education[];
-
-  @Prop({ type: [SkillSchema] })
-  skill: Skill[];
 
   @Prop()
   description: string;
