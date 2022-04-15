@@ -10,6 +10,7 @@ import { LeaveTypeRepository } from './leave-type.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Leave, LeaveSchema } from './schema/leave.schema';
 import { LeaveType, LeaveTypeSchema } from './schema/leave-type.schema';
+import { LeaveTypeValidator } from './validators/leave-type.validator';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { LeaveType, LeaveTypeSchema } from './schema/leave-type.schema';
     LeaveBalanceValidator,
     LeaveRepository,
     LeaveTypeRepository,
+    LeaveTypeValidator,
   ],
 })
 export class LeaveModule {}
