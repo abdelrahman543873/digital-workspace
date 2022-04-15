@@ -6,7 +6,7 @@ interface LeavenTypeType {
   reason?: string;
 }
 
-export const buildLeaveReasonParams = (
+export const buildLeaveTypeParams = (
   obj: LeavenTypeType = {},
 ): LeavenTypeType => {
   return {
@@ -20,7 +20,7 @@ export const leaveTypesFactory = async (
 ): Promise<LeaveType[]> => {
   const leaveTypes: LeavenTypeType[] = [];
   for (let i = 0; i < count; i++) {
-    leaveTypes.push(buildLeaveReasonParams(obj));
+    leaveTypes.push(buildLeaveTypeParams(obj));
   }
   return await leaveTypeTestRepo().addMany(leaveTypes);
 };
@@ -28,6 +28,6 @@ export const leaveTypesFactory = async (
 export const leaveTypeFactory = async (
   obj: LeavenTypeType = {},
 ): Promise<LeaveType> => {
-  const params: LeavenTypeType = buildLeaveReasonParams(obj);
+  const params: LeavenTypeType = buildLeaveTypeParams(obj);
   return await leaveTypeTestRepo().add(params);
 };

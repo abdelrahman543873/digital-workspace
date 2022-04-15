@@ -14,13 +14,14 @@ import { CreateLeaveSwagger } from './swagger/create-leave.swagger';
 import { FileCloudUploadInterceptor } from '../shared/interceptors/file-cloud-upload.interceptor';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { RequestInBodyInterceptor } from '../shared/interceptors/request-in-body.interceptor';
+import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
 
 @ApiTags('leave')
+@ApiBearerAuth()
 @Controller('leave')
 export class LeaveController {
   constructor(private readonly leaveService: LeaveService) {}
 
-  @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
   @ApiBody(CreateLeaveSwagger)
   @UseGuards(AuthGuard)
@@ -33,5 +34,11 @@ export class LeaveController {
     @UploadedFiles() attachments: Array<Express.Multer.File>,
   ) {
     return await this.leaveService.createLeave(input, attachments);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('type')
+  async createLeaveType(@Body() input: CreateLeaveTypeInput) {
+    return await this.leaveService.createLeaveType(input);
   }
 }

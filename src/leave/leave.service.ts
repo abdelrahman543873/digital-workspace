@@ -3,12 +3,15 @@ import { Inject, Injectable } from '@nestjs/common';
 import { LeaveRepository } from './leave.repository';
 import { CreateLeaveInput } from './inputs/create-leave.input';
 import { REQUEST } from '@nestjs/core';
+import { LeaveTypeRepository } from './leave-type.repository';
+import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
 
 @Injectable()
 export class LeaveService {
   constructor(
     private readonly leaveRepository: LeaveRepository,
     @Inject(REQUEST) private readonly request: RequestContext,
+    private readonly leaveTypeRepository: LeaveTypeRepository,
   ) {}
 
   createLeave(
@@ -20,5 +23,9 @@ export class LeaveService {
       input,
       attachments,
     );
+  }
+
+  createLeaveType(input: CreateLeaveTypeInput) {
+    return this.leaveTypeRepository.createLeaveType(input);
   }
 }
