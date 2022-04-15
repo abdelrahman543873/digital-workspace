@@ -12,6 +12,9 @@ export const CreateLeaveSwagger: ApiBodyOptions = {
         type: 'string',
         format: 'date',
       },
+      type: {
+        type: 'string',
+      },
       reason: {
         type: 'string',
       },
