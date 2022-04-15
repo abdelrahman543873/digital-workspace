@@ -3,14 +3,13 @@ import { Module } from '@nestjs/common';
 import { LeaveController } from './leave.controller';
 import { LeaveService } from './leave.service';
 import { LeaveBalanceValidator } from './validators/leave-balance.validator';
-import { UserModule } from '../user/user.module';
 import { filename } from '../shared/utils/multer-file-name';
 import { diskStorage } from 'multer';
 import { MulterModule } from '@nestjs/platform-express';
-import { LeaveReasonRepository } from './leave-reason.repository';
+import { LeaveTypeRepository } from './leave-type.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Leave, LeaveSchema } from './schema/leave.schema';
-import { LeaveReason, LeaveReasonSchema } from './schema/reason.schema';
+import { LeaveType, LeaveTypeSchema } from './schema/leave-type.schema';
 
 @Module({
   imports: [
@@ -23,7 +22,7 @@ import { LeaveReason, LeaveReasonSchema } from './schema/reason.schema';
     }),
     MongooseModule.forFeature([
       { name: Leave.name, schema: LeaveSchema },
-      { name: LeaveReason.name, schema: LeaveReasonSchema },
+      { name: LeaveType.name, schema: LeaveTypeSchema },
     ]),
   ],
   controllers: [LeaveController],
@@ -31,7 +30,7 @@ import { LeaveReason, LeaveReasonSchema } from './schema/reason.schema';
     LeaveService,
     LeaveBalanceValidator,
     LeaveRepository,
-    LeaveReasonRepository,
+    LeaveTypeRepository,
   ],
 })
 export class LeaveModule {}

@@ -2,14 +2,14 @@ import { leaveTestRepo } from './leave-test-repo';
 import { date, random } from 'faker';
 import { ObjectId } from 'mongoose';
 import { userFactory } from '../../src/user/user.factory';
-import { leaveReasonFactory } from './leave-reason.factory';
 import { Leave } from '../../src/leave/schema/leave.schema';
+import { leaveTypeFactory } from './leave-type.factory';
 
 interface LeaveType {
   employee?: ObjectId;
   startDate?: Date;
   endDate?: Date;
-  reason?: ObjectId;
+  type?: ObjectId;
   comment?: string;
   attachments?: string[];
   replacement?: ObjectId;
@@ -23,7 +23,7 @@ export const buildLeaveParams = async (
     employee: obj.employee || user._id,
     startDate: obj.startDate || date.past(),
     endDate: obj.endDate || date.future(),
-    reason: obj.reason || (await leaveReasonFactory())._id,
+    type: obj.type || (await leaveTypeFactory())._id,
     comment: obj.comment || random.words(),
     attachments: obj.attachments || [`${process.env.HOST}/defaults/avatar.jpg`],
     replacement: obj.replacement || user._id,

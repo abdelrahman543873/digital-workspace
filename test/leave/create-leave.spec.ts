@@ -15,14 +15,14 @@ describe('create leave case', () => {
       variables: {
         startDate: leave.startDate.toISOString(),
         endDate: leave.endDate.toISOString(),
-        reason: leave.reason.toString(),
+        type: leave.type.toString(),
         comment: leave.comment,
       },
       token: user.token,
       filePath,
       fileParam: 'attachments',
     });
-    expect(res.body.reason).toBe(decodeURI(encodeURI(leave.reason.toString())));
+    expect(res.body.type).toBe(decodeURI(encodeURI(leave.type.toString())));
     expect(res.body.attachments.length).toBeGreaterThanOrEqual(1);
   });
 });

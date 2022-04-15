@@ -29,7 +29,7 @@ export class CreateLeaveInput {
       throw new BadRequestException(`value of ${params.key} isn't a mongoId`);
     return params.value ? new Types.ObjectId(`${params.value}`) : params.value;
   })
-  reason: string;
+  type: string;
 
   @IsOptional()
   @IsString()
