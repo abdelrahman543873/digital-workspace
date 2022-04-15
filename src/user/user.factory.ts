@@ -8,7 +8,7 @@ export const usersFactory = async (
   count = 10,
   obj: UserType = {},
 ): Promise<User[]> => {
-  const users: User[] = [];
+  const users: UserType[] = [];
   for (let i = 0; i < count; i++) {
     users.push(await buildUserParams(obj));
   }
@@ -16,7 +16,7 @@ export const usersFactory = async (
 };
 
 export const userFactory = async (obj: UserType = {}): Promise<User> => {
-  const params: User = await buildUserParams(obj);
+  const params: UserType = await buildUserParams(obj);
   const user = await UserRepo().add({
     ...params,
     password: await hashPass(params.password),

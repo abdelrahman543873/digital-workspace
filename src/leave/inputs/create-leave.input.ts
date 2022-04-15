@@ -40,6 +40,13 @@ export class CreateLeaveInput {
   @MinLength(5)
   comment?: string;
 
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(500)
+  @MinLength(5)
+  reason?: string;
+
   @Allow()
   attachments?: string[];
 

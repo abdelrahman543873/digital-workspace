@@ -7,10 +7,14 @@ import {
   IsBooleanString,
   IsDateString,
   IsEmail,
+  IsEnum,
+  IsIn,
   IsISO31661Alpha2,
   IsMongoId,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
+  IsPhoneNumber,
   IsString,
   IsUrl,
   MaxLength,
@@ -18,6 +22,8 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Experience, Skill, Education } from '../schema/user.schema';
+import { getValuesFromEnum } from '../../shared/utils/columnEnum';
+import { STATUS, BLOOD_TYPE, MARTIAL_STATUS } from '../user.enum';
 
 export class AddUserInput {
   @IsEmail()
@@ -91,6 +97,47 @@ export class AddUserInput {
   @IsOptional()
   @IsDateString()
   birthDate?: string;
+
+  @IsIn(getValuesFromEnum(STATUS))
+  status: string;
+
+  @IsString()
+  @IsNotEmpty()
+  governmentalId: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  visa?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  address?: string;
+
+  @IsOptional()
+  @IsDateString()
+  visaExpiryDate?: string;
+
+  @IsOptional()
+  @IsPhoneNumber()
+  emergencyContactNumber?: string;
+
+  @IsOptional()
+  @IsIn(getValuesFromEnum(BLOOD_TYPE))
+  bloodGroup?: string;
+
+  @IsOptional()
+  @IsIn(getValuesFromEnum(MARTIAL_STATUS))
+  martialStatus?: string;
+
+  @IsOptional()
+  @IsDateString()
+  weddingDate?: string;
+
+  @IsOptional()
+  @IsNumber()
+  yearsOfExperience?: number;
 
   @Allow()
   profilePic: string;

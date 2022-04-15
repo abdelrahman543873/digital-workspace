@@ -23,6 +23,9 @@ export class Leave {
   comment: string;
 
   @Prop()
+  reason: string;
+
+  @Prop()
   attachments: string[];
 
   @Prop({ type: Types.ObjectId, ref: 'User' })
