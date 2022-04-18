@@ -14,6 +14,7 @@ import { Types } from 'mongoose';
 import { MinLength } from 'class-validator';
 import { BadRequestException } from '@nestjs/common';
 import { LeaveBalanceValidator } from '../validators/leave-balance.validator';
+import { LeaveTypeValidator } from '../validators/leave-type.validator';
 
 export class CreateLeaveInput {
   @IsDateString()
@@ -24,12 +25,13 @@ export class CreateLeaveInput {
   endDate: string;
 
   @IsDefined()
+  @Validate(LeaveTypeValidator)
   @Transform((params: TransformFnParams) => {
     if (!isMongoId(params.value))
       throw new BadRequestException(`value of ${params.key} isn't a mongoId`);
-    return params.value ? new Types.ObjectId(`${params.value}`) : params.value;
+    return new Types.ObjectId(`${params.value}`);
   })
-  reason: string;
+  type: string;
 
   @IsOptional()
   @IsString()
@@ -38,6 +40,13 @@ export class CreateLeaveInput {
   @MinLength(5)
   comment?: string;
 
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(500)
+  @MinLength(5)
+  reason?: string;
+
   @Allow()
   attachments?: string[];
 
@@ -45,7 +54,7 @@ export class CreateLeaveInput {
   @Transform((params: TransformFnParams) => {
     if (!isMongoId(params.value))
       throw new BadRequestException(`value of ${params.key} isn't a mongoId`);
-    return params.value ? new Types.ObjectId(`${params.value}`) : params.value;
+    return new Types.ObjectId(`${params.value}`);
   })
   replacement?: string;
 

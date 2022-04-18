@@ -14,7 +14,19 @@ export class LeaveRepository extends BaseRepository<Leave> {
     super(leaveSchema);
   }
 
-  createLeave(employee: ObjectId, input: CreateLeaveInput) {
-    return this.leaveSchema.create({ ...input, employee });
+  createLeave(
+    employee: ObjectId,
+    input: CreateLeaveInput,
+    attachments: Array<Express.Multer.File>,
+  ) {
+    return this.leaveSchema.create({
+      ...input,
+      employee,
+      ...(attachments && {
+        attachments: attachments.map((attachment) => {
+          return `${process.env.HOST}${attachment.filename}`;
+        }),
+      }),
+    });
   }
 }

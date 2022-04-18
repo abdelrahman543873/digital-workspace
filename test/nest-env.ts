@@ -16,7 +16,7 @@ import { SkillRepository } from '../src/skill/skill.repository';
 import { TitleRepository } from '../src/title/title.repository';
 import { InterestRepository } from '../src/interest/interest.repository';
 import { LeaveRepository } from '../src/leave/leave.repository';
-import { LeaveReasonRepository } from '../src/leave/leave-reason.repository';
+import { LeaveTypeRepository } from '../src/leave/leave-type.repository';
 
 class MongoEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -51,9 +51,8 @@ class MongoEnvironment extends NodeEnvironment {
     this.global.interestRepository =
       app.get<InterestRepository>(InterestRepository);
     this.global.leaveRepository = app.get<LeaveRepository>(LeaveRepository);
-    this.global.leaveReasonRepository = app.get<LeaveReasonRepository>(
-      LeaveReasonRepository,
-    );
+    this.global.leaveTypeRepository =
+      app.get<LeaveTypeRepository>(LeaveTypeRepository);
   }
 
   async teardown() {

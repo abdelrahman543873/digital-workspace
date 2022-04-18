@@ -11,6 +11,8 @@ describe('register user suite case', () => {
       variables: {
         email: params.email,
         password: params.password,
+        status: params.status,
+        governmentalId: params.governmentalId,
       },
     });
     expect(res.body.token).toBeTruthy();
@@ -27,6 +29,8 @@ describe('register user suite case', () => {
         password: params.password,
         isAdmin: 'false',
         isCompany: 'true',
+        status: params.status,
+        governmentalId: params.governmentalId,
       },
     });
     expect(res.body.isCompany).toBe(true);
@@ -45,6 +49,8 @@ describe('register user suite case', () => {
       variables: {
         email: params.email,
         password: params.password,
+        status: params.status,
+        governmentalId: params.governmentalId,
       },
       filePath,
       fileParam: 'coverPic',

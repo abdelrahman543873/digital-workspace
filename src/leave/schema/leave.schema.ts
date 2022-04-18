@@ -16,11 +16,14 @@ export class Leave {
   @Prop({ type: Date })
   endDate: Date;
 
-  @Prop({ type: Types.ObjectId, ref: 'Reason' })
-  reason: ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'LeaveType' })
+  type: ObjectId;
 
   @Prop()
   comment: string;
+
+  @Prop()
+  reason: string;
 
   @Prop()
   attachments: string[];

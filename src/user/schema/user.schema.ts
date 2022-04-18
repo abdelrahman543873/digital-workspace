@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, ObjectId, Types } from 'mongoose';
 import { GENDER } from '../../app.const';
+import { BLOOD_TYPE, MARTIAL_STATUS, STATUS } from '../user.enum';
 
 export type UserDocument = User & Document;
 
@@ -44,16 +45,6 @@ export class Education {
 
 const EducationSchema = SchemaFactory.createForClass(Education);
 
-@Schema({ versionKey: false, _id: false })
-export class Skill {
-  @Prop()
-  percentage: number;
-
-  @Prop()
-  name: string;
-}
-
-const SkillSchema = SchemaFactory.createForClass(Skill);
 @Schema({ versionKey: false, timestamps: true })
 export class User {
   _id?: ObjectId;
@@ -69,6 +60,9 @@ export class User {
   @Prop({ sparse: true })
   phone: string;
 
+  @Prop({ enum: STATUS, default: STATUS.INVITED })
+  status: string;
+
   @Prop()
   fullName: string;
 
@@ -77,9 +71,6 @@ export class User {
 
   @Prop({ type: [EducationSchema] })
   education: Education[];
-
-  @Prop({ type: [SkillSchema] })
-  skill: Skill[];
 
   @Prop()
   description: string;
@@ -144,6 +135,18 @@ export class User {
   @Prop()
   twitter: string;
 
+  @Prop({ sparse: true })
+  governmentalId: string;
+
+  @Prop({ sparse: true })
+  visa: string;
+
+  @Prop()
+  address: string;
+
+  @Prop({ type: Date })
+  visaExpiryDate: Date;
+
   @Prop()
   microsoftToken: string;
 
@@ -155,6 +158,21 @@ export class User {
 
   @Prop()
   leaveBalance: number;
+
+  @Prop()
+  emergencyContactNumber: string;
+
+  @Prop({ enum: BLOOD_TYPE })
+  bloodGroup: string;
+
+  @Prop({ enum: MARTIAL_STATUS })
+  martialStatus: string;
+
+  @Prop({ type: Date })
+  weddingDate: Date;
+
+  @Prop()
+  yearsOfExperience: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

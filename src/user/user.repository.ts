@@ -8,7 +8,7 @@ import { User, UserDocument } from './schema/user.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { AddUserInput } from './inputs/add-user.input';
 import { hashPassSync } from '../shared/utils/bcryptHelper';
-import { buildUserParams } from './user.seed';
+import { buildUserParams, UserType } from './user.seed';
 import { TestUser, TestUserDocument } from './schema/test-user.schema';
 import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
@@ -69,7 +69,7 @@ export class UserRepository extends BaseRepository<User> {
   async seedUsers() {
     const verifyExistingTestUsers = await this.testUserSchema.findOne();
     if (verifyExistingTestUsers) return await this.testUserSchema.find();
-    const users: User[] = [];
+    const users: UserType[] = [];
     for (let i = 0; i < 10; i++) {
       const params = await buildUserParams();
       users.push(params);

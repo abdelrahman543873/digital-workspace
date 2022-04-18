@@ -55,7 +55,6 @@ describe('create page suite case', () => {
       filePath,
       fileParam: 'logo',
     });
-    console.log(res.body);
     expect(res.body.name).toBe(page.name);
     expect(res.body.logo).toContain(process.env.HOST);
   });
