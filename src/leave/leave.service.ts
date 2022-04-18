@@ -5,6 +5,7 @@ import { CreateLeaveInput } from './inputs/create-leave.input';
 import { REQUEST } from '@nestjs/core';
 import { LeaveTypeRepository } from './leave-type.repository';
 import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
+import { Pagination } from '../shared/utils/pagination.input';
 
 @Injectable()
 export class LeaveService {
@@ -27,5 +28,9 @@ export class LeaveService {
 
   createLeaveType(input: CreateLeaveTypeInput) {
     return this.leaveTypeRepository.createLeaveType(input);
+  }
+
+  getLeaveTypes(input: Pagination) {
+    return this.leaveTypeRepository.getLeaveTypes(input);
   }
 }
