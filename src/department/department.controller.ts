@@ -15,7 +15,8 @@ import { AuthGuard } from '../shared/guards/auth.guard';
 import { UpdateDepartmentInput } from './inputs/update-department.input';
 import { DeleteDepartmentInput } from './inputs/delete-department.input';
 import { Pagination } from '../shared/utils/pagination.input';
-
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
+@UseGuards(ActiveUserGuard)
 @Controller('department')
 export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}

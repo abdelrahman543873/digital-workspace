@@ -36,6 +36,7 @@ import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 import { UpdateUserByIdSwagger } from './swagger/update-user-by-id.swagger';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
 import { DeleteUserInput } from './inputs/delete-user-by-id.input';
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -66,7 +67,7 @@ export class UserController {
   @ApiTags('user')
   @ApiConsumes('multipart/form-data')
   @ApiBody(UpdateUserSwagger)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -91,7 +92,7 @@ export class UserController {
   @ApiTags('user')
   @ApiConsumes('multipart/form-data')
   @ApiBody(UpdateUserByIdSwagger)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -114,7 +115,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Put('favWidget')
   async addFavWidget(@Body() input: AddFavWidgetInput) {
     return await this.userService.addFavWidget(input);
@@ -130,7 +131,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('hierarchy')
   async getHierarchy(@Query() input: GetHierarchyInput) {
     return await this.userService.getHierarchy(input);
@@ -138,7 +139,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('userById/:id')
   async getUserById(@Param() input: GetUserByIdInput): Promise<User> {
     return await this.userService.getUserById(input);
@@ -146,7 +147,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('list')
   async getUserList(@Query() input: Pagination) {
     return await this.userService.getUserList(input);
@@ -154,7 +155,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('search')
   async searchUser(@Query() input: SearchUserInput) {
     return await this.userService.searchUser(input);
@@ -162,7 +163,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('recommendations')
   async recommendUsers(@Query() pagination: Pagination) {
     return await this.userService.recommendUsers(pagination);
@@ -170,7 +171,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('mostFollowed')
   async getMostFollowedUsers(@Query() pagination: Pagination) {
     return await this.userService.getMostFollowed(pagination);
@@ -178,7 +179,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Put('hidePost')
   async hidePost(@Body() input: HidePostInput) {
     return await this.userService.hidePost(input);
@@ -192,7 +193,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Put('manageFollow')
   async manageFollow(@Body() input: ManageFollowUserInput) {
     return await this.userService.manageFollow(input);
@@ -200,7 +201,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('stats')
   async getStats(@Query() input: GetStatsInput) {
     return await this.userService.getStats(input);
@@ -208,7 +209,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('byBirthday')
   async getUserByBirthday(@Query() input: GetUserByBirthDate) {
     return await this.userService.getUserByBirthDate(input);
@@ -216,7 +217,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Delete('delete')
   async deleteUserById(@Body() input: DeleteUserInput) {
     return await this.userService.deleteUserById(input);

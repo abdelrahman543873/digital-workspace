@@ -15,7 +15,8 @@ import { CreateInterestInput } from './inputs/create-interest.input';
 import { UpdateInterestInput } from './inputs/update-interest.input';
 import { DeleteInterestInput } from './inputs/delete-interest.input';
 import { Pagination } from '../shared/utils/pagination.input';
-
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
+@UseGuards(ActiveUserGuard)
 @Controller('interest')
 export class InterestController {
   constructor(private interestService: InterestService) {}

@@ -17,7 +17,8 @@ import { MyTeamsInput } from './inputs/get-my-teams.input';
 import { UpdateTeamInput } from './inputs/update-team.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { DeleteTeamInput } from './inputs/delete-team.input';
-
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
+@UseGuards(ActiveUserGuard)
 @Controller('team')
 export class TeamController {
   constructor(private teamService: TeamService) {}

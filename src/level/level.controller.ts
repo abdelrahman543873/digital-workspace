@@ -1,3 +1,4 @@
+import { ActiveUserGuard } from './../shared/guards/active-user.guard';
 import {
   Body,
   Controller,
@@ -15,7 +16,7 @@ import { DeleteLevelInput } from './inputs/delete-level.input';
 import { UpdateLevelInput } from './inputs/update-level.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { Query } from '@nestjs/common';
-
+@UseGuards(ActiveUserGuard)
 @Controller('level')
 export class LevelController {
   constructor(private readonly levelService: LevelService) {}

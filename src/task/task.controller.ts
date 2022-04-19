@@ -1,3 +1,4 @@
+import { ActiveUserGuard } from './../shared/guards/active-user.guard';
 import { FileCloudUploadInterceptor } from './../shared/interceptors/file-cloud-upload.interceptor';
 import { AuthGuard } from './../shared/guards/auth.guard';
 import { TaskService } from './task.service';
@@ -14,7 +15,13 @@ import {
   Param,
 } from '@nestjs/common';
 import { CreateTaskInput } from './inputs/create-task.input';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiExcludeEndpoint,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GetTasksInput } from './inputs/get-tasks.input';
 import { UpdateTaskInput } from './inputs/update-task.input';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
@@ -23,6 +30,7 @@ import { GetTaskByIdInput } from './inputs/get-task-by-id.input';
 import { ApplyForLeaveInput } from './inputs/apply-for-leave.input';
 import { ManageLeaveInput } from './inputs/manage-leave.input';
 
+@UseGuards(ActiveUserGuard)
 @Controller('task')
 export class TaskController {
   constructor(private taskService: TaskService) {}
@@ -83,6 +91,7 @@ export class TaskController {
     return await this.taskService.updateTask(input);
   }
 
+  @ApiExcludeEndpoint()
   @ApiBearerAuth()
   @ApiTags('task')
   @UseGuards(AuthGuard)
@@ -91,6 +100,7 @@ export class TaskController {
     return await this.taskService.manageLeave(input);
   }
 
+  @ApiExcludeEndpoint()
   @ApiBearerAuth()
   @ApiTags('task')
   @UseGuards(AuthGuard)

@@ -14,6 +14,8 @@ import { CreateCountryInput } from './inputs/create-country.input';
 import { DeleteCountryInput } from './inputs/delete-country.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { SearchCountryInput } from './inputs/search-country.input';
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
+@UseGuards(ActiveUserGuard)
 @Controller('country')
 export class CountryController {
   constructor(private readonly countryService: CountryService) {}

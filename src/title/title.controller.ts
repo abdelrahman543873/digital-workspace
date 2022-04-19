@@ -15,7 +15,9 @@ import { DeleteTitleInput } from './inputs/delete-title.input';
 import { UpdateTitleInput } from './inputs/update-title.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { CreateTitleInput } from './inputs/create-title.input';
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 
+@UseGuards(ActiveUserGuard)
 @Controller('title')
 export class TitleController {
   constructor(private titleService: TitleService) {}

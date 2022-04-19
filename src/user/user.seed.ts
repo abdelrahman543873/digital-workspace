@@ -131,8 +131,7 @@ export const buildUserParams = async (
     skills: obj.skills || [(await skillFactory())._id],
     interests: obj.interests || [(await interestFactory())._id],
     title: obj.title || (await titleFactory())._id,
-    status:
-      obj.status || (random.arrayElement(getValuesFromEnum(STATUS)) as STATUS),
+    status: obj.status || STATUS.ACTIVE,
     governmentalId: obj.governmentalId || datatype.uuid(),
     visa: obj.visa || datatype.uuid(),
     address: obj.address || address.city(),

@@ -17,7 +17,9 @@ import { RequestInBodyInterceptor } from '../shared/interceptors/request-in-body
 import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
 import { Get, Query } from '@nestjs/common';
 import { Pagination } from '../shared/utils/pagination.input';
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 
+@UseGuards(ActiveUserGuard)
 @ApiTags('leave')
 @ApiBearerAuth()
 @Controller('leave')

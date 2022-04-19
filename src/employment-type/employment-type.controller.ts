@@ -1,3 +1,4 @@
+import { ActiveUserGuard } from './../shared/guards/active-user.guard';
 import { AuthGuard } from './../shared/guards/auth.guard';
 import {
   Body,
@@ -16,6 +17,7 @@ import { DeleteEmploymentTypeInput } from './inputs/delete-employment-type.input
 import { Query } from '@nestjs/common';
 import { Pagination } from '../shared/utils/pagination.input';
 
+@UseGuards(ActiveUserGuard)
 @Controller('employment-type')
 export class EmploymentTypeController {
   constructor(private employmentTypeService: EmploymentTypeService) {}

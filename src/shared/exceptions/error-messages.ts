@@ -63,4 +63,8 @@ export const LocalizedErrorMessages: IErrorMessage = {
     EN: 'file upload failed',
     AR: 'file upload failed',
   },
+  617: {
+    EN: 'your profile is inactivated please contact the admin',
+    AR: 'your profile is inactivated please contact the admin',
+  },
 };

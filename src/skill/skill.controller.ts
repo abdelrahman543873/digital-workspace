@@ -1,3 +1,4 @@
+import { ActiveUserGuard } from './../shared/guards/active-user.guard';
 import {
   Body,
   Controller,
@@ -16,6 +17,7 @@ import { Pagination } from '../shared/utils/pagination.input';
 import { DeleteSkillInput } from './inputs/delete-skill.input';
 import { UpdateSkillInput } from './inputs/update-skill.input';
 
+@UseGuards(ActiveUserGuard)
 @Controller('skill')
 export class SkillController {
   constructor(private skillService: SkillService) {}

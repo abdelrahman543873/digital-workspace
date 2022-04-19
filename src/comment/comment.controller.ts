@@ -5,7 +5,8 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { ManageLikeCommentInput } from './inputs/manage-like-comment.input';
 import { DeleteCommentInput } from './inputs/delete-comment.input';
-
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
+@UseGuards(ActiveUserGuard)
 @Controller('comment')
 export class CommentController {
   constructor(private commentService: CommentService) {}

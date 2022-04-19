@@ -12,7 +12,8 @@ import { TeamsService } from './teams.service';
 import { RegisterUserTokenInput } from './inputs/register-user-token.input';
 import { Body } from '@nestjs/common';
 import { EventsInput } from './inputs/events.input';
-
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
+@UseGuards(ActiveUserGuard)
 @Controller('teams')
 export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
