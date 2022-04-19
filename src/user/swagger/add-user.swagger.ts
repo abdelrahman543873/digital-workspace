@@ -47,6 +47,50 @@ export const AddUserSwagger: ApiBodyOptions = {
         type: 'string',
         format: 'binary',
       },
+      yearsOfExperience: {
+        type: 'number',
+      },
+      weddingDate: {
+        type: 'string',
+        format: 'date',
+      },
+      skills: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+      },
+      education: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+      },
+      status: {
+        type: 'string',
+      },
+      governmentalId: {
+        type: 'string',
+      },
+      visa: {
+        type: 'string',
+      },
+      address: {
+        type: 'string',
+      },
+      visaExpiryDate: {
+        type: 'string',
+        format: 'date',
+      },
+      emergencyContactNumber: {
+        type: 'string',
+      },
+      bloodGroup: {
+        type: 'string',
+      },
+      martialStatus: {
+        type: 'string',
+      },
     },
   },
 };

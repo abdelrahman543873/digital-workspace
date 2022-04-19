@@ -4,8 +4,11 @@ export const UpdateUserSwagger: ApiBodyOptions = {
   schema: {
     type: 'object',
     properties: {
-      fullName: {
-        type: 'string',
+      isAdmin: {
+        type: 'boolean',
+      },
+      isCompany: {
+        type: 'boolean',
       },
       twitter: {
         type: 'string',
@@ -13,23 +16,25 @@ export const UpdateUserSwagger: ApiBodyOptions = {
       linkedin: {
         type: 'string',
       },
-      position: {
-        type: 'string',
-      },
       email: {
         type: 'string',
       },
-      birthDate: {
+      fullName: {
         type: 'string',
-        format: 'date',
+      },
+      nationality: {
+        type: 'string',
       },
       password: {
         type: 'string',
       },
-      newPassword: {
+      experience: {
         type: 'string',
       },
-      experience: {
+      birthDate: {
+        type: 'string',
+      },
+      position: {
         type: 'string',
       },
       description: { type: 'string' },
@@ -41,6 +46,50 @@ export const UpdateUserSwagger: ApiBodyOptions = {
       coverPic: {
         type: 'string',
         format: 'binary',
+      },
+      yearsOfExperience: {
+        type: 'number',
+      },
+      weddingDate: {
+        type: 'string',
+        format: 'date',
+      },
+      skills: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+      },
+      education: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+      },
+      status: {
+        type: 'string',
+      },
+      governmentalId: {
+        type: 'string',
+      },
+      visa: {
+        type: 'string',
+      },
+      address: {
+        type: 'string',
+      },
+      visaExpiryDate: {
+        type: 'string',
+        format: 'date',
+      },
+      emergencyContactNumber: {
+        type: 'string',
+      },
+      bloodGroup: {
+        type: 'string',
+      },
+      martialStatus: {
+        type: 'string',
       },
     },
   },
