@@ -1,5 +1,5 @@
 import { Pagination } from './../shared/utils/pagination.input';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { AddUserInput } from './inputs/add-user.input';
 import { generateAuthToken } from '../shared/utils/token-utils';
@@ -18,12 +18,20 @@ import { HidePostInput } from './inputs/hide-post.input';
 import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
 import { DeleteUserInput } from './inputs/delete-user-by-id.input';
+import { LoginInput } from '../shared/auth/inputs/login.input';
+import {
+  ConfidentialClientApplication,
+  Configuration,
+  LogLevel,
+} from '@azure/msal-node';
+import { Response } from 'express';
 
 @Injectable()
 export class UserService {
   constructor(
     private userRepo: UserRepository,
     @Inject(REQUEST) private readonly request: RequestContext,
+    private logger: Logger,
   ) {}
   async addUser(
     input: AddUserInput,
@@ -147,5 +155,29 @@ export class UserService {
 
   async loadUser() {
     return await this.userRepo.loadUser();
+  }
+
+  async microsoftLogin(input: LoginInput, res: Response) {
+    const config: Configuration = {
+      auth: {
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+      },
+      system: {
+        loggerOptions: {
+          logLevel: LogLevel.Verbose,
+          correlationId: this.request.id,
+          loggerCallback(level, message) {
+            console.log(level, message);
+          },
+        },
+      },
+    };
+    const microsoftPca = new ConfidentialClientApplication(config);
+    const redirectUrl = await microsoftPca.getAuthCodeUrl({
+      scopes: ['user.read'],
+      redirectUri: process.env.REDIRECT_URI,
+    });
+    res.redirect(redirectUrl);
   }
 }

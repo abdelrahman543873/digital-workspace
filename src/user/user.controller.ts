@@ -14,9 +14,16 @@ import {
   UploadedFiles,
   UsePipes,
   Delete,
+  Res,
 } from '@nestjs/common';
 import { AddUserInput } from './inputs/add-user.input';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiExcludeEndpoint,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
 import { SearchUserInput } from './inputs/search-user.input';
@@ -37,11 +44,13 @@ import { UpdateUserByIdSwagger } from './swagger/update-user-by-id.swagger';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
 import { DeleteUserInput } from './inputs/delete-user-by-id.input';
 import { ActiveUserGuard } from '../shared/guards/active-user.guard';
+import { LoginInput } from '../shared/auth/inputs/login.input';
+import { Response } from 'express';
+@ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @ApiTags('user')
   @ApiConsumes('multipart/form-data')
   @ApiBody(AddUserSwagger)
   @UseInterceptors(FileCloudUploadInterceptor)
@@ -64,7 +73,6 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @ApiConsumes('multipart/form-data')
   @ApiBody(UpdateUserSwagger)
   @UseGuards(AuthGuard, ActiveUserGuard)
@@ -89,7 +97,6 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @ApiConsumes('multipart/form-data')
   @ApiBody(UpdateUserByIdSwagger)
   @UseGuards(AuthGuard, ActiveUserGuard)
@@ -114,7 +121,6 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Put('favWidget')
   async addFavWidget(@Body() input: AddFavWidgetInput) {
@@ -122,7 +128,6 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard)
   @Get('myProfile')
   async getMyProfile() {
@@ -130,7 +135,6 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('hierarchy')
   async getHierarchy(@Query() input: GetHierarchyInput) {
@@ -138,7 +142,6 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('userById/:id')
   async getUserById(@Param() input: GetUserByIdInput): Promise<User> {
@@ -146,7 +149,6 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('list')
   async getUserList(@Query() input: Pagination) {
@@ -154,7 +156,6 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('search')
   async searchUser(@Query() input: SearchUserInput) {
@@ -162,7 +163,6 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('recommendations')
   async recommendUsers(@Query() pagination: Pagination) {
@@ -170,7 +170,6 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('mostFollowed')
   async getMostFollowedUsers(@Query() pagination: Pagination) {
@@ -178,21 +177,18 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Put('hidePost')
   async hidePost(@Body() input: HidePostInput) {
     return await this.userService.hidePost(input);
   }
 
-  @ApiTags('user')
   @Get('testUsers')
   async getTestUsers() {
     return await this.userService.getTestUsers();
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Put('manageFollow')
   async manageFollow(@Body() input: ManageFollowUserInput) {
@@ -200,7 +196,6 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('stats')
   async getStats(@Query() input: GetStatsInput) {
@@ -208,7 +203,6 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('byBirthday')
   async getUserByBirthday(@Query() input: GetUserByBirthDate) {
@@ -216,16 +210,20 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Delete('delete')
   async deleteUserById(@Body() input: DeleteUserInput) {
     return await this.userService.deleteUserById(input);
   }
 
-  @ApiTags('user')
   @Post('load')
   async loadUser() {
     return await this.userService.loadUser();
+  }
+
+  @ApiExcludeEndpoint()
+  @Post('microsoft-login')
+  async microsoftLogin(@Body() input: LoginInput, @Res() res: Response) {
+    return await this.userService.microsoftLogin(input, res);
   }
 }
