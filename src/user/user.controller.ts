@@ -21,7 +21,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiConsumes,
-  ApiExcludeEndpoint,
+  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
@@ -46,6 +46,7 @@ import { DeleteUserInput } from './inputs/delete-user-by-id.input';
 import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 import { Response } from 'express';
 import { AcquireMicrosoftTokenInput } from './inputs/acquire-microsoft-token.input';
+import { MicrosoftLogin } from './swagger/microsoft-login.swagger';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
@@ -221,6 +222,7 @@ export class UserController {
     return await this.userService.loadUser();
   }
 
+  @ApiResponse(MicrosoftLogin)
   @Get('microsoft-login')
   async microsoftLogin(@Res() res: Response) {
     return await this.userService.microsoftLogin(res);

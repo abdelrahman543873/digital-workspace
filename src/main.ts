@@ -16,6 +16,7 @@ import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
+    cors: true,
     logger: WinstonModule.createLogger({
       transports: [
         new transports.Console({
