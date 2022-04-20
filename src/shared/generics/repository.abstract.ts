@@ -1,5 +1,12 @@
 import { Repository } from '../interfaces/repository.interface';
-import { Model, Document, FilterQuery, UpdateQuery } from 'mongoose';
+import {
+  Model,
+  Document,
+  FilterQuery,
+  UpdateQuery,
+  CreateQuery,
+  SaveOptions,
+} from 'mongoose';
 import { ModelOptions } from 'mongoose';
 
 export abstract class BaseRepository<T> implements Repository<T> {
@@ -39,5 +46,9 @@ export abstract class BaseRepository<T> implements Repository<T> {
     update: UpdateQuery<T>,
   ): Promise<Record<any, any>> {
     return await this._model.findOneAndUpdate(filter, update, { new: true });
+  }
+
+  async create(doc: CreateQuery<T>, options?: SaveOptions): Promise<T> {
+    return await this._model.create(doc, options);
   }
 }

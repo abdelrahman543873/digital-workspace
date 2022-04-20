@@ -10,6 +10,10 @@ import { diskStorage } from 'multer';
 import { filename } from '../shared/utils/multer-file-name';
 import { HttpModule } from '@nestjs/axios';
 import { Agent } from 'https';
+import { ConfidentialApplication } from '../shared/providers/confidential-client-app';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { ENV_VARIABLE_NAMES } from '../app.const';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -26,9 +30,20 @@ import { Agent } from 'https';
     HttpModule.register({
       httpsAgent: new Agent({ rejectUnauthorized: false }),
     }),
+    JwtModule.registerAsync({
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>(ENV_VARIABLE_NAMES.JWT_SECRET),
+        signOptions: {
+          expiresIn: configService.get<string>(
+            ENV_VARIABLE_NAMES.JWT_EXPIRY_TIME,
+          ),
+        },
+      }),
+      inject: [ConfigService],
+    }),
   ],
   controllers: [UserController],
-  providers: [UserService, UserRepository, Logger],
+  providers: [UserService, UserRepository, Logger, ConfidentialApplication],
   exports: [UserRepository],
 })
 export class UserModule {}

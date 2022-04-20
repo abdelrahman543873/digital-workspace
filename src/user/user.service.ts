@@ -1,5 +1,5 @@
 import { Pagination } from './../shared/utils/pagination.input';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { AddUserInput } from './inputs/add-user.input';
 import { generateAuthToken } from '../shared/utils/token-utils';
@@ -18,20 +18,20 @@ import { HidePostInput } from './inputs/hide-post.input';
 import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
 import { DeleteUserInput } from './inputs/delete-user-by-id.input';
-import { LoginInput } from '../shared/auth/inputs/login.input';
-import {
-  ConfidentialClientApplication,
-  Configuration,
-  LogLevel,
-} from '@azure/msal-node';
 import { Response } from 'express';
+import { ConfidentialApplication } from '../shared/providers/confidential-client-app';
+import { AcquireMicrosoftTokenInput } from './inputs/acquire-microsoft-token.input';
+import { STATUS } from './user.enum';
+import { JwtService } from '@nestjs/jwt';
+import { AuthenticationResult } from '@azure/msal-node';
 
 @Injectable()
 export class UserService {
   constructor(
     private userRepo: UserRepository,
     @Inject(REQUEST) private readonly request: RequestContext,
-    private logger: Logger,
+    private confidentialApplication: ConfidentialApplication,
+    private jwtService: JwtService,
   ) {}
   async addUser(
     input: AddUserInput,
@@ -157,27 +157,44 @@ export class UserService {
     return await this.userRepo.loadUser();
   }
 
-  async microsoftLogin(input: LoginInput, res: Response) {
-    const config: Configuration = {
-      auth: {
-        clientId: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-      },
-      system: {
-        loggerOptions: {
-          logLevel: LogLevel.Verbose,
-          correlationId: this.request.id,
-          loggerCallback(level, message) {
-            console.log(level, message);
-          },
-        },
-      },
-    };
-    const microsoftPca = new ConfidentialClientApplication(config);
-    const redirectUrl = await microsoftPca.getAuthCodeUrl({
-      scopes: ['user.read'],
-      redirectUri: process.env.REDIRECT_URI,
+  async microsoftLogin(res: Response) {
+    const redirectUrl = await this.confidentialApplication.getAuthCodeUrl({
+      scopes: process.env.SCOPES.split(','),
+      redirectUri: process.env.LOGIN_REDIRECT_URI,
+      correlationId: this.request.id,
     });
     res.redirect(redirectUrl);
+  }
+
+  async acquireMicrosoftToken(input: AcquireMicrosoftTokenInput) {
+    let token: AuthenticationResult | null;
+    try {
+      token = await this.confidentialApplication.acquireTokenByCode({
+        code: input.code,
+        scopes: process.env.SCOPES.split(','),
+        redirectUri: process.env.LOGIN_REDIRECT_URI,
+      });
+    } catch (error) {
+      throw new BaseHttpException(this.request.lang, 618, error);
+    }
+    const user = await this.userRepo.getUserByEmail(
+      token.account.username.toLowerCase(),
+    );
+    if (!user) {
+      await this.userRepo.create({
+        email: token.account.username,
+        fullName: token.account.name,
+        status: STATUS.ACTIVE,
+        microsoftToken: token.accessToken,
+      });
+      const createdUser = await this.userRepo.getUserByEmail(
+        token.account.username.toLowerCase(),
+      );
+      createdUser.token = this.jwtService.sign({ _id: user._id });
+      return createdUser;
+    } else {
+      user.token = this.jwtService.sign({ _id: user._id });
+      return user;
+    }
   }
 }

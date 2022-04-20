@@ -54,11 +54,11 @@ export class User {
   @Prop({ unique: true, required: true, trim: true, lowercase: true })
   email: string;
 
-  @Prop({ required: true, select: false })
-  password: string;
+  @Prop({ select: false })
+  password?: string;
 
   @Prop({ sparse: true })
-  phone: string;
+  phone?: string;
 
   @Prop({ enum: STATUS, default: STATUS.INVITED })
   status: string;
@@ -67,112 +67,112 @@ export class User {
   fullName: string;
 
   @Prop({ type: [ExperienceSchema] })
-  experience: Experience[];
+  experience?: Experience[];
 
   @Prop({ type: [EducationSchema] })
-  education: Education[];
+  education?: Education[];
 
   @Prop()
-  description: string;
+  description?: string;
 
   @Prop()
-  profilePic: string;
+  profilePic?: string;
 
   @Prop()
-  coverPic: string;
+  coverPic?: string;
 
   @Prop({ enum: GENDER })
-  gender: string;
+  gender?: string;
 
   @Prop({ type: [String] })
-  widgets: string[];
+  widgets?: string[];
 
   @Prop({ type: Date })
-  birthDate: string;
+  birthDate?: string;
 
   @Prop({ type: Types.ObjectId })
-  directManagerId: Types.ObjectId | ObjectId;
+  directManagerId?: Types.ObjectId | ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Level' })
-  level: ObjectId;
+  level?: ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Country' })
-  country: ObjectId;
+  country?: ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Department' })
-  department: ObjectId;
+  department?: ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'EmploymentType' })
-  employmentType: ObjectId;
+  employmentType?: ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Title' })
-  title: ObjectId;
+  title?: ObjectId;
 
   @Prop({ type: [Types.ObjectId], ref: 'Skill', default: [] })
-  skills: ObjectId[];
+  skills?: ObjectId[];
 
   @Prop({ type: [Types.ObjectId], ref: 'Interest', default: [] })
-  interests: ObjectId[];
+  interests?: ObjectId[];
 
   @Prop({ type: [Types.ObjectId] })
-  followers: ObjectId[];
+  followers?: ObjectId[];
 
   @Prop({ type: [Types.ObjectId] })
-  following: ObjectId[];
+  following?: ObjectId[];
 
   @Prop()
-  nationality: string;
+  nationality?: string;
 
   @Prop({ type: [Types.ObjectId] })
-  hiddenPosts: ObjectId[];
+  hiddenPosts?: ObjectId[];
 
   @Prop()
-  position: string;
+  position?: string;
 
   @Prop()
-  linkedin: string;
+  linkedin?: string;
 
   @Prop()
-  twitter: string;
+  twitter?: string;
 
   @Prop({ sparse: true })
-  governmentalId: string;
+  governmentalId?: string;
 
   @Prop({ sparse: true })
-  visa: string;
+  visa?: string;
 
   @Prop()
-  address: string;
+  address?: string;
 
   @Prop({ type: Date })
-  visaExpiryDate: Date;
+  visaExpiryDate?: Date;
 
   @Prop()
-  microsoftToken: string;
+  microsoftToken?: string;
 
   @Prop({ default: false })
-  isCompany: boolean;
+  isCompany?: boolean;
 
   @Prop({ default: false })
-  isAdmin: boolean;
+  isAdmin?: boolean;
 
   @Prop()
-  leaveBalance: number;
+  leaveBalance?: number;
 
   @Prop()
-  emergencyContactNumber: string;
+  emergencyContactNumber?: string;
 
   @Prop({ enum: BLOOD_TYPE })
-  bloodGroup: string;
+  bloodGroup?: string;
 
   @Prop({ enum: MARTIAL_STATUS })
-  martialStatus: string;
+  martialStatus?: string;
 
   @Prop({ type: Date })
-  weddingDate: Date;
+  weddingDate?: Date;
 
   @Prop()
-  yearsOfExperience: number;
+  yearsOfExperience?: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

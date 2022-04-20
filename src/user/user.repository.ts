@@ -1,7 +1,7 @@
 import { Pagination } from './../shared/utils/pagination.input';
 import { LookupSchemasEnum } from './../app.const';
 import { hashPass } from './../shared/utils/bcryptHelper';
-import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AggregatePaginateModel, Model, ObjectId, Types } from 'mongoose';
 import { User, UserDocument } from './schema/user.schema';
@@ -559,5 +559,9 @@ export class UserRepository extends BaseRepository<User> {
 
   async getLevelUsers(level: ObjectId) {
     return await this.userSchema.find({ level }).count();
+  }
+
+  getUserByEmail(email) {
+    return this.userSchema.findOne({ email }, {}, { lean: true });
   }
 }

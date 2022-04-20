@@ -44,8 +44,8 @@ import { UpdateUserByIdSwagger } from './swagger/update-user-by-id.swagger';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
 import { DeleteUserInput } from './inputs/delete-user-by-id.input';
 import { ActiveUserGuard } from '../shared/guards/active-user.guard';
-import { LoginInput } from '../shared/auth/inputs/login.input';
 import { Response } from 'express';
+import { AcquireMicrosoftTokenInput } from './inputs/acquire-microsoft-token.input';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
@@ -221,9 +221,13 @@ export class UserController {
     return await this.userService.loadUser();
   }
 
-  @ApiExcludeEndpoint()
-  @Post('microsoft-login')
-  async microsoftLogin(@Body() input: LoginInput, @Res() res: Response) {
-    return await this.userService.microsoftLogin(input, res);
+  @Get('microsoft-login')
+  async microsoftLogin(@Res() res: Response) {
+    return await this.userService.microsoftLogin(res);
+  }
+
+  @Get('authenticate')
+  async acquireMicrosoftToken(@Query() input: AcquireMicrosoftTokenInput) {
+    return await this.userService.acquireMicrosoftToken(input);
   }
 }

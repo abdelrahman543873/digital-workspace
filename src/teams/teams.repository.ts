@@ -53,7 +53,7 @@ export class TeamsRepository {
         `https://login.microsoftonline.com/${process.env.TENANT_ID}/oauth2/v2.0/token`,
         qs.stringify({
           client_id: process.env.CLIENT_ID,
-          scope: 'user.read',
+          scope: process.env.SCOPES.split(',')[0],
           code: input.code,
           redirect_uri: process.env.REDIRECT_URI,
           grant_type: 'authorization_code',
