@@ -193,6 +193,10 @@ export class UserService {
       createdUser.token = this.jwtService.sign({ _id: user._id });
       return createdUser;
     } else {
+      await this.userRepo.updateOne(
+        { email: token.account.username },
+        { microsoftToken: token.accessToken },
+      );
       user.token = this.jwtService.sign({ _id: user._id });
       return user;
     }
