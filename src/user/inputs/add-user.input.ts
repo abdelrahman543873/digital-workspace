@@ -1,4 +1,4 @@
-import { Transform, TransformFnParams, Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   Allow,
   ArrayNotEmpty,
@@ -156,9 +156,11 @@ export class AddUserInput {
   @Allow()
   coverPic: string;
 
+  @ApiProperty()
   @IsMobilePhone(ALLOWED_COUNTRIES_PHONES)
   phone: string;
 
+  @ApiProperty()
   @IsIn(GENDER)
   gender: string;
 
