@@ -2,9 +2,12 @@ import { buildUserParams } from './../../src/user/user.seed';
 import { testRequest } from '../request';
 import { HTTP_METHODS_ENUM } from '../request.methods.enum';
 import { ADD_USER } from '../endpoints/user.endpoints';
+import { skillFactory } from '../../src/skill/skill.factory';
+import { GENDER } from '../../src/app.const';
 describe('register user suite case', () => {
   it('should register user and return a token', async () => {
     const params = await buildUserParams();
+    const skill = await skillFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_USER,
@@ -14,8 +17,11 @@ describe('register user suite case', () => {
         status: params.status,
         governmentalId: params.governmentalId,
         phone: params.phone,
+        skills: [skill._id.toString()],
+        gender: GENDER[0],
       },
     });
+    expect(res.body.skills[0]).toBe(skill._id.toString());
     expect(res.body.token).toBeTruthy();
     expect(res.body.email).toBe(params.email.toLowerCase());
   });
@@ -33,6 +39,7 @@ describe('register user suite case', () => {
         status: params.status,
         governmentalId: params.governmentalId,
         phone: params.phone,
+        gender: GENDER[0],
       },
     });
     expect(res.body.isCompany).toBe(true);
@@ -54,6 +61,7 @@ describe('register user suite case', () => {
         status: params.status,
         governmentalId: params.governmentalId,
         phone: params.phone,
+        gender: GENDER[0],
       },
       filePath,
       fileParam: 'coverPic',
