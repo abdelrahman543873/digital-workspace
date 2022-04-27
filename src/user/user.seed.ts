@@ -103,7 +103,7 @@ export const buildUserParams = async (
     email: obj.email || internet.email(),
     password: obj.password || internet.password(),
     fullName: obj.fullName || `${name.firstName()} ${name.lastName()}`,
-    phone: obj.phone || phone.phoneNumber(),
+    phone: obj.phone || phone.phoneNumber('010091#####'),
     experience: obj.experience || [buildExperienceParams()],
     description: obj.description || name.jobDescriptor(),
     profilePic: obj.profilePic || `${process.env.HOST}avatar.jpg`,

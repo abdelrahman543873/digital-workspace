@@ -13,6 +13,7 @@ describe('register user suite case', () => {
         password: params.password,
         status: params.status,
         governmentalId: params.governmentalId,
+        phone: params.phone,
       },
     });
     expect(res.body.token).toBeTruthy();
@@ -31,6 +32,7 @@ describe('register user suite case', () => {
         isCompany: 'true',
         status: params.status,
         governmentalId: params.governmentalId,
+        phone: params.phone,
       },
     });
     expect(res.body.isCompany).toBe(true);
@@ -51,6 +53,7 @@ describe('register user suite case', () => {
         password: params.password,
         status: params.status,
         governmentalId: params.governmentalId,
+        phone: params.phone,
       },
       filePath,
       fileParam: 'coverPic',

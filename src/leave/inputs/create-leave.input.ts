@@ -15,6 +15,7 @@ import { MinLength } from 'class-validator';
 import { BadRequestException } from '@nestjs/common';
 import { LeaveBalanceValidator } from '../validators/leave-balance.validator';
 import { LeaveTypeValidator } from '../validators/leave-type.validator';
+import { mongoIdTransform } from '../../shared/utils/mongo-id.transform';
 
 export class CreateLeaveInput {
   @IsDateString()
@@ -26,11 +27,7 @@ export class CreateLeaveInput {
 
   @IsDefined()
   @Validate(LeaveTypeValidator)
-  @Transform((params: TransformFnParams) => {
-    if (!isMongoId(params.value))
-      throw new BadRequestException(`value of ${params.key} isn't a mongoId`);
-    return new Types.ObjectId(`${params.value}`);
-  })
+  @Transform(mongoIdTransform)
   type: string;
 
   @IsOptional()
@@ -51,11 +48,7 @@ export class CreateLeaveInput {
   attachments?: string[];
 
   @IsOptional()
-  @Transform((params: TransformFnParams) => {
-    if (!isMongoId(params.value))
-      throw new BadRequestException(`value of ${params.key} isn't a mongoId`);
-    return new Types.ObjectId(`${params.value}`);
-  })
+  @Transform(mongoIdTransform)
   replacement?: string;
 
   // added by the 'request in body interceptor' to be able to get the user in the input validator

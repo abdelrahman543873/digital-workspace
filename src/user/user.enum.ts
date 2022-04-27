@@ -21,3 +21,5 @@ export enum STATUS {
   INACTIVE = 'INACTIVE',
   INVITED = 'INVITED',
 }
+
+export const ALLOWED_COUNTRIES_PHONES = ['ar-EG'];

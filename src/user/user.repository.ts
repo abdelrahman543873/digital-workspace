@@ -48,9 +48,6 @@ export class UserRepository extends BaseRepository<User> {
     return (
       await this.userSchema.create({
         ...input,
-        ...(input.directManagerId && {
-          directManagerId: new Types.ObjectId(input.directManagerId),
-        }),
         password: await hashPass(input.password),
         ...(files?.coverPic && {
           coverPic: `${process.env.HOST}${files.coverPic[0].filename}`,
@@ -273,7 +270,6 @@ export class UserRepository extends BaseRepository<User> {
       { _id: userId },
       {
         ...filteredInput,
-        directManagerId: new Types.ObjectId(input.directManagerId),
         ...(newPassword && { password: hashPassSync(newPassword) }),
         ...(files?.coverPic && {
           coverPic: `${process.env.HOST}${files.coverPic[0].filename}`,
@@ -298,7 +294,6 @@ export class UserRepository extends BaseRepository<User> {
       { _id: new Types.ObjectId(input.userId) },
       {
         ...filteredInput,
-        directManagerId: new Types.ObjectId(input.directManagerId),
         ...(files?.coverPic && {
           coverPic: `${process.env.HOST}${files.coverPic[0].filename}`,
         }),

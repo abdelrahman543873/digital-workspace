@@ -2,15 +2,13 @@ import { Transform, TransformFnParams, Type } from 'class-transformer';
 import {
   Allow,
   ArrayNotEmpty,
-  isArray,
   IsArray,
   IsBooleanString,
   IsDateString,
   IsEmail,
   IsIn,
   IsISO31661Alpha2,
-  isMongoId,
-  IsMongoId,
+  IsMobilePhone,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -23,10 +21,19 @@ import {
 } from 'class-validator';
 import { Experience, Education } from '../schema/user.schema';
 import { getValuesFromEnum } from '../../shared/utils/columnEnum';
-import { STATUS, BLOOD_TYPE, MARTIAL_STATUS } from '../user.enum';
-import { BadRequestException } from '@nestjs/common';
-import { Types, ObjectId } from 'mongoose';
+import {
+  STATUS,
+  BLOOD_TYPE,
+  MARTIAL_STATUS,
+  ALLOWED_COUNTRIES_PHONES,
+} from '../user.enum';
+import { ObjectId } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+import { GENDER, WIDGETS } from '../../app.const';
+import {
+  mongoIdTransform,
+  mongoIdArrayTransform,
+} from '../../shared/utils/mongo-id.transform';
 
 export class AddUserInput {
   @ApiProperty()
@@ -52,20 +59,7 @@ export class AddUserInput {
   experience?: Experience[];
 
   @IsOptional()
-  @Transform((params: TransformFnParams) => {
-    const skills: [string] = params.value;
-    const convertedSkillsArray = [];
-    if (!isArray(skills) || !skills.length)
-      throw new BadRequestException(
-        `value of ${params.key} should be an array with mongoIds`,
-      );
-    skills.forEach((skill) => {
-      if (!isMongoId(skill))
-        throw new BadRequestException(`value of ${params.key} isn't a mongoId`);
-      convertedSkillsArray.push(new Types.ObjectId(`${params.value}`));
-    });
-    return convertedSkillsArray;
-  })
+  @Transform(mongoIdArrayTransform)
   skills?: ObjectId[];
 
   @IsOptional()
@@ -81,7 +75,7 @@ export class AddUserInput {
   description?: string;
 
   @IsOptional()
-  @IsMongoId()
+  @Transform(mongoIdTransform)
   directManagerId?: string;
 
   @IsOptional()
@@ -161,4 +155,38 @@ export class AddUserInput {
 
   @Allow()
   coverPic: string;
+
+  @IsMobilePhone(ALLOWED_COUNTRIES_PHONES)
+  phone: string;
+
+  @IsIn(GENDER)
+  gender: string;
+
+  @IsOptional()
+  @IsIn(WIDGETS)
+  widgets?: string;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  level?: string;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  country?: string;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  department?: string;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  employmentType?: string;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  title?: string;
+
+  @IsOptional()
+  @Transform(mongoIdArrayTransform)
+  interests?: string[];
 }
