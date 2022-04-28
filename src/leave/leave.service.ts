@@ -7,6 +7,7 @@ import { LeaveTypeRepository } from './leave-type.repository';
 import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { DeleteLeaveTypeInput } from './inputs/delete-levae-type.input';
+import { UpdateLeaveTypeInput } from './inputs/update-leave-type.input';
 
 @Injectable()
 export class LeaveService {
@@ -29,6 +30,10 @@ export class LeaveService {
 
   createLeaveType(input: CreateLeaveTypeInput) {
     return this.leaveTypeRepository.createLeaveType(input);
+  }
+
+  updateLeaveType(input: UpdateLeaveTypeInput) {
+    return this.leaveTypeRepository.updateLeaveType(input);
   }
 
   deleteLeaveType(input: DeleteLeaveTypeInput) {

@@ -16,6 +16,6 @@ export class LeaveTypeValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return "you aren't eligible for this leave type";
+    return "this leave type doesn't exist";
   }
 }

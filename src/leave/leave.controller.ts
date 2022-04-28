@@ -15,10 +15,11 @@ import { FileCloudUploadInterceptor } from '../shared/interceptors/file-cloud-up
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { RequestInBodyInterceptor } from '../shared/interceptors/request-in-body.interceptor';
 import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
-import { Get, Query, Delete } from '@nestjs/common';
+import { Get, Query, Delete, Put } from '@nestjs/common';
 import { Pagination } from '../shared/utils/pagination.input';
 import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 import { DeleteLeaveTypeInput } from './inputs/delete-levae-type.input';
+import { UpdateLeaveTypeInput } from './inputs/update-leave-type.input';
 
 @UseGuards(ActiveUserGuard)
 @ApiTags('leave')
@@ -45,6 +46,12 @@ export class LeaveController {
   @Post('type')
   async createLeaveType(@Body() input: CreateLeaveTypeInput) {
     return await this.leaveService.createLeaveType(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put('type')
+  async updateLeaveType(@Body() input: UpdateLeaveTypeInput) {
+    return await this.leaveService.updateLeaveType(input);
   }
 
   @UseGuards(AuthGuard)

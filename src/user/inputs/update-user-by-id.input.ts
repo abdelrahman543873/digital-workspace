@@ -1,4 +1,4 @@
-import { IsMongoId, Validate } from 'class-validator';
+import { IsDefined, Validate } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
 import { AddUserInput } from './add-user.input';
 import { Transform } from 'class-transformer';
@@ -7,7 +7,7 @@ import { ObjectId } from 'mongoose';
 import { ExistingUserValidator } from '../validators/existing-user.validator';
 
 export class UpdateUserByIdInput extends PartialType(AddUserInput) {
-  @IsMongoId()
+  @IsDefined()
   @Validate(ExistingUserValidator)
   @Transform(mongoIdTransform)
   userId: ObjectId;
