@@ -26,29 +26,33 @@ export class TeamsRepository {
     const todayMorning = new Date(date);
     todayNight.setHours(25);
     todayMorning.setHours(2);
-    const response = await firstValueFrom(
-      this.httpService.get(
-        `https://graph.microsoft.com/v1.0/me/calendarView?startDateTime=${todayMorning.toISOString()}&endDateTime=${todayNight.toISOString()}&$select=subject,organizer,onlineMeeting,attendees,start,end`,
-        {
-          headers: { Authorization: `Bearer ${user.microsoftToken}` },
-        },
-      ),
-    );
-    const teamsResponse: TeamsResponse = response.data;
-    for await (const value of teamsResponse.value) {
-      const valueWithAttendeesArray = [];
-      for await (const attendee of value.attendees) {
-        const dbAttendee = await this.userRepository.findOne(
-          { email: attendee.emailAddress.address.toLowerCase() },
-          { profilePic: 1, fullName: 1, email: 1 },
-        );
-        dbAttendee
-          ? valueWithAttendeesArray.unshift(dbAttendee)
-          : valueWithAttendeesArray.push(attendee);
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get(
+          `https://graph.microsoft.com/v1.0/me/calendarView?startDateTime=${todayMorning.toISOString()}&endDateTime=${todayNight.toISOString()}&$select=subject,organizer,onlineMeeting,attendees,start,end`,
+          {
+            headers: { Authorization: `Bearer ${user.microsoftToken}` },
+          },
+        ),
+      );
+      const teamsResponse: TeamsResponse = response.data;
+      for await (const value of teamsResponse.value) {
+        const valueWithAttendeesArray = [];
+        for await (const attendee of value.attendees) {
+          const dbAttendee = await this.userRepository.findOne(
+            { email: attendee.emailAddress.address.toLowerCase() },
+            { profilePic: 1, fullName: 1, email: 1 },
+          );
+          dbAttendee
+            ? valueWithAttendeesArray.unshift(dbAttendee)
+            : valueWithAttendeesArray.push(attendee);
+        }
+        value.attendees = valueWithAttendeesArray;
       }
-      value.attendees = valueWithAttendeesArray;
+      return teamsResponse.value;
+    } catch (error) {
+      throw new BaseHttpException('EN', 400, error);
     }
-    return teamsResponse.value;
   }
 
   async registerUserMicrosoft(userId: ObjectId, input: RegisterUserTokenInput) {
