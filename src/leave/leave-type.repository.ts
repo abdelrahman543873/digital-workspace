@@ -5,6 +5,7 @@ import { LeaveReasonDocument, LeaveType } from './schema/leave-type.schema';
 import { AggregatePaginateModel } from 'mongoose';
 import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
 import { Pagination } from '../shared/utils/pagination.input';
+import { DeleteLeaveTypeInput } from './inputs/delete-levae-type.input';
 
 @Injectable()
 export class LeaveTypeRepository extends BaseRepository<LeaveType> {
@@ -17,6 +18,11 @@ export class LeaveTypeRepository extends BaseRepository<LeaveType> {
 
   createLeaveType(input: CreateLeaveTypeInput) {
     return this.leaveTypeSchema.create(input);
+  }
+
+  deleteLeaveType(input: DeleteLeaveTypeInput) {
+    console.log(input.id);
+    return this.leaveTypeSchema.findOneAndDelete({ _id: input.id });
   }
 
   getLeaveTypes(input: Pagination) {

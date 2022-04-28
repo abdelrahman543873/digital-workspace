@@ -1,2 +1,3 @@
-export const LEAVE = '/LEAVE';
-export const LEAVE_TYPE = '/LEAVE/type';
+export const LEAVE = '/leave';
+export const LEAVE_TYPE = '/leave/type';
+export const LEAVE_TYPES = '/leave/types';
