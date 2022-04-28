@@ -13,6 +13,9 @@ export class Team {
   @Prop({ unique: true })
   name: string;
 
+  @Prop()
+  description: string;
+
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
   members: ObjectId[];
 }

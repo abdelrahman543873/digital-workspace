@@ -24,7 +24,8 @@ import { DeletePageInput } from './inputs/delete-page.input';
 import { SearchPageInput } from './inputs/search-page.input';
 import { UpdatePageSwagger } from './swagger/update-page.swagger';
 import { UpdatePageInput } from './inputs/update-page.input';
-
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
+@UseGuards(ActiveUserGuard)
 @Controller('page')
 export class PageController {
   constructor(private pageService: PageService) {}

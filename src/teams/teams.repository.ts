@@ -8,12 +8,16 @@ import { ObjectId } from 'mongoose';
 import { User } from '../user/schema/user.schema';
 import { TeamsResponse } from '../shared/interfaces/teams-response.interface';
 import { EventsInput } from './inputs/events.input';
+import { ConfidentialApplication } from '../shared/providers/confidential-client-app';
+import { AuthenticationResult } from '@azure/msal-node';
+import { BaseHttpException } from '../shared/exceptions/base-http-exception';
 
 @Injectable()
 export class TeamsRepository {
   constructor(
     private httpService: HttpService,
     private userRepository: UserRepository,
+    private confidentialApplication: ConfidentialApplication,
   ) {}
 
   async events(user: User, input: EventsInput) {
@@ -48,25 +52,19 @@ export class TeamsRepository {
   }
 
   async registerUserMicrosoft(userId: ObjectId, input: RegisterUserTokenInput) {
-    const response = await firstValueFrom(
-      this.httpService.post(
-        `https://login.microsoftonline.com/${process.env.TENANT_ID}/oauth2/v2.0/token`,
-        qs.stringify({
-          client_id: process.env.CLIENT_ID,
-          scope: 'user.read',
-          code: input.code,
-          redirect_uri: process.env.REDIRECT_URI,
-          grant_type: 'authorization_code',
-          client_secret: process.env.CLIENT_SECRET,
-        }),
-        {
-          headers: { 'content-type': 'application/x-www-form-urlencoded' },
-        },
-      ),
-    );
+    let token: AuthenticationResult | null;
+    try {
+      token = await this.confidentialApplication.acquireTokenByCode({
+        code: input.code,
+        scopes: process.env.SCOPES.split(','),
+        redirectUri: process.env.REDIRECT_URI,
+      });
+    } catch (error) {
+      throw new BaseHttpException(null, 618, error);
+    }
     return await this.userRepository.updateOne(
       { _id: userId },
-      { microsoftToken: response.data.access_token },
+      { microsoftToken: token },
     );
   }
 }

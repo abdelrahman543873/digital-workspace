@@ -1,96 +1,14 @@
-import { Type } from 'class-transformer';
-import {
-  Allow,
-  ArrayNotEmpty,
-  IsArray,
-  IsBooleanString,
-  IsDateString,
-  IsEmail,
-  IsISO31661Alpha2,
-  IsMongoId,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUrl,
-  ValidateNested,
-} from 'class-validator';
-import { Experience, Skill, Education } from '../schema/user.schema';
+import { IsDefined, Validate } from 'class-validator';
+import { PartialType } from '@nestjs/swagger';
+import { AddUserInput } from './add-user.input';
+import { Transform } from 'class-transformer';
+import { mongoIdTransform } from '../../shared/utils/mongo-id.transform';
+import { ObjectId } from 'mongoose';
+import { ExistingUserValidator } from '../validators/existing-user.validator';
 
-export class UpdateUserByIdInput {
-  @IsMongoId()
-  userId: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  fullName?: string;
-
-  @IsOptional()
-  @IsArray()
-  @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => Experience)
-  experience?: Experience[];
-
-  @IsOptional()
-  @IsArray()
-  @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => Skill)
-  skill?: Skill[];
-
-  @IsOptional()
-  @IsEmail()
-  email?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  position?: string;
-
-  @IsOptional()
-  @IsArray()
-  @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => Education)
-  education?: Education[];
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  description?: string;
-
-  @IsOptional()
-  @IsMongoId()
-  directManagerId?: string;
-
-  @IsOptional()
-  @IsISO31661Alpha2()
-  nationality?: string;
-
-  @IsOptional()
-  @IsDateString()
-  birthDate?: string;
-
-  @Allow()
-  profilePic: string;
-
-  @Allow()
-  coverPic: string;
-
-  @IsOptional()
-  @IsBooleanString()
-  isCompany?: boolean;
-
-  @IsOptional()
-  @IsBooleanString({})
-  isAdmin?: boolean;
-
-  @IsOptional()
-  @IsUrl()
-  linkedin?: string;
-
-  @IsOptional()
-  @IsUrl()
-  twitter?: string;
+export class UpdateUserByIdInput extends PartialType(AddUserInput) {
+  @IsDefined()
+  @Validate(ExistingUserValidator)
+  @Transform(mongoIdTransform)
+  userId: ObjectId;
 }

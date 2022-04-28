@@ -23,7 +23,9 @@ import { AddPostSwagger } from './swagger/add-post.swagger';
 import { RemovePostInput } from './inputs/remove-post.input';
 import { ReportPostInput } from './inputs/report-post.input';
 import { MyPostsInput } from './inputs/my-posts.input';
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 
+@UseGuards(ActiveUserGuard)
 @Controller('post')
 export class PostController {
   constructor(private postService: PostService) {}

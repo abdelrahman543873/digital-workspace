@@ -1,7 +1,16 @@
-import { User, Experience, Skill, Education } from './schema/user.schema';
+import { Experience, Education } from './schema/user.schema';
 import { ObjectId, Types } from 'mongoose';
 import { address, datatype, date, internet, name, phone, random } from 'faker';
 import { GENDER, WIDGETS } from '../app.const';
+import { countryFactory } from '../country/country.factory';
+import { levelFactory } from '../level/level.factory';
+import { departmentFactory } from '../../test/department/department.factory';
+import { EmploymentTypeFactory } from '../employment-type/employment-type.factory';
+import { skillFactory } from '../skill/skill.factory';
+import { titleFactory } from '../title/title.factory';
+import { interestFactory } from '../interest/interest.factory';
+import { getValuesFromEnum } from '../shared/utils/columnEnum';
+import { STATUS, BLOOD_TYPE, MARTIAL_STATUS } from './user.enum';
 interface ExperienceType {
   startDate?: Date;
   endDate?: Date;
@@ -30,7 +39,6 @@ export interface UserType {
   phone?: string;
   experience?: Experience[];
   education?: Education[];
-  skill?: Skill[];
   description?: string;
   profilePic?: string;
   coverPic?: string;
@@ -49,6 +57,23 @@ export interface UserType {
   linkedin?: string;
   microsoftToken?: string;
   leaveBalance?: number;
+  country?: ObjectId;
+  level?: ObjectId;
+  department?: ObjectId;
+  employmentType?: ObjectId;
+  skills?: ObjectId[];
+  title?: ObjectId;
+  interests?: ObjectId[];
+  status?: STATUS;
+  governmentalId?: string;
+  visa?: string;
+  address?: string;
+  visaExpiryDate?: Date;
+  emergencyContactNumber?: string;
+  bloodGroup?: BLOOD_TYPE;
+  martialStatus?: MARTIAL_STATUS;
+  weddingDate?: Date;
+  yearsOfExperience?: number;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -71,19 +96,14 @@ const buildEducationParams = (obj: EducationType = {}): Education => {
   };
 };
 
-const buildSkillParams = (obj: SkillType = {}): Skill => {
-  return {
-    name: obj.name || name.jobTitle(),
-    percentage: obj.percentage || datatype.number(100),
-  };
-};
-
-export const buildUserParams = (obj: UserType = {}): User => {
+export const buildUserParams = async (
+  obj: UserType = {},
+): Promise<UserType> => {
   return {
     email: obj.email || internet.email(),
     password: obj.password || internet.password(),
     fullName: obj.fullName || `${name.firstName()} ${name.lastName()}`,
-    phone: obj.phone || phone.phoneNumber(),
+    phone: obj.phone || phone.phoneNumber('010091#####'),
     experience: obj.experience || [buildExperienceParams()],
     description: obj.description || name.jobDescriptor(),
     profilePic: obj.profilePic || `${process.env.HOST}avatar.jpg`,
@@ -95,7 +115,6 @@ export const buildUserParams = (obj: UserType = {}): User => {
     followers: obj.followers || [],
     following: obj.following || [],
     education: obj.education || [buildEducationParams()],
-    skill: obj.skill || [buildSkillParams()],
     nationality: obj.nationality || address.countryCode(),
     hiddenPosts: obj.hiddenPosts || [],
     position: obj.position || name.jobTitle(),
@@ -105,5 +124,28 @@ export const buildUserParams = (obj: UserType = {}): User => {
     twitter: obj.twitter || internet.url(),
     microsoftToken: obj.microsoftToken || '',
     leaveBalance: obj.leaveBalance || datatype.number(25),
+    country: obj.country || (await countryFactory())._id,
+    level: obj.level || (await levelFactory())._id,
+    department: obj.department || (await departmentFactory())._id,
+    employmentType: obj.employmentType || (await EmploymentTypeFactory())._id,
+    skills: obj.skills || [(await skillFactory())._id],
+    interests: obj.interests || [(await interestFactory())._id],
+    title: obj.title || (await titleFactory())._id,
+    status: obj.status || STATUS.ACTIVE,
+    governmentalId: obj.governmentalId || datatype.uuid(),
+    visa: obj.visa || datatype.uuid(),
+    address: obj.address || address.city(),
+    visaExpiryDate: obj.visaExpiryDate || date.future(),
+    emergencyContactNumber: obj.emergencyContactNumber || phone.phoneNumber(),
+    bloodGroup:
+      obj.bloodGroup ||
+      (random.arrayElement(getValuesFromEnum(BLOOD_TYPE)) as BLOOD_TYPE),
+    martialStatus:
+      obj.martialStatus ||
+      (random.arrayElement(
+        getValuesFromEnum(MARTIAL_STATUS),
+      ) as MARTIAL_STATUS),
+    weddingDate: obj.weddingDate || date.future(),
+    yearsOfExperience: obj.yearsOfExperience || datatype.number(),
   };
 };

@@ -18,12 +18,20 @@ import { HidePostInput } from './inputs/hide-post.input';
 import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
 import { DeleteUserInput } from './inputs/delete-user-by-id.input';
+import { Response } from 'express';
+import { ConfidentialApplication } from '../shared/providers/confidential-client-app';
+import { AcquireMicrosoftTokenInput } from './inputs/acquire-microsoft-token.input';
+import { STATUS } from './user.enum';
+import { JwtService } from '@nestjs/jwt';
+import { AuthenticationResult } from '@azure/msal-node';
 
 @Injectable()
 export class UserService {
   constructor(
     private userRepo: UserRepository,
     @Inject(REQUEST) private readonly request: RequestContext,
+    private confidentialApplication: ConfidentialApplication,
+    private jwtService: JwtService,
   ) {}
   async addUser(
     input: AddUserInput,
@@ -44,13 +52,6 @@ export class UserService {
       coverPic?: Express.Multer.File[];
     },
   ) {
-    if (
-      input.directManagerId &&
-      !(await this.userRepo.checkUserExists(input.directManagerId))
-    )
-      throw new BaseHttpException(this.request.lang, 602);
-    if (input?.directManagerId === this.request.currentUser._id.toString())
-      throw new BaseHttpException(this.request.lang, 607);
     return await this.userRepo.updateUser(
       this.request.currentUser._id,
       input,
@@ -65,13 +66,6 @@ export class UserService {
       coverPic?: Express.Multer.File[];
     },
   ) {
-    if (input.userId && !(await this.userRepo.checkUserExists(input.userId)))
-      throw new BaseHttpException(this.request.lang, 602);
-    if (
-      input.directManagerId &&
-      !(await this.userRepo.checkUserExists(input.directManagerId))
-    )
-      throw new BaseHttpException(this.request.lang, 608);
     return await this.userRepo.updateUserById(input, files);
   }
 
@@ -147,5 +141,50 @@ export class UserService {
 
   async loadUser() {
     return await this.userRepo.loadUser();
+  }
+
+  async microsoftLogin(res: Response) {
+    const redirectUrl = await this.confidentialApplication.getAuthCodeUrl({
+      scopes: process.env.SCOPES.split(','),
+      redirectUri: process.env.LOGIN_REDIRECT_URI,
+      correlationId: this.request.id,
+    });
+    res.redirect(redirectUrl);
+  }
+
+  async acquireMicrosoftToken(input: AcquireMicrosoftTokenInput) {
+    let token: AuthenticationResult | null;
+    try {
+      token = await this.confidentialApplication.acquireTokenByCode({
+        code: input.code,
+        scopes: process.env.SCOPES.split(','),
+        redirectUri: process.env.LOGIN_REDIRECT_URI,
+      });
+    } catch (error) {
+      throw new BaseHttpException(this.request.lang, 618, error);
+    }
+    const user = await this.userRepo.getUserByEmail(
+      token.account.username.toLowerCase(),
+    );
+    if (!user) {
+      await this.userRepo.create({
+        email: token.account.username,
+        fullName: token.account.name,
+        status: STATUS.ACTIVE,
+        microsoftToken: token.accessToken,
+      });
+      const createdUser = await this.userRepo.getUserByEmail(
+        token.account.username.toLowerCase(),
+      );
+      createdUser.token = this.jwtService.sign({ _id: user._id });
+      return createdUser;
+    } else {
+      await this.userRepo.updateOne(
+        { email: token.account.username },
+        { microsoftToken: token.accessToken },
+      );
+      user.token = this.jwtService.sign({ _id: user._id });
+      return user;
+    }
   }
 }

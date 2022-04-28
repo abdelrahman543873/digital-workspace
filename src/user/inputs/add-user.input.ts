@@ -3,26 +3,46 @@ import {
   Allow,
   ArrayNotEmpty,
   IsArray,
-  IsBoolean,
   IsBooleanString,
   IsDateString,
   IsEmail,
+  IsIn,
   IsISO31661Alpha2,
-  IsMongoId,
+  IsMobilePhone,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
+  IsPhoneNumber,
   IsString,
   IsUrl,
   MaxLength,
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { Experience, Skill, Education } from '../schema/user.schema';
+import { Experience, Education, User } from '../schema/user.schema';
+import { getValuesFromEnum } from '../../shared/utils/columnEnum';
+import {
+  STATUS,
+  BLOOD_TYPE,
+  MARTIAL_STATUS,
+  ALLOWED_COUNTRIES_PHONES,
+} from '../user.enum';
+import { ObjectId } from 'mongoose';
+import { ApiProperty } from '@nestjs/swagger';
+import { GENDER, WIDGETS } from '../../app.const';
+import { DirectManagerIdValidator } from '../validators/direct-manager-validator';
+import { Validate } from 'class-validator';
+import {
+  mongoIdTransform,
+  mongoIdArrayTransform,
+} from '../../shared/utils/mongo-id.transform';
 
 export class AddUserInput {
+  @ApiProperty()
   @IsEmail()
   email: string;
 
+  @ApiProperty()
   @IsString()
   @MinLength(8)
   @MaxLength(256)
@@ -41,11 +61,8 @@ export class AddUserInput {
   experience?: Experience[];
 
   @IsOptional()
-  @IsArray()
-  @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => Skill)
-  skill?: Skill[];
+  @Transform(mongoIdArrayTransform)
+  skills?: ObjectId[];
 
   @IsOptional()
   @IsArray()
@@ -60,8 +77,9 @@ export class AddUserInput {
   description?: string;
 
   @IsOptional()
-  @IsMongoId()
-  directManagerId?: string;
+  @Validate(DirectManagerIdValidator)
+  @Transform(mongoIdTransform)
+  directManagerId?: ObjectId;
 
   @IsOptional()
   @IsISO31661Alpha2()
@@ -92,9 +110,91 @@ export class AddUserInput {
   @IsDateString()
   birthDate?: string;
 
+  @ApiProperty()
+  @IsIn(getValuesFromEnum(STATUS))
+  status: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  governmentalId: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  visa?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  address?: string;
+
+  @IsOptional()
+  @IsDateString()
+  visaExpiryDate?: Date;
+
+  @IsOptional()
+  @IsPhoneNumber()
+  emergencyContactNumber?: string;
+
+  @IsOptional()
+  @IsIn(getValuesFromEnum(BLOOD_TYPE))
+  bloodGroup?: string;
+
+  @IsOptional()
+  @IsIn(getValuesFromEnum(MARTIAL_STATUS))
+  martialStatus?: string;
+
+  @IsOptional()
+  @IsDateString()
+  weddingDate?: Date;
+
+  @IsOptional()
+  @IsNumber()
+  yearsOfExperience?: number;
+
   @Allow()
   profilePic: string;
 
   @Allow()
   coverPic: string;
+
+  @ApiProperty()
+  @IsMobilePhone(ALLOWED_COUNTRIES_PHONES)
+  phone: string;
+
+  @ApiProperty()
+  @IsIn(GENDER)
+  gender: string;
+
+  @IsOptional()
+  @IsIn(WIDGETS)
+  widgets?: string;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  level?: string;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  country?: string;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  department?: string;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  employmentType?: string;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  title?: string;
+
+  @IsOptional()
+  @Transform(mongoIdArrayTransform)
+  interests?: string[];
+
+  @Allow()
+  currentUser: User;
 }

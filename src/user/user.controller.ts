@@ -14,9 +14,16 @@ import {
   UploadedFiles,
   UsePipes,
   Delete,
+  Res,
 } from '@nestjs/common';
 import { AddUserInput } from './inputs/add-user.input';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
 import { SearchUserInput } from './inputs/search-user.input';
@@ -36,11 +43,16 @@ import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
 import { UpdateUserByIdSwagger } from './swagger/update-user-by-id.swagger';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
 import { DeleteUserInput } from './inputs/delete-user-by-id.input';
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
+import { Response } from 'express';
+import { AcquireMicrosoftTokenInput } from './inputs/acquire-microsoft-token.input';
+import { MicrosoftLogin } from './swagger/microsoft-login.swagger';
+import { RequestInBodyInterceptor } from '../shared/interceptors/request-in-body.interceptor';
+@ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @ApiTags('user')
   @ApiConsumes('multipart/form-data')
   @ApiBody(AddUserSwagger)
   @UseInterceptors(FileCloudUploadInterceptor)
@@ -63,11 +75,11 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @ApiConsumes('multipart/form-data')
   @ApiBody(UpdateUserSwagger)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @UseInterceptors(FileCloudUploadInterceptor)
+  @UseInterceptors(RequestInBodyInterceptor)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'profilePic', maxCount: 1 },
@@ -88,10 +100,9 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @ApiConsumes('multipart/form-data')
   @ApiBody(UpdateUserByIdSwagger)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -113,15 +124,13 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Put('favWidget')
   async addFavWidget(@Body() input: AddFavWidgetInput) {
     return await this.userService.addFavWidget(input);
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
   @UseGuards(AuthGuard)
   @Get('myProfile')
   async getMyProfile() {
@@ -129,102 +138,100 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('hierarchy')
   async getHierarchy(@Query() input: GetHierarchyInput) {
     return await this.userService.getHierarchy(input);
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('userById/:id')
   async getUserById(@Param() input: GetUserByIdInput): Promise<User> {
     return await this.userService.getUserById(input);
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('list')
   async getUserList(@Query() input: Pagination) {
     return await this.userService.getUserList(input);
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('search')
   async searchUser(@Query() input: SearchUserInput) {
     return await this.userService.searchUser(input);
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('recommendations')
   async recommendUsers(@Query() pagination: Pagination) {
     return await this.userService.recommendUsers(pagination);
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('mostFollowed')
   async getMostFollowedUsers(@Query() pagination: Pagination) {
     return await this.userService.getMostFollowed(pagination);
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Put('hidePost')
   async hidePost(@Body() input: HidePostInput) {
     return await this.userService.hidePost(input);
   }
 
-  @ApiTags('user')
   @Get('testUsers')
   async getTestUsers() {
     return await this.userService.getTestUsers();
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Put('manageFollow')
   async manageFollow(@Body() input: ManageFollowUserInput) {
     return await this.userService.manageFollow(input);
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('stats')
   async getStats(@Query() input: GetStatsInput) {
     return await this.userService.getStats(input);
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('byBirthday')
   async getUserByBirthday(@Query() input: GetUserByBirthDate) {
     return await this.userService.getUserByBirthDate(input);
   }
 
   @ApiBearerAuth()
-  @ApiTags('user')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @Delete('delete')
   async deleteUserById(@Body() input: DeleteUserInput) {
     return await this.userService.deleteUserById(input);
   }
 
-  @ApiTags('user')
   @Post('load')
   async loadUser() {
     return await this.userService.loadUser();
+  }
+
+  @ApiResponse(MicrosoftLogin)
+  @Get('microsoft-login')
+  async microsoftLogin(@Res() res: Response) {
+    return await this.userService.microsoftLogin(res);
+  }
+
+  @Get('authenticate')
+  async acquireMicrosoftToken(@Query() input: AcquireMicrosoftTokenInput) {
+    return await this.userService.acquireMicrosoftToken(input);
   }
 }

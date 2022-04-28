@@ -1,3 +1,4 @@
+import { DirectManagerIdValidator } from './validators/direct-manager-validator';
 import { Module, Logger } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
@@ -10,6 +11,11 @@ import { diskStorage } from 'multer';
 import { filename } from '../shared/utils/multer-file-name';
 import { HttpModule } from '@nestjs/axios';
 import { Agent } from 'https';
+import { ConfidentialApplication } from '../shared/providers/confidential-client-app';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { ENV_VARIABLE_NAMES } from '../app.const';
+import { ExistingUserValidator } from './validators/existing-user.validator';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -26,9 +32,27 @@ import { Agent } from 'https';
     HttpModule.register({
       httpsAgent: new Agent({ rejectUnauthorized: false }),
     }),
+    JwtModule.registerAsync({
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>(ENV_VARIABLE_NAMES.JWT_SECRET),
+        signOptions: {
+          expiresIn: configService.get<string>(
+            ENV_VARIABLE_NAMES.JWT_EXPIRY_TIME,
+          ),
+        },
+      }),
+      inject: [ConfigService],
+    }),
   ],
   controllers: [UserController],
-  providers: [UserService, UserRepository, Logger],
+  providers: [
+    UserService,
+    UserRepository,
+    Logger,
+    ConfidentialApplication,
+    DirectManagerIdValidator,
+    ExistingUserValidator,
+  ],
   exports: [UserRepository],
 })
 export class UserModule {}

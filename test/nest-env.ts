@@ -1,3 +1,4 @@
+import { EmploymentTypeRepository } from './../src/employment-type/employment-type.repository';
 import { TestingModule } from '@nestjs/testing';
 import { PostRepository } from '../src/post/post.repository';
 import { PageRepository } from '../src/page/page.repository';
@@ -8,6 +9,14 @@ import { CommentRepository } from '../src/comment/comment.repository';
 import { TaskRepository } from '../src/task/task.repository';
 import { TeamRepository } from '../src/team/team.repository';
 import NodeEnvironment from 'jest-environment-node';
+import { CountryRepository } from '../src/country/country.repository';
+import { LevelRepository } from '../src/level/level.repository';
+import { DepartmentRepository } from '../src/department/department.repository';
+import { SkillRepository } from '../src/skill/skill.repository';
+import { TitleRepository } from '../src/title/title.repository';
+import { InterestRepository } from '../src/interest/interest.repository';
+import { LeaveRepository } from '../src/leave/leave.repository';
+import { LeaveTypeRepository } from '../src/leave/leave-type.repository';
 
 class MongoEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -29,6 +38,21 @@ class MongoEnvironment extends NodeEnvironment {
       app.get<CommentRepository>(CommentRepository);
     this.global.taskRepository = app.get<TaskRepository>(TaskRepository);
     this.global.teamRepository = app.get<TeamRepository>(TeamRepository);
+    this.global.countryRepository =
+      app.get<CountryRepository>(CountryRepository);
+    this.global.levelRepository = app.get<LevelRepository>(LevelRepository);
+    this.global.departmentRepository =
+      app.get<DepartmentRepository>(DepartmentRepository);
+    this.global.employmentTypeRepository = app.get<EmploymentTypeRepository>(
+      EmploymentTypeRepository,
+    );
+    this.global.skillRepository = app.get<SkillRepository>(SkillRepository);
+    this.global.titleRepository = app.get<TitleRepository>(TitleRepository);
+    this.global.interestRepository =
+      app.get<InterestRepository>(InterestRepository);
+    this.global.leaveRepository = app.get<LeaveRepository>(LeaveRepository);
+    this.global.leaveTypeRepository =
+      app.get<LeaveTypeRepository>(LeaveTypeRepository);
   }
 
   async teardown() {

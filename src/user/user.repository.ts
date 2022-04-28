@@ -8,7 +8,7 @@ import { User, UserDocument } from './schema/user.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { AddUserInput } from './inputs/add-user.input';
 import { hashPassSync } from '../shared/utils/bcryptHelper';
-import { buildUserParams } from './user.seed';
+import { buildUserParams, UserType } from './user.seed';
 import { TestUser, TestUserDocument } from './schema/test-user.schema';
 import { AddFavWidgetInput } from './inputs/add-fav-widget.input';
 import { ManageFollowUserInput } from './inputs/manage-follow-user.input';
@@ -48,9 +48,6 @@ export class UserRepository extends BaseRepository<User> {
     return (
       await this.userSchema.create({
         ...input,
-        ...(input.directManagerId && {
-          directManagerId: new Types.ObjectId(input.directManagerId),
-        }),
         password: await hashPass(input.password),
         ...(files?.coverPic && {
           coverPic: `${process.env.HOST}${files.coverPic[0].filename}`,
@@ -69,9 +66,9 @@ export class UserRepository extends BaseRepository<User> {
   async seedUsers() {
     const verifyExistingTestUsers = await this.testUserSchema.findOne();
     if (verifyExistingTestUsers) return await this.testUserSchema.find();
-    const users: User[] = [];
+    const users: UserType[] = [];
     for (let i = 0; i < 10; i++) {
-      const params = buildUserParams();
+      const params = await buildUserParams();
       users.push(params);
     }
     await this.testUserSchema.deleteMany({});
@@ -273,7 +270,6 @@ export class UserRepository extends BaseRepository<User> {
       { _id: userId },
       {
         ...filteredInput,
-        directManagerId: new Types.ObjectId(input.directManagerId),
         ...(newPassword && { password: hashPassSync(newPassword) }),
         ...(files?.coverPic && {
           coverPic: `${process.env.HOST}${files.coverPic[0].filename}`,
@@ -298,7 +294,6 @@ export class UserRepository extends BaseRepository<User> {
       { _id: new Types.ObjectId(input.userId) },
       {
         ...filteredInput,
-        directManagerId: new Types.ObjectId(input.directManagerId),
         ...(files?.coverPic && {
           coverPic: `${process.env.HOST}${files.coverPic[0].filename}`,
         }),
@@ -555,5 +550,13 @@ export class UserRepository extends BaseRepository<User> {
         },
       },
     ]);
+  }
+
+  async getLevelUsers(level: ObjectId) {
+    return await this.userSchema.find({ level }).count();
+  }
+
+  getUserByEmail(email) {
+    return this.userSchema.findOne({ email }, {}, { lean: true });
   }
 }

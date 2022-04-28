@@ -28,7 +28,7 @@ export class FileCloudUploadInterceptor implements NestInterceptor {
       });
       for await (const info of infos) {
         const uploadResponse = await blobUploader(info.path, info.filename);
-        if (!uploadResponse) throw new BaseHttpException('EN', 606);
+        if (!uploadResponse) throw new BaseHttpException('EN', 616);
         await fs.unlinkSync(info.path);
       }
     }

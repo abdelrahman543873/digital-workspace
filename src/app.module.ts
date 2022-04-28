@@ -8,7 +8,6 @@ import { CurrencyModule } from './currency/currency.module';
 import { UserModule } from './user/user.module';
 import { HelperModule } from './shared/helper/helper.module';
 import { CommentModule } from './comment/comment.module';
-import { ServicesModule } from './shared/services/services.module';
 import { AuthModule } from './shared/auth/auth.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -19,6 +18,14 @@ import { TaskModule } from './task/task.module';
 import { EventModule } from './event/event.module';
 import { TeamsModule } from './teams/teams.module';
 import { CorrelationIdMiddleware } from './shared/middlewares/correlation-id.middleware';
+import { CountryModule } from './country/country.module';
+import { LevelModule } from './level/level.module';
+import { DepartmentModule } from './department/department.module';
+import { EmploymentTypeModule } from './employment-type/employment-type.module';
+import { SkillModule } from './skill/skill.module';
+import { TitleModule } from './title/title.module';
+import { InterestModule } from './interest/interest.module';
+import { LeaveModule } from './leave/leave.module';
 
 @Module({
   imports: [
@@ -35,7 +42,6 @@ import { CorrelationIdMiddleware } from './shared/middlewares/correlation-id.mid
     CurrencyModule,
     UserModule,
     CommentModule,
-    ServicesModule,
     AuthModule,
     PageModule,
     GroupModule,
@@ -43,6 +49,14 @@ import { CorrelationIdMiddleware } from './shared/middlewares/correlation-id.mid
     TaskModule,
     EventModule,
     TeamsModule,
+    CountryModule,
+    LevelModule,
+    DepartmentModule,
+    EmploymentTypeModule,
+    SkillModule,
+    TitleModule,
+    InterestModule,
+    LeaveModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -9,5 +9,5 @@ export class LoginInput {
   @IsOptional()
   @MinLength(6)
   @MaxLength(255)
-  password: string;
+  password?: string;
 }

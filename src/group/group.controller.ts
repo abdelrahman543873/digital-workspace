@@ -13,7 +13,8 @@ import { GroupService } from './group.service';
 import { CreateGroupInput } from './inputs/create-group.input';
 import { ManageJoinGroupInput } from './inputs/manage-join-group.input';
 import { JoinedGroupsInput } from './joined-groups.input';
-
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
+@UseGuards(ActiveUserGuard)
 @Controller('group')
 export class GroupController {
   constructor(private groupService: GroupService) {}

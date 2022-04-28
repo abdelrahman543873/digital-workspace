@@ -12,9 +12,11 @@ import { Cluster } from './cluster';
 import morganBody from 'morgan-body';
 import correlationId from 'express-correlation-id';
 import { logTransform } from './shared/utils/transformer.print';
+import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
+    cors: true,
     logger: WinstonModule.createLogger({
       transports: [
         new transports.Console({
@@ -30,7 +32,7 @@ async function bootstrap() {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore: Unreachable code error
         new transports.MongoDB({
-          db: process.env.MONGO_DB,
+          db: process.env.MONGO_DB || process.env.LOCAL_MONGO_DB,
           options: {
             useUnifiedTopology: true,
           },
@@ -42,6 +44,7 @@ async function bootstrap() {
       exitOnError: false,
     }),
   });
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
   const logger = new Logger();
   const options = new DocumentBuilder()
     .setTitle('🚀digital work space🚀')
@@ -59,6 +62,12 @@ async function bootstrap() {
     .addTag('weather', 'weather api routes')
     .addTag('prayer', 'prayer api routes')
     .addTag('teams', 'teams endpoints')
+    .addTag('country', 'country endpoints')
+    .addTag('level', 'level endpoints')
+    .addTag('department', 'department endpoints')
+    .addTag('employment-type', 'employment-type endpoints')
+    .addTag('skill', 'skill endpoints')
+    .addTag('title', 'title endpoints')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
@@ -93,7 +102,6 @@ async function bootstrap() {
     new MongooseExceptionFilter(),
   );
   SwaggerModule.setup('api', app, document);
-  app.enableCors();
   await app.listen(3000);
 }
 Cluster.register(bootstrap);

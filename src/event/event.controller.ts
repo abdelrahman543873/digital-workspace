@@ -1,3 +1,4 @@
+import { ActiveUserGuard } from './../shared/guards/active-user.guard';
 import { Pagination } from './../shared/utils/pagination.input';
 import { AuthGuard } from './../shared/guards/auth.guard';
 import { EventService } from './event.service';
@@ -26,6 +27,7 @@ import { SearchEventInput } from './inputs/search-events.input';
 import { Param } from '@nestjs/common';
 import { FileCloudUploadInterceptor } from '../shared/interceptors/file-cloud-upload.interceptor';
 
+@UseGuards(ActiveUserGuard)
 @Controller('event')
 export class EventController {
   constructor(private eventService: EventService) {}
