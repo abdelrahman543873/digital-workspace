@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { User, UserDocument } from '../../user/schema/user.schema';
 import { ENV_VARIABLE_NAMES } from '../../app.const';
 import { IncomingHttpHeaders } from 'http';
+import { BaseHttpException } from '../exceptions/base-http-exception';
 
 export interface TokenPayload {
   _id: string;
@@ -21,13 +22,17 @@ export class HelperService {
   async getCurrentUser(req: IncomingHttpHeaders): Promise<User> {
     const token = getAuthToken(req);
     if (!token) return null;
-    const { _id } = <TokenPayload>(
-      jwt.verify(
-        token,
-        this.configService.get<string>(ENV_VARIABLE_NAMES.JWT_SECRET),
-      )
-    );
-    return await this.userSchema.findById(_id);
+    try {
+      const { _id } = <TokenPayload>(
+        jwt.verify(
+          token,
+          this.configService.get<string>(ENV_VARIABLE_NAMES.JWT_SECRET),
+        )
+      );
+      return await this.userSchema.findById(_id);
+    } catch (error) {
+      throw new BaseHttpException('EN', 400, error);
+    }
   }
 
   async getExistingUser(input: GetExistingUserInput): Promise<User> {
