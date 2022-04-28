@@ -14,15 +14,19 @@ import { LeaveBalanceValidator } from '../validators/leave-balance.validator';
 import { LeaveTypeValidator } from '../validators/leave-type.validator';
 import { mongoIdTransform } from '../../shared/utils/mongo-id.transform';
 import { User } from '../../user/schema/user.schema';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateLeaveInput {
+  @ApiProperty()
   @IsDateString()
   @Validate(LeaveBalanceValidator)
   startDate: string;
 
+  @ApiProperty()
   @IsDateString()
   endDate: string;
 
+  @ApiProperty()
   @IsDefined()
   @Validate(LeaveTypeValidator)
   @Transform(mongoIdTransform)

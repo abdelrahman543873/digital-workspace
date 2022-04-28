@@ -8,6 +8,7 @@ import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { DeleteLeaveTypeInput } from './inputs/delete-levae-type.input';
 import { UpdateLeaveTypeInput } from './inputs/update-leave-type.input';
+import { UpdateLeaveInput } from './inputs/update-leave.input';
 
 @Injectable()
 export class LeaveService {
@@ -26,6 +27,12 @@ export class LeaveService {
       input,
       attachments,
     );
+  }
+  updateLeave(
+    input: UpdateLeaveInput,
+    attachments: Array<Express.Multer.File>,
+  ) {
+    return this.leaveRepository.updateLeave(input, attachments);
   }
 
   createLeaveType(input: CreateLeaveTypeInput) {

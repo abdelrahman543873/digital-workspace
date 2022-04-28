@@ -4,6 +4,7 @@ import { Leave, LeaveDocument } from './schema/leave.schema';
 import { AggregatePaginateModel, ObjectId } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateLeaveInput } from './inputs/create-leave.input';
+import { UpdateLeaveInput } from './inputs/update-leave.input';
 
 @Injectable()
 export class LeaveRepository extends BaseRepository<Leave> {
@@ -28,5 +29,23 @@ export class LeaveRepository extends BaseRepository<Leave> {
         }),
       }),
     });
+  }
+
+  updateLeave(
+    input: UpdateLeaveInput,
+    attachments: Array<Express.Multer.File>,
+  ) {
+    return this.leaveSchema.findOneAndUpdate(
+      { _id: input.id },
+      {
+        ...input,
+        ...(attachments && {
+          attachments: attachments.map((attachment) => {
+            return `${process.env.HOST}${attachment.filename}`;
+          }),
+        }),
+      },
+      { new: true },
+    );
   }
 }
