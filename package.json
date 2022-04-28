@@ -104,7 +104,7 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "displayName": {
-      "name": "social-media",
+      "name": "digital-workspace",
       "color": "blue"
     },
     "moduleFileExtensions": [

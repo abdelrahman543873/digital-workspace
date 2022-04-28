@@ -52,13 +52,6 @@ export class UserService {
       coverPic?: Express.Multer.File[];
     },
   ) {
-    if (
-      input.directManagerId &&
-      !(await this.userRepo.checkUserExists(input.directManagerId))
-    )
-      throw new BaseHttpException(this.request.lang, 602);
-    if (input?.directManagerId === this.request.currentUser._id.toString())
-      throw new BaseHttpException(this.request.lang, 607);
     return await this.userRepo.updateUser(
       this.request.currentUser._id,
       input,
@@ -73,13 +66,6 @@ export class UserService {
       coverPic?: Express.Multer.File[];
     },
   ) {
-    if (input.userId && !(await this.userRepo.checkUserExists(input.userId)))
-      throw new BaseHttpException(this.request.lang, 602);
-    if (
-      input.directManagerId &&
-      !(await this.userRepo.checkUserExists(input.directManagerId))
-    )
-      throw new BaseHttpException(this.request.lang, 608);
     return await this.userRepo.updateUserById(input, files);
   }
 

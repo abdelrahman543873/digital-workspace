@@ -42,7 +42,7 @@ describe('update user case', () => {
         directManagerId: randomId.toString(),
       },
     });
-    expect(res.body.statusCode).toBe(602);
+    expect(res.body.statusCode).toBe(400);
   });
 
   it('should throw error if manager id equal to employee id', async () => {
@@ -55,6 +55,6 @@ describe('update user case', () => {
         directManagerId: user._id.toString(),
       },
     });
-    expect(res.body.statusCode).toBe(607);
+    expect(res.body.statusCode).toBe(400);
   });
 });

@@ -1,3 +1,4 @@
+import { DirectManagerIdValidator } from './validators/direct-manager-validator';
 import { Module, Logger } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
@@ -14,6 +15,7 @@ import { ConfidentialApplication } from '../shared/providers/confidential-client
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ENV_VARIABLE_NAMES } from '../app.const';
+import { ExistingUserValidator } from './validators/existing-user.validator';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -43,7 +45,14 @@ import { ENV_VARIABLE_NAMES } from '../app.const';
     }),
   ],
   controllers: [UserController],
-  providers: [UserService, UserRepository, Logger, ConfidentialApplication],
+  providers: [
+    UserService,
+    UserRepository,
+    Logger,
+    ConfidentialApplication,
+    DirectManagerIdValidator,
+    ExistingUserValidator,
+  ],
   exports: [UserRepository],
 })
 export class UserModule {}

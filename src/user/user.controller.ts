@@ -47,6 +47,7 @@ import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 import { Response } from 'express';
 import { AcquireMicrosoftTokenInput } from './inputs/acquire-microsoft-token.input';
 import { MicrosoftLogin } from './swagger/microsoft-login.swagger';
+import { RequestInBodyInterceptor } from '../shared/interceptors/request-in-body.interceptor';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
@@ -78,6 +79,7 @@ export class UserController {
   @ApiBody(UpdateUserSwagger)
   @UseGuards(AuthGuard, ActiveUserGuard)
   @UseInterceptors(FileCloudUploadInterceptor)
+  @UseInterceptors(RequestInBodyInterceptor)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'profilePic', maxCount: 1 },

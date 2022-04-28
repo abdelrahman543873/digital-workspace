@@ -19,7 +19,7 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { Experience, Education } from '../schema/user.schema';
+import { Experience, Education, User } from '../schema/user.schema';
 import { getValuesFromEnum } from '../../shared/utils/columnEnum';
 import {
   STATUS,
@@ -30,6 +30,8 @@ import {
 import { ObjectId } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { GENDER, WIDGETS } from '../../app.const';
+import { DirectManagerIdValidator } from '../validators/direct-manager-validator';
+import { Validate } from 'class-validator';
 import {
   mongoIdTransform,
   mongoIdArrayTransform,
@@ -75,8 +77,9 @@ export class AddUserInput {
   description?: string;
 
   @IsOptional()
+  @Validate(DirectManagerIdValidator)
   @Transform(mongoIdTransform)
-  directManagerId?: string;
+  directManagerId?: ObjectId;
 
   @IsOptional()
   @IsISO31661Alpha2()
@@ -191,4 +194,7 @@ export class AddUserInput {
   @IsOptional()
   @Transform(mongoIdArrayTransform)
   interests?: string[];
+
+  @Allow()
+  currentUser: User;
 }

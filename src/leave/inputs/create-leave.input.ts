@@ -1,21 +1,19 @@
-import { Transform, TransformFnParams } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import {
   Allow,
   IsDateString,
   IsDefined,
-  isMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
   MaxLength,
   Validate,
 } from 'class-validator';
-import { Types } from 'mongoose';
 import { MinLength } from 'class-validator';
-import { BadRequestException } from '@nestjs/common';
 import { LeaveBalanceValidator } from '../validators/leave-balance.validator';
 import { LeaveTypeValidator } from '../validators/leave-type.validator';
 import { mongoIdTransform } from '../../shared/utils/mongo-id.transform';
+import { User } from '../../user/schema/user.schema';
 
 export class CreateLeaveInput {
   @IsDateString()
@@ -53,5 +51,5 @@ export class CreateLeaveInput {
 
   // added by the 'request in body interceptor' to be able to get the user in the input validator
   @Allow()
-  currentUser: string;
+  currentUser: User;
 }
