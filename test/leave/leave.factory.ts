@@ -4,6 +4,7 @@ import { ObjectId } from 'mongoose';
 import { userFactory } from '../../src/user/user.factory';
 import { Leave } from '../../src/leave/schema/leave.schema';
 import { leaveTypeFactory } from './leave-type.factory';
+import { LEAVE_STATUS } from '../../src/leave/leave.enum';
 
 interface LeaveType {
   employee?: ObjectId;
@@ -13,6 +14,7 @@ interface LeaveType {
   comment?: string;
   attachments?: string[];
   replacement?: ObjectId;
+  status?: string;
 }
 
 export const buildLeaveParams = async (
@@ -27,6 +29,7 @@ export const buildLeaveParams = async (
     comment: obj.comment || random.words(),
     attachments: obj.attachments || [`${process.env.HOST}/defaults/avatar.jpg`],
     replacement: obj.replacement || user._id,
+    status: obj.status || LEAVE_STATUS.PENDING,
   };
 };
 

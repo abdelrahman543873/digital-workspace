@@ -1,3 +1,5 @@
-export function getValuesFromEnum(enumValue: Record<string, any>) {
+export function getValuesFromEnum(
+  enumValue: Record<string, any>,
+): Array<string> {
   return Object.keys(enumValue);
 }

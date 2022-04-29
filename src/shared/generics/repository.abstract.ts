@@ -26,7 +26,7 @@ export abstract class BaseRepository<T> implements Repository<T> {
   async addMany(
     item: any[],
     options?: { ordered?: boolean; rawResult?: boolean } & ModelOptions,
-  ): Promise<T[]> {
+  ): Promise<(T & Document)[]> {
     return await this._model.insertMany(item, options);
   }
 
@@ -38,17 +38,23 @@ export abstract class BaseRepository<T> implements Repository<T> {
     return await this._model.deleteOne(filter);
   }
 
-  async findOne(filter: FilterQuery<T>, projection?: any): Promise<T> {
+  async findOne(
+    filter: FilterQuery<T>,
+    projection?: any,
+  ): Promise<T & Document> {
     return await this._model.findOne(filter, projection);
   }
   async updateOne(
     filter: FilterQuery<T>,
     update: UpdateQuery<T>,
-  ): Promise<Record<any, any>> {
+  ): Promise<T & Document> {
     return await this._model.findOneAndUpdate(filter, update, { new: true });
   }
 
-  async create(doc: CreateQuery<T>, options?: SaveOptions): Promise<T> {
+  async create(
+    doc: CreateQuery<T>,
+    options?: SaveOptions,
+  ): Promise<T & Document> {
     return await this._model.create(doc, options);
   }
 }

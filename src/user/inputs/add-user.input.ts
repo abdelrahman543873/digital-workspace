@@ -62,6 +62,7 @@ export class AddUserInput {
 
   @IsOptional()
   @Transform(mongoIdArrayTransform)
+  @ApiProperty({ type: 'array', items: { type: 'string' } })
   skills?: ObjectId[];
 
   @IsOptional()
@@ -79,6 +80,7 @@ export class AddUserInput {
   @IsOptional()
   @Validate(DirectManagerIdValidator)
   @Transform(mongoIdTransform)
+  @ApiProperty({ type: 'string' })
   directManagerId?: ObjectId;
 
   @IsOptional()
@@ -195,6 +197,7 @@ export class AddUserInput {
   @Transform(mongoIdArrayTransform)
   interests?: string[];
 
+  @ApiProperty({ readOnly: true })
   @Allow()
   currentUser: User;
 }
