@@ -1,4 +1,3 @@
-import { LangEnum } from './../../app.const';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { BaseHttpException } from '../exceptions/base-http-exception';
 import { HelperService } from '../helper/helper.service';

@@ -35,6 +35,13 @@ export class LeaveService {
     return this.leaveRepository.updateLeave(input, attachments);
   }
 
+  getLeavesList(input: Pagination) {
+    return this.leaveRepository.getLeavesList(
+      input,
+      this.request.currentUser._id,
+    );
+  }
+
   createLeaveType(input: CreateLeaveTypeInput) {
     return this.leaveTypeRepository.createLeaveType(input);
   }
