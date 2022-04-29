@@ -10,6 +10,9 @@ import { DeleteLeaveTypeInput } from './inputs/delete-levae-type.input';
 import { UpdateLeaveTypeInput } from './inputs/update-leave-type.input';
 import { UpdateLeaveInput } from './inputs/update-leave.input';
 import { ManageLeaveInput } from './inputs/manage-leave.input';
+import { UserRepository } from '../user/user.repository';
+import { User } from '../user/schema/user.schema';
+import { ObjectId } from 'mongoose';
 
 @Injectable()
 export class LeaveService {
@@ -17,6 +20,7 @@ export class LeaveService {
     private readonly leaveRepository: LeaveRepository,
     @Inject(REQUEST) private readonly request: RequestContext,
     private readonly leaveTypeRepository: LeaveTypeRepository,
+    private readonly userRepository: UserRepository,
   ) {}
 
   createLeave(
@@ -44,6 +48,22 @@ export class LeaveService {
     return this.leaveRepository.getLeavesList(
       input,
       this.request.currentUser._id,
+    );
+  }
+
+  async getAssignedLeavesList(input: Pagination) {
+    const managedEmployees: User[] =
+      await this.userRepository.getUserSubordinates(
+        this.request.currentUser._id,
+      );
+    const managedEmployeesIds: ObjectId[] = managedEmployees.map(
+      (managedEmployee) => {
+        return managedEmployee._id;
+      },
+    );
+    return await this.leaveRepository.getAssignedLeavesList(
+      input,
+      managedEmployeesIds,
     );
   }
 

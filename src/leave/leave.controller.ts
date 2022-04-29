@@ -71,6 +71,12 @@ export class LeaveController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('assigned-list')
+  async getAssignedLeavesList(@Body() input: Pagination) {
+    return await this.leaveService.getAssignedLeavesList(input);
+  }
+
+  @UseGuards(AuthGuard)
   @Post('type')
   async createLeaveType(@Body() input: CreateLeaveTypeInput) {
     return await this.leaveService.createLeaveType(input);

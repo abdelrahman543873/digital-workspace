@@ -66,6 +66,23 @@ export class LeaveRepository extends BaseRepository<Leave> {
     });
   }
 
+  getAssignedLeavesList(input: Pagination, employees: ObjectId[]) {
+    const aggregation = this.leaveSchema.aggregate([
+      {
+        $match: {
+          $expr: {
+            $in: ['$employee', employees],
+          },
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
+    return this.leaveSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
+    });
+  }
+
   manageLeave(input: ManageLeaveInput) {
     return this.leaveSchema.findOneAndUpdate(
       { _id: input.id },

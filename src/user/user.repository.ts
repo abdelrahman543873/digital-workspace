@@ -559,4 +559,8 @@ export class UserRepository extends BaseRepository<User> {
   getUserByEmail(email) {
     return this.userSchema.findOne({ email }, {}, { lean: true });
   }
+
+  getUserSubordinates(_id: ObjectId) {
+    return this.userSchema.find({ directManagerId: _id });
+  }
 }
