@@ -563,4 +563,8 @@ export class UserRepository extends BaseRepository<User> {
   getUserSubordinates(_id: ObjectId) {
     return this.userSchema.find({ directManagerId: _id });
   }
+
+  decrementUserLeave(_id: ObjectId) {
+    return this.userSchema.updateOne({ _id }, { $inc: { leaveBalance: -1 } });
+  }
 }

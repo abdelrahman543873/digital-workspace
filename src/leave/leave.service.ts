@@ -13,6 +13,7 @@ import { ManageLeaveInput } from './inputs/manage-leave.input';
 import { UserRepository } from '../user/user.repository';
 import { User } from '../user/schema/user.schema';
 import { ObjectId } from 'mongoose';
+import { LEAVE_STATUS } from './leave.enum';
 
 @Injectable()
 export class LeaveService {
@@ -40,8 +41,11 @@ export class LeaveService {
     return this.leaveRepository.updateLeave(input, attachments);
   }
 
-  manageLeave(input: ManageLeaveInput) {
-    return this.leaveRepository.manageLeave(input);
+  async manageLeave(input: ManageLeaveInput) {
+    const leave = await this.leaveRepository.findOne({ _id: input.id });
+    if (input.status === LEAVE_STATUS.APPROVED)
+      await this.userRepository.decrementUserLeave(leave.employee);
+    return await this.leaveRepository.manageLeave(input);
   }
 
   getLeavesList(input: Pagination) {
