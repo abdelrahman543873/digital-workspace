@@ -31,8 +31,10 @@ describe('register user suite case', () => {
         directManagerId: user._id.toString(),
         level: level._id.toString(),
         employmentType: employmentType._id.toString(),
+        education: params.education,
       },
     });
+    expect(res.body.education[0].level).toBe(params.education[0].level);
     expect(res.body.skills[0]).toBe(skill._id.toString());
     expect(res.body.token).toBeTruthy();
     expect(res.body.email).toBe(params.email.toLowerCase());

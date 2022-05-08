@@ -184,6 +184,7 @@ export class AddUserInput {
 
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   yearsOfExperience?: number;
 
   @Allow()
