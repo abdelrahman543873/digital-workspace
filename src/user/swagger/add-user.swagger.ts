@@ -1,6 +1,7 @@
+import { ApiBodyOptions } from '@nestjs/swagger';
 import { GENDER, WIDGETS } from '../../app.const';
 
-export const AddUserSwagger = {
+export const AddUserSwagger: ApiBodyOptions = {
   schema: {
     type: 'object',
     properties: {

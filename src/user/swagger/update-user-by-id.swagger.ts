@@ -6,6 +6,8 @@ export const UpdateUserByIdSwagger: ApiBodyOptions = {
     type: 'object',
     properties: {
       userId: { type: 'string', format: 'uuid' },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       ...AddUserSwagger.schema.properties,
     },
   },

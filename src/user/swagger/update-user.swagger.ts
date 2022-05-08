@@ -6,6 +6,8 @@ export const UpdateUserSwagger: ApiBodyOptions = {
     type: 'object',
     properties: {
       newPassword: { type: 'string' },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       ...AddUserSwagger.schema.properties,
     },
   },
