@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId, Types } from 'mongoose';
+import { Model, ObjectId, QueryWithHelpers, Types } from 'mongoose';
 import { CommentDocument, Comment } from './schema/comment.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { PostCommentInput } from './inputs/post-comment.input';
@@ -49,7 +49,10 @@ export class CommentRepository extends BaseRepository<Comment> {
     return await this.commentSchema.findOne({ _id: input.commentId });
   }
 
-  async deleteCommentInput(userId: ObjectId, input: DeleteCommentInput) {
+  async deleteCommentInput(
+    userId: ObjectId,
+    input: DeleteCommentInput,
+  ): Promise<QueryWithHelpers<any, any>> {
     return await this.commentSchema.deleteOne({
       $or: [
         {

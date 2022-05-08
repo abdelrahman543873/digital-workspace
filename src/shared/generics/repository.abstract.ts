@@ -4,10 +4,10 @@ import {
   Document,
   FilterQuery,
   UpdateQuery,
-  CreateQuery,
   SaveOptions,
+  QueryWithHelpers,
+  AnyKeys,
 } from 'mongoose';
-import { ModelOptions } from 'mongoose';
 
 export abstract class BaseRepository<T> implements Repository<T> {
   // creating a property to use your code in all instances
@@ -25,7 +25,7 @@ export abstract class BaseRepository<T> implements Repository<T> {
 
   async addMany(
     item: any[],
-    options?: { ordered?: boolean; rawResult?: boolean } & ModelOptions,
+    options?: { ordered?: boolean; rawResult?: boolean },
   ): Promise<(T & Document)[]> {
     return await this._model.insertMany(item, options);
   }
@@ -34,27 +34,22 @@ export abstract class BaseRepository<T> implements Repository<T> {
     return await this._model.deleteMany({});
   }
 
-  async deleteOne(filter?: FilterQuery<T>) {
-    return await this._model.deleteOne(filter);
+  deleteOne(filter): QueryWithHelpers<any, any> {
+    return this._model.deleteOne(filter);
   }
 
-  async findOne(
-    filter: FilterQuery<T>,
-    projection?: any,
-  ): Promise<T & Document> {
-    return await this._model.findOne(filter, projection);
+  findOne(filter: FilterQuery<T>, projection?: any): QueryWithHelpers<any, T> {
+    return this._model.findOne(filter, projection);
   }
-  async updateOne(
+
+  updateOne(
     filter: FilterQuery<T>,
     update: UpdateQuery<T>,
-  ): Promise<T & Document> {
-    return await this._model.findOneAndUpdate(filter, update, { new: true });
+  ): QueryWithHelpers<any, T> {
+    return this._model.findOneAndUpdate(filter, update, { new: true });
   }
 
-  async create(
-    doc: CreateQuery<T>,
-    options?: SaveOptions,
-  ): Promise<T & Document> {
-    return await this._model.create(doc, options);
+  create(doc: AnyKeys<T>, options?: SaveOptions) {
+    return this._model.create(doc, options);
   }
 }

@@ -2,7 +2,12 @@ import { Pagination } from './../shared/utils/pagination.input';
 import { LookupSchemasEnum } from './../app.const';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { ObjectId, AggregatePaginateModel, Types } from 'mongoose';
+import {
+  ObjectId,
+  AggregatePaginateModel,
+  Types,
+  QueryWithHelpers,
+} from 'mongoose';
 import { Post, PostDocument } from './schema/post.schema';
 import { AddPostInput } from './inputs/add-post.input';
 import { BaseRepository } from '../shared/generics/repository.abstract';
@@ -62,7 +67,10 @@ export class PostRepository extends BaseRepository<Post> {
     });
   }
 
-  async removePost(userId: ObjectId, input: RemovePostInput) {
+  async removePost(
+    userId: ObjectId,
+    input: RemovePostInput,
+  ): Promise<QueryWithHelpers<any, any>> {
     return await this.postSchema.deleteOne({
       $and: [{ userId }, { _id: new Types.ObjectId(input.postId) }],
     });
