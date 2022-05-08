@@ -11,10 +11,10 @@ describe('create leave type case', () => {
       method: HTTP_METHODS_ENUM.POST,
       url: LEAVE_TYPE,
       variables: {
-        reason: leaveType.reason,
+        name: leaveType.name,
       },
       token: user.token,
     });
-    expect(res.body.reason).toBe(leaveType.reason);
+    expect(res.body.name).toBe(leaveType.name);
   });
 });
