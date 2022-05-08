@@ -10,7 +10,9 @@ export const mongoIdTransform = (params: TransformFnParams) => {
 };
 
 export const mongoIdArrayTransform = (params: TransformFnParams) => {
-  const array: [string] = params.value;
+  // for working with parsing form data
+  const array: [string] =
+    typeof params.value === 'string' ? JSON.parse(params.value) : params.value;
   const convertedArray = [];
   if (!isArray(array) || !array.length)
     throw new BadRequestException(

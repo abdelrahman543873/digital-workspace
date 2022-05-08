@@ -16,6 +16,8 @@ describe('register user suite case', () => {
     const user = await userFactory();
     const level = await levelFactory();
     const employmentType = await EmploymentTypeFactory();
+    const testFiles = process.cwd();
+    const filePath = `${testFiles}/test/test-files/test-duck.jpeg`;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_USER,
@@ -33,7 +35,10 @@ describe('register user suite case', () => {
         employmentType: employmentType._id.toString(),
         education: params.education,
       },
+      filePath,
+      fileParam: 'coverPic',
     });
+    console.log(res.body);
     expect(res.body.education[0].level).toBe(params.education[0].level);
     expect(res.body.skills[0]).toBe(skill._id.toString());
     expect(res.body.token).toBeTruthy();
@@ -42,6 +47,7 @@ describe('register user suite case', () => {
 
   it('should register user that is company and not admin', async () => {
     const params = await buildUserParams();
+    const skill = await skillFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_USER,
@@ -53,9 +59,12 @@ describe('register user suite case', () => {
         status: params.status,
         governmentalId: params.governmentalId,
         phone: params.phone,
+        skills: [skill._id.toString()],
         gender: GENDER[0],
       },
     });
+    // validating that mongo id transform works with both form data and application/json
+    expect(res.body.skills[0]).toBe(skill._id.toString());
     expect(res.body.isCompany).toBe(true);
     expect(res.body.isAdmin).toBe(false);
     expect(res.body.token).toBeTruthy();
