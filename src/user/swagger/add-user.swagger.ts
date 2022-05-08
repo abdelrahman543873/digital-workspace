@@ -94,7 +94,8 @@ export const AddUserSwagger = {
           type: 'object',
           properties: {
             logo: { type: 'string', format: 'uri' },
-            name: { type: 'string' },
+            university: { type: 'string' },
+            major: { type: 'string' },
             level: { type: 'string' },
             startDate: { type: 'string', format: 'date' },
             endDate: { type: 'string', format: 'date' },
@@ -133,6 +134,31 @@ export const AddUserSwagger = {
       widgets: {
         type: 'string',
         enum: WIDGETS,
+      },
+      passport: {
+        type: 'string',
+      },
+      contractEndDate: {
+        type: 'string',
+        format: 'date',
+      },
+      internshipEndDate: {
+        type: 'string',
+        format: 'date',
+      },
+      exitDate: {
+        type: 'string',
+        format: 'date',
+      },
+      resignationDate: {
+        type: 'string',
+        format: 'date',
+      },
+      personalEmail: {
+        type: 'string',
+      },
+      exitReason: {
+        type: 'string',
       },
     },
   },

@@ -132,6 +132,21 @@ export class AddUserInput {
   address?: string;
 
   @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  passport?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  personalEmail?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  exitReason?: string;
+
+  @IsOptional()
   @IsDateString()
   visaExpiryDate?: Date;
 
@@ -150,6 +165,22 @@ export class AddUserInput {
   @IsOptional()
   @IsDateString()
   weddingDate?: Date;
+
+  @IsOptional()
+  @IsDateString()
+  contractEndDate?: Date;
+
+  @IsOptional()
+  @IsDateString()
+  internshipEndDate?: Date;
+
+  @IsOptional()
+  @IsDateString()
+  exitDate?: Date;
+
+  @IsOptional()
+  @IsDateString()
+  resignationDate?: Date;
 
   @IsOptional()
   @IsNumber()
