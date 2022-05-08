@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Allow } from 'class-validator';
+import { Allow, IsOptional } from 'class-validator';
 import { Document, ObjectId, Types } from 'mongoose';
 import { GENDER } from '../../app.const';
 import { BLOOD_TYPE, MARTIAL_STATUS, STATUS } from '../user.enum';
@@ -28,27 +28,21 @@ const ExperienceSchema = SchemaFactory.createForClass(Experience);
 
 @Schema({ versionKey: false, _id: false })
 export class Education {
-  @Allow()
   @Prop()
   logo: string;
 
-  @Allow()
   @Prop()
   university: string;
 
-  @Allow()
   @Prop()
   major: string;
 
-  @Allow()
   @Prop()
   level: string;
 
-  @Allow()
   @Prop({ type: Date })
   startDate: Date;
 
-  @Allow()
   @Prop({ type: Date })
   endDate: Date;
 }

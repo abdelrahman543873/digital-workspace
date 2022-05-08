@@ -21,7 +21,7 @@ export const mongoIdArrayTransform = (params: TransformFnParams) => {
   array.forEach((element) => {
     if (!isMongoId(element))
       throw new BadRequestException(`value of ${params.key} isn't a mongoId`);
-    convertedArray.push(new Types.ObjectId(`${params.value}`));
+    convertedArray.push(new Types.ObjectId(element));
   });
   return convertedArray;
 };
