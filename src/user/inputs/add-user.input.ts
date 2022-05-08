@@ -58,11 +58,12 @@ export class AddUserInput {
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => Experience)
+  @ApiProperty({ type: [Experience] })
   experience?: Experience[];
 
   @IsOptional()
   @Transform(mongoIdArrayTransform)
-  @ApiProperty({ type: 'array', items: { type: 'string' } })
+  @ApiProperty({ type: [String] })
   skills?: ObjectId[];
 
   @IsOptional()
@@ -70,6 +71,7 @@ export class AddUserInput {
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => Education)
+  @ApiProperty({ type: [Education] })
   education?: Education[];
 
   @IsOptional()
@@ -187,11 +189,15 @@ export class AddUserInput {
   @Type(() => Number)
   yearsOfExperience?: number;
 
+  @IsOptional()
+  @ApiProperty({ type: 'string', format: 'binary' })
   @Allow()
-  profilePic: string;
+  profilePic?: string;
 
+  @IsOptional()
+  @ApiProperty({ type: 'string', format: 'binary' })
   @Allow()
-  coverPic: string;
+  coverPic?: string;
 
   @ApiProperty()
   @IsMobilePhone(ALLOWED_COUNTRIES_PHONES)
@@ -227,9 +233,10 @@ export class AddUserInput {
 
   @IsOptional()
   @Transform(mongoIdArrayTransform)
+  @ApiProperty({ type: [String] })
   interests?: string[];
 
   @ApiProperty({ readOnly: true })
   @Allow()
-  currentUser: User;
+  currentUser?: User;
 }

@@ -38,7 +38,6 @@ describe('register user suite case', () => {
       filePath,
       fileParam: 'coverPic',
     });
-    console.log(res.body);
     expect(res.body.education[0].level).toBe(params.education[0].level);
     expect(res.body.skills[0]).toBe(skill._id.toString());
     expect(res.body.token).toBeTruthy();
