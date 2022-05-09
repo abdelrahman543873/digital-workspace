@@ -12,10 +12,10 @@ describe('update leave type case', () => {
       url: LEAVE_TYPE,
       variables: {
         id: leaveType._id.toString(),
-        reason: user.description,
+        name: user.description,
       },
       token: user.token,
     });
-    expect(res.body.reason).toBe(user.description);
+    expect(res.body.name).toBe(user.description);
   });
 });

@@ -20,16 +20,12 @@ interface ExperienceType {
 }
 
 interface EducationType {
+  logo?: string;
+  university?: string;
+  major?: string;
+  level?: string;
   startDate?: Date;
   endDate?: Date;
-  level?: string;
-  name?: string;
-  logo?: string;
-}
-
-interface SkillType {
-  name?: string;
-  percentage?: number;
 }
 
 export interface UserType {
@@ -88,7 +84,8 @@ const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
 
 const buildEducationParams = (obj: EducationType = {}): Education => {
   return {
-    name: obj.name || name.title(),
+    university: obj.university || name.title(),
+    major: obj.major || name.title(),
     logo: obj.logo || `${process.env.HOST}avatar.jpg`,
     level: obj.level || name.jobTitle(),
     endDate: obj.endDate || date.future(),

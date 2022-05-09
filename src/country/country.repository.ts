@@ -5,7 +5,11 @@ import { CreateCountryInput } from './inputs/create-country.input';
 import { Country, CountryDocument } from './schema/country.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { InjectModel } from '@nestjs/mongoose';
-import { AggregatePaginateModel } from 'mongoose';
+import {
+  AggregatePaginateModel,
+  HydratedDocument,
+  QueryWithHelpers,
+} from 'mongoose';
 import { LookupSchemasEnum } from '../app.const';
 import { SearchCountryInput } from './inputs/search-country.input';
 
@@ -18,14 +22,16 @@ export class CountryRepository extends BaseRepository<Country> {
     super(countrySchema);
   }
 
-  async create(input: CreateCountryInput) {
+  async create(
+    input: CreateCountryInput,
+  ): Promise<HydratedDocument<Country, any>> {
     return await this.countrySchema.create({
       ...input,
     });
   }
 
-  async deleteCountry(input: DeleteCountryInput) {
-    return await this.countrySchema.deleteOne({ name: input.name });
+  deleteCountry(input: DeleteCountryInput): QueryWithHelpers<any, any> {
+    return this.countrySchema.deleteOne({ name: input.name });
   }
 
   async getCountries(input: Pagination) {

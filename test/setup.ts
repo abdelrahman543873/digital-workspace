@@ -57,8 +57,9 @@ module.exports = async (): Promise<void> => {
   app.use(compression());
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true,
       whitelist: true,
+      transform: true,
+      stopAtFirstError: true,
       forbidNonWhitelisted: true,
     }),
   );

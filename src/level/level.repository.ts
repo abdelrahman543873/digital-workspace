@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Level, LevelDocument } from './schema/level.schema';
-import { AggregatePaginateModel, ObjectId, Types } from 'mongoose';
+import {
+  AggregatePaginateModel,
+  ObjectId,
+  QueryWithHelpers,
+  Types,
+} from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { CreateLevelInput } from './inputs/create-level.input';
@@ -61,8 +66,8 @@ export class LevelRepository extends BaseRepository<Level> {
     });
   }
 
-  async deleteLevel(input: DeleteLevelInput) {
-    return await this.levelSchema.deleteOne({ name: input.name });
+  deleteLevel(input: DeleteLevelInput): QueryWithHelpers<any, any> {
+    return this.levelSchema.deleteOne({ name: input.name });
   }
 
   async getLevelByName(name: string) {

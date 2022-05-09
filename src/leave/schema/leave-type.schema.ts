@@ -8,7 +8,19 @@ export class LeaveType {
   _id?: ObjectId;
 
   @Prop()
-  reason: string;
+  name: string;
+
+  @Prop()
+  accrual: string;
+
+  @Prop()
+  startingMonth: number;
+
+  @Prop()
+  maximumDays: number;
+
+  @Prop({ type: Date })
+  effectiveDate: Date;
 }
 
 export const LeaveTypeSchema = SchemaFactory.createForClass(LeaveType);

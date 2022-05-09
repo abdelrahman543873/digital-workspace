@@ -59,7 +59,7 @@ describe('update user by id case', () => {
         directManagerId: randomId.toString(),
       },
     });
-    expect(res.body.statusCode).toBe(608);
+    expect(res.body.statusCode).toBe(400);
   });
 
   it('should update user direct manager', async () => {

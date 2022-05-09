@@ -17,10 +17,11 @@ import { RequestInBodyInterceptor } from '../shared/interceptors/request-in-body
 import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
 import { Get, Query, Delete, Put } from '@nestjs/common';
 import { Pagination } from '../shared/utils/pagination.input';
-import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 import { DeleteLeaveTypeInput } from './inputs/delete-levae-type.input';
 import { UpdateLeaveTypeInput } from './inputs/update-leave-type.input';
 import { UpdateLeaveInput } from './inputs/update-leave.input';
+import { ActiveUserGuard } from '../shared/guards/active-user.guard';
+import { ManageLeaveInput } from './inputs/manage-leave.input';
 
 @UseGuards(ActiveUserGuard)
 @ApiTags('leave')
@@ -54,6 +55,25 @@ export class LeaveController {
     @UploadedFiles() attachments: Array<Express.Multer.File>,
   ) {
     return await this.leaveService.updateLeave(input, attachments);
+  }
+
+  @UseGuards(AuthGuard)
+  @UseInterceptors(RequestInBodyInterceptor)
+  @Put('manage')
+  async manageLeave(@Body() input: ManageLeaveInput) {
+    return await this.leaveService.manageLeave(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('list')
+  async getLeavesList(@Body() input: Pagination) {
+    return await this.leaveService.getLeavesList(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('assigned-list')
+  async getAssignedLeavesList(@Body() input: Pagination) {
+    return await this.leaveService.getAssignedLeavesList(input);
   }
 
   @UseGuards(AuthGuard)

@@ -32,11 +32,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { GENDER, WIDGETS } from '../../app.const';
 import { DirectManagerIdValidator } from '../validators/direct-manager-validator';
 import { Validate } from 'class-validator';
+import { jsonArrayTransform } from '../../shared/utils/json-array.transform';
 import {
   mongoIdTransform,
   mongoIdArrayTransform,
 } from '../../shared/utils/mongo-id.transform';
-
 export class AddUserInput {
   @ApiProperty()
   @IsEmail()
@@ -56,19 +56,22 @@ export class AddUserInput {
   @IsOptional()
   @IsArray()
   @ArrayNotEmpty()
-  @ValidateNested({ each: true })
   @Type(() => Experience)
+  @ApiProperty({ type: [Experience] })
+  @Transform(jsonArrayTransform)
   experience?: Experience[];
 
   @IsOptional()
   @Transform(mongoIdArrayTransform)
+  @ApiProperty({ type: [String] })
   skills?: ObjectId[];
 
   @IsOptional()
   @IsArray()
   @ArrayNotEmpty()
-  @ValidateNested({ each: true })
   @Type(() => Education)
+  @ApiProperty({ type: [Education] })
+  @Transform(jsonArrayTransform)
   education?: Education[];
 
   @IsOptional()
@@ -79,6 +82,7 @@ export class AddUserInput {
   @IsOptional()
   @Validate(DirectManagerIdValidator)
   @Transform(mongoIdTransform)
+  @ApiProperty({ type: 'string' })
   directManagerId?: ObjectId;
 
   @IsOptional()
@@ -130,6 +134,21 @@ export class AddUserInput {
   address?: string;
 
   @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  passport?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  personalEmail?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  exitReason?: string;
+
+  @IsOptional()
   @IsDateString()
   visaExpiryDate?: Date;
 
@@ -150,14 +169,35 @@ export class AddUserInput {
   weddingDate?: Date;
 
   @IsOptional()
+  @IsDateString()
+  contractEndDate?: Date;
+
+  @IsOptional()
+  @IsDateString()
+  internshipEndDate?: Date;
+
+  @IsOptional()
+  @IsDateString()
+  exitDate?: Date;
+
+  @IsOptional()
+  @IsDateString()
+  resignationDate?: Date;
+
+  @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   yearsOfExperience?: number;
 
+  @IsOptional()
+  @ApiProperty({ type: 'string', format: 'binary' })
   @Allow()
-  profilePic: string;
+  profilePic?: string;
 
+  @IsOptional()
+  @ApiProperty({ type: 'string', format: 'binary' })
   @Allow()
-  coverPic: string;
+  coverPic?: string;
 
   @ApiProperty()
   @IsMobilePhone(ALLOWED_COUNTRIES_PHONES)
@@ -193,8 +233,10 @@ export class AddUserInput {
 
   @IsOptional()
   @Transform(mongoIdArrayTransform)
+  @ApiProperty({ type: [String] })
   interests?: string[];
 
+  @ApiProperty({ readOnly: true })
   @Allow()
-  currentUser: User;
+  currentUser?: User;
 }

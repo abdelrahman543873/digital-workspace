@@ -5,6 +5,8 @@ import { AggregatePaginateModel, ObjectId } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateLeaveInput } from './inputs/create-leave.input';
 import { UpdateLeaveInput } from './inputs/update-leave.input';
+import { Pagination } from '../shared/utils/pagination.input';
+import { ManageLeaveInput } from './inputs/manage-leave.input';
 
 @Injectable()
 export class LeaveRepository extends BaseRepository<Leave> {
@@ -44,6 +46,48 @@ export class LeaveRepository extends BaseRepository<Leave> {
             return `${process.env.HOST}${attachment.filename}`;
           }),
         }),
+      },
+      { new: true },
+    );
+  }
+
+  getLeavesList(input: Pagination, employee: ObjectId) {
+    const aggregation = this.leaveSchema.aggregate([
+      {
+        $match: {
+          employee,
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
+    return this.leaveSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
+    });
+  }
+
+  getAssignedLeavesList(input: Pagination, employees: ObjectId[]) {
+    const aggregation = this.leaveSchema.aggregate([
+      {
+        $match: {
+          $expr: {
+            $in: ['$employee', employees],
+          },
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
+    return this.leaveSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
+    });
+  }
+
+  manageLeave(input: ManageLeaveInput) {
+    return this.leaveSchema.findOneAndUpdate(
+      { _id: input.id },
+      {
+        status: input.status,
       },
       { new: true },
     );

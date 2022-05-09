@@ -3,7 +3,14 @@ import { LookupSchemasEnum } from './../app.const';
 import { hashPass } from './../shared/utils/bcryptHelper';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { AggregatePaginateModel, Model, ObjectId, Types } from 'mongoose';
+import {
+  AggregatePaginateModel,
+  Model,
+  ObjectId,
+  QueryWithHelpers,
+  Types,
+  UpdateWriteOpResult,
+} from 'mongoose';
 import { User, UserDocument } from './schema/user.schema';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { AddUserInput } from './inputs/add-user.input';
@@ -291,7 +298,7 @@ export class UserRepository extends BaseRepository<User> {
   ) {
     const { ...filteredInput } = input;
     return await this.userSchema.findOneAndUpdate(
-      { _id: new Types.ObjectId(input.userId) },
+      { _id: input.userId },
       {
         ...filteredInput,
         ...(files?.coverPic && {
@@ -542,7 +549,10 @@ export class UserRepository extends BaseRepository<User> {
     return users;
   }
 
-  async subtractLeaveDays(_id: ObjectId, leaveDays: number) {
+  async subtractLeaveDays(
+    _id: ObjectId,
+    leaveDays: number,
+  ): Promise<QueryWithHelpers<UpdateWriteOpResult, User>> {
     return await this.userSchema.updateOne({ _id }, [
       {
         $set: {
@@ -558,5 +568,13 @@ export class UserRepository extends BaseRepository<User> {
 
   getUserByEmail(email) {
     return this.userSchema.findOne({ email }, {}, { lean: true });
+  }
+
+  getUserSubordinates(_id: ObjectId) {
+    return this.userSchema.find({ directManagerId: _id });
+  }
+
+  decrementUserLeave(_id: ObjectId): QueryWithHelpers<any, any> {
+    return this.userSchema.updateOne({ _id }, { $inc: { leaveBalance: -1 } });
   }
 }

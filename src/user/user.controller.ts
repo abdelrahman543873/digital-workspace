@@ -32,15 +32,12 @@ import { GetUserByIdInput } from './inputs/get-user-by-id.input';
 import { User } from './schema/user.schema';
 import { Pagination } from '../shared/utils/pagination.input';
 import { UpdateUserInput } from './inputs/update-user.input';
-import { UpdateUserSwagger } from './swagger/update-user.swagger';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { UpdateUserJoi } from './joi/update-user.joi';
 import { GetStatsInput } from './inputs/get-stats.input';
 import { GetHierarchyInput } from './inputs/get-hierarchy.input';
 import { HidePostInput } from './inputs/hide-post.input';
-import { AddUserSwagger } from './swagger/add-user.swagger';
 import { UpdateUserByIdInput } from './inputs/update-user-by-id.input';
-import { UpdateUserByIdSwagger } from './swagger/update-user-by-id.swagger';
 import { GetUserByBirthDate } from './inputs/get-user-by-birthdate.input';
 import { DeleteUserInput } from './inputs/delete-user-by-id.input';
 import { ActiveUserGuard } from '../shared/guards/active-user.guard';
@@ -54,7 +51,6 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @ApiConsumes('multipart/form-data')
-  @ApiBody(AddUserSwagger)
   @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -76,7 +72,6 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
-  @ApiBody(UpdateUserSwagger)
   @UseGuards(AuthGuard, ActiveUserGuard)
   @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(RequestInBodyInterceptor)
@@ -101,7 +96,6 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
-  @ApiBody(UpdateUserByIdSwagger)
   @UseGuards(AuthGuard, ActiveUserGuard)
   @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(

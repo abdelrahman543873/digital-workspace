@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Allow, IsOptional } from 'class-validator';
 import { Document, ObjectId, Types } from 'mongoose';
 import { GENDER } from '../../app.const';
 import { BLOOD_TYPE, MARTIAL_STATUS, STATUS } from '../user.enum';
@@ -31,7 +32,10 @@ export class Education {
   logo: string;
 
   @Prop()
-  name: string;
+  university: string;
+
+  @Prop()
+  major: string;
 
   @Prop()
   level: string;
@@ -173,6 +177,27 @@ export class User {
 
   @Prop()
   yearsOfExperience?: number;
+
+  @Prop({ sparse: true })
+  passport?: string;
+
+  @Prop({ type: Date })
+  contractEndDate?: Date;
+
+  @Prop({ type: Date })
+  internshipEndDate?: Date;
+
+  @Prop({ type: Date })
+  exitDate?: Date;
+
+  @Prop({ type: Date })
+  resignationDate?: Date;
+
+  @Prop()
+  personalEmail?: string;
+
+  @Prop()
+  exitReason?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

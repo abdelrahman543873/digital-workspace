@@ -15,6 +15,6 @@ describe('delete leave type case', () => {
       },
       token: user.token,
     });
-    expect(res.body.reason).toBe(leaveType.reason);
+    expect(res.body.name).toBe(leaveType.name);
   });
 });

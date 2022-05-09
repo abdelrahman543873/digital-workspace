@@ -18,13 +18,13 @@ export class DirectManagerIdValidator implements ValidatorConstraintInterface {
     directManagerId: ObjectId,
     validationArguments: ValidationArguments,
   ): Promise<boolean> {
-    const currentUser: User = JSON.parse(
-      validationArguments.object['currentUser'],
-    );
+    let currentUser: User;
+    if (validationArguments.object['currentUser'])
+      currentUser = JSON.parse(validationArguments.object['currentUser']);
     const directManager = await this.userRepository.findOne({
       _id: directManagerId,
     });
-    if (`${directManagerId}` === `${currentUser._id}`) {
+    if (currentUser && `${directManagerId}` === `${currentUser._id}`) {
       this.error = "your id can't be the direct manager id";
       return false;
     } else if (!directManager) {

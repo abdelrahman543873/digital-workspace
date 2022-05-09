@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, ObjectId, Types } from 'mongoose';
+import { LEAVE_STATUS } from '../leave.enum';
 
 export type LeaveDocument = Leave & Document;
 
@@ -24,6 +25,9 @@ export class Leave {
 
   @Prop()
   reason: string;
+
+  @Prop({ default: LEAVE_STATUS.PENDING })
+  status: string;
 
   @Prop()
   attachments: string[];
