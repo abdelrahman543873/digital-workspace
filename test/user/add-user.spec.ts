@@ -34,10 +34,12 @@ describe('register user suite case', () => {
         level: level._id.toString(),
         employmentType: employmentType._id.toString(),
         education: params.education,
+        interests: params.interests,
       },
       filePath,
       fileParam: 'coverPic',
     });
+    expect(res.body.interests[0]).toBe(params.interests[0].toString());
     expect(res.body.education[0].level).toBe(params.education[0].level);
     expect(res.body.skills[0]).toBe(skill._id.toString());
     expect(res.body.token).toBeTruthy();
