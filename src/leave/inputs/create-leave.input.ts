@@ -46,6 +46,7 @@ export class CreateLeaveInput {
   @MinLength(5)
   reason?: string;
 
+  @ApiProperty({ type: 'array', items: { type: 'string', format: 'binary' } })
   @Allow()
   attachments?: string[];
 
