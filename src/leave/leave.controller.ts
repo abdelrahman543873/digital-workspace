@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { LeaveService } from './leave.service';
 import { CreateLeaveInput } from './inputs/create-leave.input';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileCloudUploadInterceptor } from '../shared/interceptors/file-cloud-upload.interceptor';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { RequestInBodyInterceptor } from '../shared/interceptors/request-in-body.interceptor';
@@ -21,6 +21,7 @@ import { UpdateLeaveTypeInput } from './inputs/update-leave-type.input';
 import { UpdateLeaveInput } from './inputs/update-leave.input';
 import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 import { ManageLeaveInput } from './inputs/manage-leave.input';
+import { CancelLeaveInput } from './inputs/cancel-leave.input';
 
 @UseGuards(ActiveUserGuard)
 @ApiTags('leave')
@@ -95,5 +96,12 @@ export class LeaveController {
   @Get('types')
   async getLeaveTypes(@Query() input: Pagination) {
     return await this.leaveService.getLeaveTypes(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @UseInterceptors(RequestInBodyInterceptor)
+  @Post('cancel')
+  async cancelLeave(@Body() input: CancelLeaveInput) {
+    return await this.leaveService.cancelLeave(input);
   }
 }

@@ -577,4 +577,8 @@ export class UserRepository extends BaseRepository<User> {
   decrementUserLeave(_id: ObjectId): QueryWithHelpers<any, any> {
     return this.userSchema.updateOne({ _id }, { $inc: { leaveBalance: -1 } });
   }
+
+  incrementUserLeave(_id: ObjectId): QueryWithHelpers<any, any> {
+    return this.userSchema.updateOne({ _id }, { $inc: { leaveBalance: +1 } });
+  }
 }

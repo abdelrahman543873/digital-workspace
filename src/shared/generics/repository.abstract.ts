@@ -38,7 +38,7 @@ export abstract class BaseRepository<T> implements Repository<T> {
     return this._model.deleteOne(filter);
   }
 
-  findOne(filter: FilterQuery<T>, projection?: any): QueryWithHelpers<any, T> {
+  findOne(filter: FilterQuery<T>, projection?: any): QueryWithHelpers<T, T> {
     return this._model.findOne(filter, projection);
   }
 
