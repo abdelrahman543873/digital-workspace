@@ -15,7 +15,9 @@ export class BaseHttpExceptionFilter implements ExceptionFilter {
     const errorResponse = exception.getResponse() as ExceptionInterface;
     response.status(exception.getStatus()).json({
       success: false,
-      ...errorResponse,
+      ...(typeof errorResponse === 'string'
+        ? { error: errorResponse }
+        : errorResponse),
     });
   }
 }
