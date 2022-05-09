@@ -56,7 +56,6 @@ export class AddUserInput {
   @IsOptional()
   @IsArray()
   @ArrayNotEmpty()
-  @ValidateNested({ each: true })
   @Type(() => Experience)
   @ApiProperty({ type: [Experience] })
   @Transform(jsonArrayTransform)
