@@ -32,6 +32,7 @@ export enum LookupSchemasEnum {
   pages = 'pages',
   tasks = 'tasks',
   departments = 'departments',
+  leaveTypes = 'leaveTypes',
 }
 
 export const PRIORITIES = ['low', 'medium', 'high'];

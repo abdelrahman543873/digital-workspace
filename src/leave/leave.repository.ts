@@ -14,6 +14,7 @@ import { Pagination } from '../shared/utils/pagination.input';
 import { ManageLeaveInput } from './inputs/manage-leave.input';
 import { CancelLeaveInput } from './inputs/cancel-leave.input';
 import { LEAVE_STATUS } from './leave.enum';
+import { LookupSchemasEnum } from '../app.const';
 
 @Injectable()
 export class LeaveRepository extends BaseRepository<Leave> {
@@ -65,6 +66,15 @@ export class LeaveRepository extends BaseRepository<Leave> {
           employee,
         },
       },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.leaveTypes,
+          localField: 'type',
+          foreignField: '_id',
+          as: 'type',
+        },
+      },
+      { $unwind: '$type' },
       { $sort: { createdAt: -1 } },
     ]);
     return this.leaveSchema.aggregatePaginate(aggregation, {
