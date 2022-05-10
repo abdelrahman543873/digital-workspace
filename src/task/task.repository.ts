@@ -31,7 +31,6 @@ export class TaskRepository extends BaseRepository<Task> {
     return await this.taskSchema.create({
       ...input,
       assigner: userId,
-      assignee: new Types.ObjectId(input.assignee),
       ...(files?.attachments && {
         attachments: files.attachments.map((file) => {
           return `${process.env.HOST}${file.filename}`;

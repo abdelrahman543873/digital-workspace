@@ -1,9 +1,13 @@
-import { Allow, IsIn, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { Allow, IsDefined, IsIn, IsNotEmpty, IsString } from 'class-validator';
 import { PRIORITIES } from '../../app.const';
+import { ObjectId } from 'mongoose';
+import { Transform } from 'class-transformer';
+import { mongoIdTransform } from '../../shared/utils/mongo-id.transform';
 
 export class CreateTaskInput {
-  @IsMongoId()
-  assignee: string;
+  @IsDefined()
+  @Transform(mongoIdTransform)
+  assignee: ObjectId;
 
   @IsString()
   @IsNotEmpty()

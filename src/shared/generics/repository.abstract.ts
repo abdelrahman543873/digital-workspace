@@ -19,7 +19,7 @@ export abstract class BaseRepository<T> implements Repository<T> {
     this._model = schemaModel;
   }
 
-  async add(item): Promise<T & Document> {
+  async add(item: AnyKeys<T>): Promise<T & Document> {
     return await this._model.create(item);
   }
 
