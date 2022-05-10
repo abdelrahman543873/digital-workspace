@@ -496,6 +496,24 @@ export class UserRepository extends BaseRepository<User> {
         },
       },
       {
+        $lookup: {
+          from: LookupSchemasEnum.titles,
+          localField: 'title',
+          foreignField: '_id',
+          as: 'title',
+        },
+      },
+      { $unwind: '$title' },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.teams,
+          localField: 'team',
+          foreignField: '_id',
+          as: 'team',
+        },
+      },
+      { $unwind: '$team' },
+      {
         $addFields: {
           directManager: {
             $cond: {
