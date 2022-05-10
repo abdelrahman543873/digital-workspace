@@ -11,6 +11,7 @@ import { titleFactory } from '../title/title.factory';
 import { interestFactory } from '../interest/interest.factory';
 import { getValuesFromEnum } from '../shared/utils/columnEnum';
 import { STATUS, BLOOD_TYPE, MARTIAL_STATUS } from './user.enum';
+import { teamFactory } from '../team/team.factory';
 interface ExperienceType {
   startDate?: Date;
   endDate?: Date;
@@ -71,6 +72,7 @@ export interface UserType {
   weddingDate?: Date;
   yearsOfExperience?: number;
   joiningDate?: Date;
+  team?: ObjectId;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -146,5 +148,6 @@ export const buildUserParams = async (
     weddingDate: obj.weddingDate || date.future(),
     yearsOfExperience: obj.yearsOfExperience || datatype.number(),
     joiningDate: obj.joiningDate || date.future(),
+    team: obj.team || (await teamFactory())._id,
   };
 };

@@ -216,23 +216,33 @@ export class AddUserInput {
 
   @IsOptional()
   @Transform(mongoIdTransform)
-  level?: string;
+  @ApiProperty({ type: 'string' })
+  level?: ObjectId;
 
   @IsOptional()
   @Transform(mongoIdTransform)
-  country?: string;
+  @ApiProperty({ type: 'string' })
+  country?: ObjectId;
 
   @IsOptional()
   @Transform(mongoIdTransform)
-  department?: string;
+  @ApiProperty({ type: 'string' })
+  department?: ObjectId;
 
   @IsOptional()
   @Transform(mongoIdTransform)
-  employmentType?: string;
+  @ApiProperty({ type: 'string' })
+  employmentType?: ObjectId;
 
   @IsOptional()
   @Transform(mongoIdTransform)
-  title?: string;
+  @ApiProperty({ type: 'string' })
+  title?: ObjectId;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  @ApiProperty({ type: 'string' })
+  team?: ObjectId;
 
   @IsOptional()
   @Transform(mongoIdArrayTransform)

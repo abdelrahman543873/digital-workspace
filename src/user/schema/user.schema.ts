@@ -100,6 +100,9 @@ export class User {
   @Prop({ type: Types.ObjectId, ref: 'Level' })
   level?: ObjectId;
 
+  @Prop({ type: Types.ObjectId, ref: 'Team' })
+  team?: ObjectId;
+
   @Prop({ type: Types.ObjectId, ref: 'Country' })
   country?: ObjectId;
 
