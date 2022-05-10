@@ -70,7 +70,7 @@ export class LeaveController {
 
   @UseGuards(AuthGuard)
   @Get('assigned-list')
-  async getAssignedLeavesList(@Body() input: Pagination) {
+  async getAssignedLeavesList(@Param() input: Pagination) {
     return await this.leaveService.getAssignedLeavesList(input);
   }
 
