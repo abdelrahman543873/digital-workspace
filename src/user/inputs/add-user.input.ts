@@ -17,7 +17,6 @@ import {
   IsUrl,
   MaxLength,
   MinLength,
-  ValidateNested,
 } from 'class-validator';
 import { Experience, Education, User } from '../schema/user.schema';
 import { getValuesFromEnum } from '../../shared/utils/columnEnum';
@@ -167,6 +166,10 @@ export class AddUserInput {
   @IsOptional()
   @IsDateString()
   weddingDate?: Date;
+
+  @IsOptional()
+  @IsDateString()
+  joiningDate?: Date;
 
   @IsOptional()
   @IsDateString()

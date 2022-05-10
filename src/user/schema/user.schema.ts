@@ -191,6 +191,9 @@ export class User {
   exitDate?: Date;
 
   @Prop({ type: Date })
+  joiningDate?: Date;
+
+  @Prop({ type: Date })
   resignationDate?: Date;
 
   @Prop()

@@ -70,6 +70,7 @@ export interface UserType {
   martialStatus?: MARTIAL_STATUS;
   weddingDate?: Date;
   yearsOfExperience?: number;
+  joiningDate?: Date;
 }
 
 const buildExperienceParams = (obj: ExperienceType = {}): Experience => {
@@ -144,5 +145,6 @@ export const buildUserParams = async (
       ) as MARTIAL_STATUS),
     weddingDate: obj.weddingDate || date.future(),
     yearsOfExperience: obj.yearsOfExperience || datatype.number(),
+    joiningDate: obj.joiningDate || date.future(),
   };
 };
