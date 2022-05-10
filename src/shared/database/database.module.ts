@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { existsSync, readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { ENV_VARIABLE_NAMES } from '../../app.const';
 @Module({
   imports: [
@@ -10,7 +10,7 @@ import { ENV_VARIABLE_NAMES } from '../../app.const';
         // done this way to be able to connect in case of testing
         // docker and real runtime without docker
         uri:
-          (existsSync('globalConfig.json') &&
+          (configService.get<string>(ENV_VARIABLE_NAMES.NODE_ENV) === 'test' &&
             JSON.parse(readFileSync('globalConfig.json', 'utf-8')).mongoUri) ||
           configService.get<string>(ENV_VARIABLE_NAMES.MONGO_DB) ||
           configService.get<string>(ENV_VARIABLE_NAMES.LOCAL_MONGO_DB),

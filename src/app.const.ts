@@ -7,6 +7,7 @@ export enum ENV_VARIABLE_NAMES {
   JWT_SECRET = 'JWT_SECRET',
   JWT_EXPIRY_TIME = 'JWT_EXPIRY_TIME',
   MONGO_DB = 'MONGO_DB',
+  NODE_ENV = 'NODE_ENV',
 }
 
 export enum LangEnum {

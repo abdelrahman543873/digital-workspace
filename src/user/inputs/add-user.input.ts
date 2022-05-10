@@ -29,9 +29,9 @@ import {
 import { ObjectId } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { GENDER, WIDGETS } from '../../app.const';
-import { DirectManagerIdValidator } from '../validators/direct-manager-validator';
-import { Validate } from 'class-validator';
+import { Validate, ArrayUnique } from 'class-validator';
 import { jsonArrayTransform } from '../../shared/utils/json-array.transform';
+import { ExistingUserValidator } from '../validators/existing-user.validator';
 import {
   mongoIdTransform,
   mongoIdArrayTransform,
@@ -55,6 +55,7 @@ export class AddUserInput {
   @IsOptional()
   @IsArray()
   @ArrayNotEmpty()
+  @ArrayUnique()
   @Type(() => Experience)
   @ApiProperty({ type: [Experience] })
   @Transform(jsonArrayTransform)
@@ -62,11 +63,13 @@ export class AddUserInput {
 
   @IsOptional()
   @Transform(mongoIdArrayTransform)
+  @ArrayUnique()
   @ApiProperty({ type: [String] })
   skills?: ObjectId[];
 
   @IsOptional()
   @IsArray()
+  @ArrayUnique()
   @ArrayNotEmpty()
   @Type(() => Education)
   @ApiProperty({ type: [Education] })
@@ -79,7 +82,7 @@ export class AddUserInput {
   description?: string;
 
   @IsOptional()
-  @Validate(DirectManagerIdValidator)
+  @Validate(ExistingUserValidator)
   @Transform(mongoIdTransform)
   @ApiProperty({ type: 'string' })
   directManagerId?: ObjectId;
@@ -245,11 +248,8 @@ export class AddUserInput {
   team?: ObjectId;
 
   @IsOptional()
+  @ArrayUnique()
   @Transform(mongoIdArrayTransform)
   @ApiProperty({ type: [String] })
   interests?: string[];
-
-  @ApiProperty({ readOnly: true })
-  @Allow()
-  currentUser?: User;
 }
