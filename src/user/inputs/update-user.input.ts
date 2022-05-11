@@ -4,7 +4,6 @@ import {
   IsOptional,
   IsString,
   IsNotEmpty,
-  Min,
   Validate,
   Allow,
 } from 'class-validator';
@@ -13,6 +12,7 @@ import { DirectManagerIdValidator } from '../validators/direct-manager-validator
 import { mongoIdTransform } from '../../shared/utils/mongo-id.transform';
 import { Transform } from 'class-transformer';
 import { ObjectId } from 'mongoose';
+import { MinLength } from 'class-validator';
 
 export class UpdateUserInput extends PartialType(
   OmitType(AddUserInput, ['directManagerId']),
@@ -20,7 +20,7 @@ export class UpdateUserInput extends PartialType(
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  @Min(8)
+  @MinLength(8)
   newPassword?: string;
 
   @IsOptional()
