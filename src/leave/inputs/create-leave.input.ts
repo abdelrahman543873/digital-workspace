@@ -24,6 +24,7 @@ export class CreateLeaveInput {
 
   @ApiProperty()
   @IsDateString()
+  @Validate(LeaveBalanceValidator)
   endDate: string;
 
   @ApiProperty()

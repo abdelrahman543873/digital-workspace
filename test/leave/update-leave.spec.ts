@@ -18,4 +18,21 @@ describe('update leave case', () => {
     });
     expect(res.body.comment).toBe(user.description);
   });
+
+  it("shouldn't update leave if start date and end date are equal", async () => {
+    const leave = await leaveFactory();
+    const user = await userFactory({ leaveBalance: 1000 });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: LEAVE,
+      variables: {
+        id: leave._id.toString(),
+        comment: user.description,
+        startDate: leave.startDate,
+        endDate: leave.startDate,
+      },
+      token: user.token,
+    });
+    expect(res.body.statusCode).toBe(400);
+  });
 });
