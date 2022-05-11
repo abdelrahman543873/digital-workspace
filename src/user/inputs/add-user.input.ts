@@ -255,5 +255,5 @@ export class AddUserInput {
   @Transform(mongoIdArrayTransform)
   @Validate(ExistingInterestId, { each: true })
   @ApiProperty({ type: [String] })
-  interests?: string[];
+  interests?: ObjectId[];
 }
