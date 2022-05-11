@@ -16,6 +16,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ENV_VARIABLE_NAMES } from '../app.const';
 import { ExistingUserValidator } from './validators/existing-user.validator';
+import { CorrectPassValidator } from './validators/correct-pass.validator';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -52,6 +53,7 @@ import { ExistingUserValidator } from './validators/existing-user.validator';
     ConfidentialApplication,
     DirectManagerIdValidator,
     ExistingUserValidator,
+    CorrectPassValidator,
   ],
   exports: [UserRepository],
 })

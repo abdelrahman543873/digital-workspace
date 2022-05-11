@@ -4,7 +4,7 @@ import { UPDATE_USER } from '../endpoints/user.endpoints';
 import { userFactory } from '../../src/user/user.factory';
 import { postFactory } from '../../src/post/post.factory';
 import { buildUserParams } from '../../src/user/user.seed';
-import { datatype, random } from 'faker';
+import { random } from 'faker';
 describe('update user case', () => {
   it('should update user cover pic', async () => {
     const user = await userFactory();
@@ -74,5 +74,36 @@ describe('update user case', () => {
       },
     });
     expect(res.body.email).toBe(user.email);
+  });
+
+  it('should throw password if original password is incorrect', async () => {
+    const params = await buildUserParams();
+    const user = await userFactory(params);
+    const newPassword = random.words(5);
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: UPDATE_USER,
+      token: user.token,
+      variables: {
+        password: random.words(5),
+        newPassword,
+      },
+    });
+    expect(res.body.statusCode).toBe(400);
+  });
+
+  it('should throw error if new password only', async () => {
+    const params = await buildUserParams();
+    const user = await userFactory(params);
+    const newPassword = random.words(5);
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: UPDATE_USER,
+      token: user.token,
+      variables: {
+        newPassword,
+      },
+    });
+    expect(res.body.statusCode).toBe(400);
   });
 });

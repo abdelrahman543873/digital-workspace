@@ -8,7 +8,7 @@ import { ExistingUserValidator } from '../validators/existing-user.validator';
 import { DirectManagerIdValidator } from '../validators/direct-manager-validator';
 
 export class UpdateUserByIdInput extends PartialType(
-  OmitType(AddUserInput, ['directManagerId']),
+  OmitType(AddUserInput, ['directManagerId', 'password']),
 ) {
   @IsDefined()
   @Validate(ExistingUserValidator)
