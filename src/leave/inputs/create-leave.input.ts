@@ -57,5 +57,5 @@ export class CreateLeaveInput {
   // added by the 'request in body interceptor' to be able to get the user in the input validator
   @ApiProperty({ readOnly: true })
   @Allow()
-  currentUser: User;
+  currentUser?: User;
 }

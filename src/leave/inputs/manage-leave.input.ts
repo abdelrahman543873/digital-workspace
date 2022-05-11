@@ -20,5 +20,5 @@ export class ManageLeaveInput {
 
   @ApiProperty({ readOnly: true })
   @Allow()
-  currentUser: User;
+  currentUser?: User;
 }

@@ -31,5 +31,5 @@ export class UpdateUserInput extends PartialType(
 
   @ApiProperty({ readOnly: true })
   @Allow()
-  currentUser: User;
+  currentUser?: User;
 }
