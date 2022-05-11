@@ -32,6 +32,8 @@ import { GENDER, WIDGETS } from '../../app.const';
 import { Validate, ArrayUnique } from 'class-validator';
 import { jsonArrayTransform } from '../../shared/utils/json-array.transform';
 import { ExistingUserValidator } from '../validators/existing-user.validator';
+import { ExistingSkillId } from '../../skill/validators/existing-skill-id.validator';
+import { ExistingInterestId } from '../../interest/validators/existing-interest-id.validator';
 import {
   mongoIdTransform,
   mongoIdArrayTransform,
@@ -62,6 +64,7 @@ export class AddUserInput {
   experience?: Experience[];
 
   @IsOptional()
+  @Validate(ExistingSkillId, { each: true })
   @Transform(mongoIdArrayTransform)
   @ArrayUnique()
   @ApiProperty({ type: [String] })
@@ -250,6 +253,7 @@ export class AddUserInput {
   @IsOptional()
   @ArrayUnique()
   @Transform(mongoIdArrayTransform)
+  @Validate(ExistingInterestId, { each: true })
   @ApiProperty({ type: [String] })
   interests?: string[];
 }

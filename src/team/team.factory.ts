@@ -13,6 +13,7 @@ interface TeamType {
 }
 
 export const buildTeamParams = async (obj: TeamType = {}): Promise<Team> => {
+  // done this way to avoid infinite loop of calling userFactory
   const userId = (
     await UserRepo().add({
       email: internet.email(),

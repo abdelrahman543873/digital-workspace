@@ -94,4 +94,23 @@ describe('register user suite case', () => {
     expect(res.body.token).toBeTruthy();
     expect(res.body.email).toBe(params.email.toLowerCase());
   });
+
+  it("should throw an error if a skill id doesn't exist", async () => {
+    const params = await buildUserParams();
+    const skill = await skillFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_USER,
+      variables: {
+        email: params.email,
+        password: params.password,
+        status: params.status,
+        governmentalId: params.governmentalId,
+        phone: params.phone,
+        skills: [skill._id.toString(), params.team.toString()],
+        gender: GENDER[0],
+      },
+    });
+    expect(res.body.statusCode).toBe(400);
+  });
 });
