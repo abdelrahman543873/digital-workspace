@@ -64,13 +64,13 @@ export class LeaveController {
 
   @UseGuards(AuthGuard)
   @Get('list')
-  async getLeavesList(@Param() input: Pagination) {
+  async getLeavesList(@Query() input: Pagination) {
     return await this.leaveService.getLeavesList(input);
   }
 
   @UseGuards(AuthGuard)
   @Get('assigned-list')
-  async getAssignedLeavesList(@Param() input: Pagination) {
+  async getAssignedLeavesList(@Query() input: Pagination) {
     return await this.leaveService.getAssignedLeavesList(input);
   }
 

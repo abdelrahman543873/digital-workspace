@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Get, Param } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Get, Query } from '@nestjs/common';
 import { AddRoleInput } from './inputs/add-role.input';
 import { RoleService } from './role.service';
 import { AuthGuard } from '../shared/guards/auth.guard';
@@ -17,7 +17,7 @@ export class RoleController {
   }
 
   @Get()
-  async getRolesList(@Param() input: Pagination) {
+  async getRolesList(@Query() input: Pagination) {
     return await this.roleService.getRolesList(input);
   }
 }

@@ -7,6 +7,7 @@ import {
   Delete,
   UseGuards,
   Param,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CountryService } from './country.service';
@@ -40,7 +41,7 @@ export class CountryController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Get()
-  async getCountries(@Param() input: Pagination) {
+  async getCountries(@Query() input: Pagination) {
     return await this.countryService.getCountries(input);
   }
 
