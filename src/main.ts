@@ -68,6 +68,7 @@ async function bootstrap() {
     .addTag('employment-type', 'employment-type endpoints')
     .addTag('skill', 'skill endpoints')
     .addTag('title', 'title endpoints')
+    .addTag('role', 'role endpoints')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);

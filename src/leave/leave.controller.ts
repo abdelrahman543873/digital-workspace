@@ -14,7 +14,7 @@ import { FileCloudUploadInterceptor } from '../shared/interceptors/file-cloud-up
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { RequestInBodyInterceptor } from '../shared/interceptors/request-in-body.interceptor';
 import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
-import { Get, Query, Delete, Put, Param } from '@nestjs/common';
+import { Get, Query, Delete, Put } from '@nestjs/common';
 import { Pagination } from '../shared/utils/pagination.input';
 import { DeleteLeaveTypeInput } from './inputs/delete-levae-type.input';
 import { UpdateLeaveTypeInput } from './inputs/update-leave-type.input';
