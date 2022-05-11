@@ -1,3 +1,4 @@
+import { Skill } from './schema/skill.schema';
 import { name, datatype } from 'faker';
 import { Department } from '../department/schema/department.schema';
 import { skillTestRepo } from '../../test/skill/skill-test-repo';
@@ -17,7 +18,7 @@ export const buildSkillParams = (obj: SkillType = {}): SkillType => {
 export const skillsFactory = async (
   count = 10,
   obj: SkillType = {},
-): Promise<Department[]> => {
+): Promise<Skill[]> => {
   const skills: SkillType[] = [];
   for (let i = 0; i < count; i++) {
     skills.push(buildSkillParams(obj));
@@ -25,9 +26,7 @@ export const skillsFactory = async (
   return await skillTestRepo().addMany(skills);
 };
 
-export const skillFactory = async (
-  obj: SkillType = {},
-): Promise<Department> => {
+export const skillFactory = async (obj: SkillType = {}): Promise<Skill> => {
   const params: SkillType = buildSkillParams(obj);
   return await skillTestRepo().add(params);
 };

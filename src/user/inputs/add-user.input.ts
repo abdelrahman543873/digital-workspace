@@ -64,6 +64,7 @@ export class AddUserInput {
   experience?: Experience[];
 
   @IsOptional()
+  // TODO : validate if skill already exists for user
   @Validate(ExistingSkillId, { each: true })
   @Transform(mongoIdArrayTransform)
   @ArrayUnique()
@@ -253,6 +254,7 @@ export class AddUserInput {
   @IsOptional()
   @ArrayUnique()
   @Transform(mongoIdArrayTransform)
+  // TODO : validate if interest already exists for user
   @Validate(ExistingInterestId, { each: true })
   @ApiProperty({ type: [String] })
   interests?: ObjectId[];
