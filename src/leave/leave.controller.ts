@@ -46,6 +46,7 @@ export class LeaveController {
   @ApiConsumes('multipart/form-data')
   @UseGuards(AuthGuard)
   @UseInterceptors(FileCloudUploadInterceptor)
+  @UseInterceptors(RequestInBodyInterceptor)
   @UseInterceptors(FilesInterceptor('attachments'))
   @Put()
   async updateLeave(
