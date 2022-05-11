@@ -35,10 +35,12 @@ describe('register user suite case', () => {
         employmentType: employmentType._id.toString(),
         education: params.education,
         interests: params.interests,
+        role: params.role.toString(),
       },
       filePath,
       fileParam: 'coverPic',
     });
+    expect(res.body.role).toBe(params.role.toString());
     expect(res.body.interests[0]).toBe(params.interests[0].toString());
     expect(res.body.education[0].level).toBe(params.education[0].level);
     expect(res.body.skills[0]).toBe(skill._id.toString());
@@ -108,6 +110,24 @@ describe('register user suite case', () => {
         governmentalId: params.governmentalId,
         phone: params.phone,
         skills: [skill._id.toString(), params.team.toString()],
+        gender: GENDER[0],
+      },
+    });
+    expect(res.body.statusCode).toBe(400);
+  });
+
+  it("should throw an error if role id doesn't exist", async () => {
+    const params = await buildUserParams();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_USER,
+      variables: {
+        email: params.email,
+        password: params.password,
+        status: params.status,
+        governmentalId: params.governmentalId,
+        phone: params.phone,
+        role: params.team.toString(),
         gender: GENDER[0],
       },
     });

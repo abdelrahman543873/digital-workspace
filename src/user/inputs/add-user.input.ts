@@ -18,7 +18,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { Experience, Education, User } from '../schema/user.schema';
+import { Experience, Education } from '../schema/user.schema';
 import { getValuesFromEnum } from '../../shared/utils/columnEnum';
 import {
   STATUS,
@@ -34,6 +34,7 @@ import { jsonArrayTransform } from '../../shared/utils/json-array.transform';
 import { ExistingUserValidator } from '../validators/existing-user.validator';
 import { ExistingSkillId } from '../../skill/validators/existing-skill-id.validator';
 import { ExistingInterestId } from '../../interest/validators/existing-interest-id.validator';
+import { ExistingRoleIdValidator } from '../../role/validators/existing-role-id.validator';
 import {
   mongoIdTransform,
   mongoIdArrayTransform,
@@ -225,6 +226,12 @@ export class AddUserInput {
   @Transform(mongoIdTransform)
   @ApiProperty({ type: 'string' })
   level?: ObjectId;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  @Validate(ExistingRoleIdValidator)
+  @ApiProperty({ type: 'string' })
+  role?: ObjectId;
 
   @IsOptional()
   @Transform(mongoIdTransform)
