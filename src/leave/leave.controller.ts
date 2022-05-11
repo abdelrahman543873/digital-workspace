@@ -9,8 +9,7 @@ import {
 } from '@nestjs/common';
 import { LeaveService } from './leave.service';
 import { CreateLeaveInput } from './inputs/create-leave.input';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { CreateLeaveSwagger } from './swagger/create-leave.swagger';
+import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileCloudUploadInterceptor } from '../shared/interceptors/file-cloud-upload.interceptor';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { RequestInBodyInterceptor } from '../shared/interceptors/request-in-body.interceptor';
@@ -22,6 +21,7 @@ import { UpdateLeaveTypeInput } from './inputs/update-leave-type.input';
 import { UpdateLeaveInput } from './inputs/update-leave.input';
 import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 import { ManageLeaveInput } from './inputs/manage-leave.input';
+import { CancelLeaveInput } from './inputs/cancel-leave.input';
 
 @UseGuards(ActiveUserGuard)
 @ApiTags('leave')
@@ -31,7 +31,6 @@ export class LeaveController {
   constructor(private readonly leaveService: LeaveService) {}
 
   @ApiConsumes('multipart/form-data')
-  @ApiBody(CreateLeaveSwagger)
   @UseGuards(AuthGuard)
   @UseInterceptors(RequestInBodyInterceptor)
   @UseInterceptors(FileCloudUploadInterceptor)
@@ -45,7 +44,6 @@ export class LeaveController {
   }
 
   @ApiConsumes('multipart/form-data')
-  @ApiBody(CreateLeaveSwagger)
   @UseGuards(AuthGuard)
   @UseInterceptors(FileCloudUploadInterceptor)
   @UseInterceptors(FilesInterceptor('attachments'))
@@ -66,13 +64,13 @@ export class LeaveController {
 
   @UseGuards(AuthGuard)
   @Get('list')
-  async getLeavesList(@Body() input: Pagination) {
+  async getLeavesList(@Query() input: Pagination) {
     return await this.leaveService.getLeavesList(input);
   }
 
   @UseGuards(AuthGuard)
   @Get('assigned-list')
-  async getAssignedLeavesList(@Body() input: Pagination) {
+  async getAssignedLeavesList(@Query() input: Pagination) {
     return await this.leaveService.getAssignedLeavesList(input);
   }
 
@@ -98,5 +96,12 @@ export class LeaveController {
   @Get('types')
   async getLeaveTypes(@Query() input: Pagination) {
     return await this.leaveService.getLeaveTypes(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @UseInterceptors(RequestInBodyInterceptor)
+  @Post('cancel')
+  async cancelLeave(@Body() input: CancelLeaveInput) {
+    return await this.leaveService.cancelLeave(input);
   }
 }

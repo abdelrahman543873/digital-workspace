@@ -24,7 +24,7 @@ describe('create task suite case', () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: CREATE_TASK,
-      variables: params,
+      variables: { ...params, assignee: params.assignee.toString() },
       token: user.token,
       filePath,
       fileParam: 'attachments',
@@ -40,7 +40,7 @@ describe('create task suite case', () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: CREATE_TASK,
-      variables: params,
+      variables: { ...params, assignee: params.assignee.toString() },
       token: user.token,
       filePath,
       fileParam: 'logo',

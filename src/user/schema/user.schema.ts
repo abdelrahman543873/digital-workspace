@@ -100,11 +100,17 @@ export class User {
   @Prop({ type: Types.ObjectId, ref: 'Level' })
   level?: ObjectId;
 
+  @Prop({ type: Types.ObjectId, ref: 'Team' })
+  team?: ObjectId;
+
   @Prop({ type: Types.ObjectId, ref: 'Country' })
   country?: ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Department' })
   department?: ObjectId;
+
+  @Prop({ type: Types.ObjectId, ref: 'Role' })
+  role?: ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'EmploymentType' })
   employmentType?: ObjectId;
@@ -189,6 +195,9 @@ export class User {
 
   @Prop({ type: Date })
   exitDate?: Date;
+
+  @Prop({ type: Date })
+  joiningDate?: Date;
 
   @Prop({ type: Date })
   resignationDate?: Date;

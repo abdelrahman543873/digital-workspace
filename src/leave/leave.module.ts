@@ -14,6 +14,7 @@ import { LeaveTypeValidator } from './validators/leave-type.validator';
 import { ExistingLeaveValidator } from './validators/existing-leave.validator';
 import { EmployeeIsDirectManagerValidator } from './validators/employee-is-direct-manager.validator';
 import { UserModule } from '../user/user.module';
+import { ValidLeaveCancellationValidator } from './validators/valid-leave-cancellation.validator';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { UserModule } from '../user/user.module';
     LeaveTypeValidator,
     EmployeeIsDirectManagerValidator,
     ExistingLeaveValidator,
+    ValidLeaveCancellationValidator,
   ],
 })
 export class LeaveModule {}

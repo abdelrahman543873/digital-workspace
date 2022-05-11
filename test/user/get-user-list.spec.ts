@@ -10,6 +10,8 @@ describe('get user list suite case', () => {
       url: GET_USER_LIST,
       token: user.token,
     });
+    expect(res.body.docs[0].team).toHaveProperty('_id');
+    expect(res.body.docs[0].title).toHaveProperty('_id');
     expect(res.body.totalDocs).toBeGreaterThanOrEqual(1);
   });
 });

@@ -496,6 +496,24 @@ export class UserRepository extends BaseRepository<User> {
         },
       },
       {
+        $lookup: {
+          from: LookupSchemasEnum.titles,
+          localField: 'title',
+          foreignField: '_id',
+          as: 'title',
+        },
+      },
+      { $unwind: '$title' },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.teams,
+          localField: 'team',
+          foreignField: '_id',
+          as: 'team',
+        },
+      },
+      { $unwind: '$team' },
+      {
         $addFields: {
           directManager: {
             $cond: {
@@ -576,5 +594,9 @@ export class UserRepository extends BaseRepository<User> {
 
   decrementUserLeave(_id: ObjectId): QueryWithHelpers<any, any> {
     return this.userSchema.updateOne({ _id }, { $inc: { leaveBalance: -1 } });
+  }
+
+  incrementUserLeave(_id: ObjectId): QueryWithHelpers<any, any> {
+    return this.userSchema.updateOne({ _id }, { $inc: { leaveBalance: +1 } });
   }
 }

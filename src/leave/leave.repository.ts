@@ -1,12 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/generics/repository.abstract';
 import { Leave, LeaveDocument } from './schema/leave.schema';
-import { AggregatePaginateModel, ObjectId } from 'mongoose';
+import {
+  AggregatePaginateModel,
+  ObjectId,
+  QueryWithHelpers,
+  UpdateWriteOpResult,
+} from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateLeaveInput } from './inputs/create-leave.input';
 import { UpdateLeaveInput } from './inputs/update-leave.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { ManageLeaveInput } from './inputs/manage-leave.input';
+import { CancelLeaveInput } from './inputs/cancel-leave.input';
+import { LEAVE_STATUS } from './leave.enum';
+import { LookupSchemasEnum } from '../app.const';
 
 @Injectable()
 export class LeaveRepository extends BaseRepository<Leave> {
@@ -58,6 +66,15 @@ export class LeaveRepository extends BaseRepository<Leave> {
           employee,
         },
       },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.leaveTypes,
+          localField: 'type',
+          foreignField: '_id',
+          as: 'type',
+        },
+      },
+      { $unwind: '$type' },
       { $sort: { createdAt: -1 } },
     ]);
     return this.leaveSchema.aggregatePaginate(aggregation, {
@@ -89,6 +106,14 @@ export class LeaveRepository extends BaseRepository<Leave> {
       {
         status: input.status,
       },
+      { new: true },
+    );
+  }
+
+  cancelLeave(input: CancelLeaveInput): QueryWithHelpers<any, Leave> {
+    return this.leaveSchema.findOneAndUpdate(
+      { _id: input.id },
+      { status: LEAVE_STATUS.CANCELLED },
       { new: true },
     );
   }

@@ -19,7 +19,7 @@ export abstract class BaseRepository<T> implements Repository<T> {
     this._model = schemaModel;
   }
 
-  async add(item): Promise<T & Document> {
+  async add(item: AnyKeys<T>): Promise<T & Document> {
     return await this._model.create(item);
   }
 
@@ -38,7 +38,7 @@ export abstract class BaseRepository<T> implements Repository<T> {
     return this._model.deleteOne(filter);
   }
 
-  findOne(filter: FilterQuery<T>, projection?: any): QueryWithHelpers<any, T> {
+  findOne(filter: FilterQuery<T>, projection?: any): QueryWithHelpers<T, T> {
     return this._model.findOne(filter, projection);
   }
 

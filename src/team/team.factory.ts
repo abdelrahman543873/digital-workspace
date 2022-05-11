@@ -1,8 +1,9 @@
 import { TeamRepo } from './../../test/team/team-test-repo';
 import { ObjectId } from 'mongoose';
-import { userFactory } from '../user/user.factory';
-import { name } from 'faker';
+import { name, datatype, internet } from 'faker';
 import { Team } from './schema/team.schema';
+import { UserRepo } from '../../test/user/user-test-repo';
+import { STATUS } from '../user/user.enum';
 
 interface TeamType {
   admin?: ObjectId;
@@ -12,7 +13,15 @@ interface TeamType {
 }
 
 export const buildTeamParams = async (obj: TeamType = {}): Promise<Team> => {
-  const userId = (await userFactory())._id;
+  // done this way to avoid infinite loop of calling userFactory
+  const userId = (
+    await UserRepo().add({
+      email: internet.email(),
+      password: internet.password(),
+      status: STATUS.ACTIVE,
+      fullName: internet.userName(),
+    })
+  )._id;
   return {
     name: obj.name || name.title(),
     description: obj.description || name.title(),

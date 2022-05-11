@@ -11,7 +11,9 @@ import compression from 'compression';
 import { ValidationPipe } from '@nestjs/common';
 import { useContainer } from 'class-validator';
 
-const mongod = new MongoMemoryServer({ binary: { version: '4.2.8' } });
+const mongod = new MongoMemoryServer({
+  binary: { version: '5.0.6', arch: 'x64' },
+});
 module.exports = async (): Promise<void> => {
   await mongod.start();
   const mongoConfig = {

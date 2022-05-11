@@ -7,6 +7,7 @@ export enum ENV_VARIABLE_NAMES {
   JWT_SECRET = 'JWT_SECRET',
   JWT_EXPIRY_TIME = 'JWT_EXPIRY_TIME',
   MONGO_DB = 'MONGO_DB',
+  NODE_ENV = 'NODE_ENV',
 }
 
 export enum LangEnum {
@@ -31,6 +32,9 @@ export enum LookupSchemasEnum {
   pages = 'pages',
   tasks = 'tasks',
   departments = 'departments',
+  leaveTypes = 'leavetypes',
+  titles = 'titles',
+  teams = 'teams',
 }
 
 export const PRIORITIES = ['low', 'medium', 'high'];

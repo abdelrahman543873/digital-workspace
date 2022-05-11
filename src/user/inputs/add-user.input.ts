@@ -17,9 +17,8 @@ import {
   IsUrl,
   MaxLength,
   MinLength,
-  ValidateNested,
 } from 'class-validator';
-import { Experience, Education, User } from '../schema/user.schema';
+import { Experience, Education } from '../schema/user.schema';
 import { getValuesFromEnum } from '../../shared/utils/columnEnum';
 import {
   STATUS,
@@ -30,9 +29,12 @@ import {
 import { ObjectId } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { GENDER, WIDGETS } from '../../app.const';
-import { DirectManagerIdValidator } from '../validators/direct-manager-validator';
-import { Validate } from 'class-validator';
+import { Validate, ArrayUnique } from 'class-validator';
 import { jsonArrayTransform } from '../../shared/utils/json-array.transform';
+import { ExistingUserValidator } from '../validators/existing-user.validator';
+import { ExistingSkillId } from '../../skill/validators/existing-skill-id.validator';
+import { ExistingInterestId } from '../../interest/validators/existing-interest-id.validator';
+import { ExistingRoleIdValidator } from '../../role/validators/existing-role-id.validator';
 import {
   mongoIdTransform,
   mongoIdArrayTransform,
@@ -56,18 +58,23 @@ export class AddUserInput {
   @IsOptional()
   @IsArray()
   @ArrayNotEmpty()
+  @ArrayUnique()
   @Type(() => Experience)
   @ApiProperty({ type: [Experience] })
   @Transform(jsonArrayTransform)
   experience?: Experience[];
 
   @IsOptional()
+  // TODO : validate if skill already exists for user
+  @Validate(ExistingSkillId, { each: true })
   @Transform(mongoIdArrayTransform)
+  @ArrayUnique()
   @ApiProperty({ type: [String] })
   skills?: ObjectId[];
 
   @IsOptional()
   @IsArray()
+  @ArrayUnique()
   @ArrayNotEmpty()
   @Type(() => Education)
   @ApiProperty({ type: [Education] })
@@ -80,7 +87,7 @@ export class AddUserInput {
   description?: string;
 
   @IsOptional()
-  @Validate(DirectManagerIdValidator)
+  @Validate(ExistingUserValidator)
   @Transform(mongoIdTransform)
   @ApiProperty({ type: 'string' })
   directManagerId?: ObjectId;
@@ -170,6 +177,10 @@ export class AddUserInput {
 
   @IsOptional()
   @IsDateString()
+  joiningDate?: Date;
+
+  @IsOptional()
+  @IsDateString()
   contractEndDate?: Date;
 
   @IsOptional()
@@ -213,30 +224,45 @@ export class AddUserInput {
 
   @IsOptional()
   @Transform(mongoIdTransform)
-  level?: string;
+  @ApiProperty({ type: 'string' })
+  level?: ObjectId;
 
   @IsOptional()
   @Transform(mongoIdTransform)
-  country?: string;
+  @Validate(ExistingRoleIdValidator)
+  @ApiProperty({ type: 'string' })
+  role?: ObjectId;
 
   @IsOptional()
   @Transform(mongoIdTransform)
-  department?: string;
+  @ApiProperty({ type: 'string' })
+  country?: ObjectId;
 
   @IsOptional()
   @Transform(mongoIdTransform)
-  employmentType?: string;
+  @ApiProperty({ type: 'string' })
+  department?: ObjectId;
 
   @IsOptional()
   @Transform(mongoIdTransform)
-  title?: string;
+  @ApiProperty({ type: 'string' })
+  employmentType?: ObjectId;
 
   @IsOptional()
+  @Transform(mongoIdTransform)
+  @ApiProperty({ type: 'string' })
+  title?: ObjectId;
+
+  @IsOptional()
+  @Transform(mongoIdTransform)
+  @ApiProperty({ type: 'string' })
+  team?: ObjectId;
+
+  @IsOptional()
+  @ArrayUnique()
   @Transform(mongoIdArrayTransform)
+  // TODO : validate if interest already exists for user
+  @Validate(ExistingInterestId, { each: true })
   @ApiProperty({ type: [String] })
-  interests?: string[];
-
-  @ApiProperty({ readOnly: true })
-  @Allow()
-  currentUser?: User;
+  interests?: ObjectId[];
 }

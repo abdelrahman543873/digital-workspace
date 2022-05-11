@@ -4,7 +4,7 @@
 
 "'@nestjs/axios":
   version "0.0.7"
-  resolved "https://codeload.github.com/nestjs/axios/tar.gz/790bcad34a241792c9df458330cd0bd9ff4fcc2d"
+  resolved "https://codeload.github.com/nestjs/axios/tar.gz/4d4d8a121c527a52f3b62354334a7f71ebdf421d"
   dependencies:
     axios "0.26.0"
 
@@ -2009,9 +2009,9 @@ camelcase@^6.1.0, camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001332:
-  version "1.0.30001338"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001338.tgz#b5dd7a7941a51a16480bdf6ff82bded1628eec0d"
-  integrity sha512-1gLHWyfVoRDsHieO+CaeYe7jSo/MT7D7lhaXUiwwbuR5BwQxORs0f1tAwUSQr3YbxRXJvxHM/PA5FfPQRnsPeQ==
+  version "1.0.30001339"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001339.tgz#f9aece4ea8156071613b27791547ba0b33f176cf"
+  integrity sha512-Es8PiVqCe+uXdms0Gu5xP5PF2bxLR7OBp3wUzUnuO7OHzhOfCyg3hdiGWVPVxhiuniOzng+hTc1u3fEQ0TlkSQ==
 
 cfb@^1.1.4:
   version "1.2.2"
@@ -3321,9 +3321,9 @@ globals@^11.1.0:
   integrity sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==
 
 globals@^13.6.0, globals@^13.9.0:
-  version "13.13.0"
-  resolved "https://registry.yarnpkg.com/globals/-/globals-13.13.0.tgz#ac32261060d8070e2719dd6998406e27d2b5727b"
-  integrity sha512-EQ7Q18AJlPwp3vUDL4mKA0KXrXyNIQyWon6T6XQiBQF0XHvRsiCSrWmmeATpUzdJN2HhWZU6Pdl0a9zdep5p6A==
+  version "13.14.0"
+  resolved "https://registry.yarnpkg.com/globals/-/globals-13.14.0.tgz#daf3ff9b4336527cf56e98330b6f64bea9aff9df"
+  integrity sha512-ERO68sOYwm5UuLvSJTY7w7NP2c8S4UcXs3X1GBX8cwOr+ShOcDBbCY5mH4zxz0jsYCdJ8ve8Mv9n2YGJMB1aeg==
   dependencies:
     type-fest "^0.20.2"
 
@@ -3540,9 +3540,9 @@ interpret@^1.0.0:
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
 ip@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"
-  integrity sha1-vd7XARQpCCjAoDnnLvJfWq7ENUo=
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.6.tgz#5a651a37644586e18b6ba3b48ca122bf56495f67"
+  integrity sha512-/dAvCivFs/VexXAtiAoMIqyhkhStNC9CPD0h1noonimOgB1xrCkexF2c5CjlqQ72GgMPjN6tiV+oreoPv3Ft1g==
 
 ipaddr.js@1.9.1:
   version "1.9.1"
@@ -4638,9 +4638,9 @@ mongoose-aggregate-paginate-v2@^1.0.6:
   integrity sha512-UuALu+mjhQa1K9lMQvjLL3vm3iALvNw8PQNIh2gp1b+tO5hUa0NC0Wf6/8QrT9PSJVTihXaD8hQVy3J4e0jO0Q==
 
 mongoose@^6.0.10, mongoose@^6.3.0:
-  version "6.3.2"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-6.3.2.tgz#7cac2d11119896c8235ce03ae65c322257435142"
-  integrity sha512-4SEa8ynhJYkGMMbx6KOZ5kJz6qhKIYM8nAGufGq3xh+gNrKP3QwthNfc0X4DvTKhE0DQLMS1/Oy3cMl0AXm5RQ==
+  version "6.3.3"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-6.3.3.tgz#1ef1daa016ce5dfe4c905ce297a3770d62764e54"
+  integrity sha512-bAGuf+6mXuVjKReNcOGjdI05y9g0JXnRpZ3/PBN3kVXIn3rbhbFwR/lPbuwtsBsWhlblMK8tieDeFAVzV6yhww==
   dependencies:
     bson "^4.6.2"
     kareem "2.3.5"

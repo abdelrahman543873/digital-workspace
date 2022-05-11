@@ -14,6 +14,7 @@ import { UserRepository } from '../user/user.repository';
 import { User } from '../user/schema/user.schema';
 import { ObjectId } from 'mongoose';
 import { LEAVE_STATUS } from './leave.enum';
+import { CancelLeaveInput } from './inputs/cancel-leave.input';
 
 @Injectable()
 export class LeaveService {
@@ -85,5 +86,18 @@ export class LeaveService {
 
   getLeaveTypes(input: Pagination) {
     return this.leaveTypeRepository.getLeaveTypes(input);
+  }
+
+  async cancelLeave(input: CancelLeaveInput) {
+    const leave = await this.leaveRepository.findOne({ _id: input.id });
+    const updatedLeave = await this.leaveRepository.cancelLeave(input);
+    if (
+      leave.status === LEAVE_STATUS.MANAGER_APPROVED ||
+      leave.status === LEAVE_STATUS.APPROVED
+    )
+      await this.userRepository.incrementUserLeave(
+        this.request.currentUser._id,
+      );
+    return updatedLeave;
   }
 }
