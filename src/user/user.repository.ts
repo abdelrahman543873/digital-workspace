@@ -496,6 +496,12 @@ export class UserRepository extends BaseRepository<User> {
         },
       },
       {
+        $unwind: {
+          path: '$directManager',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
         $lookup: {
           from: LookupSchemasEnum.titles,
           localField: 'title',
@@ -503,7 +509,12 @@ export class UserRepository extends BaseRepository<User> {
           as: 'title',
         },
       },
-      { $unwind: '$title' },
+      {
+        $unwind: {
+          path: '$title',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       {
         $lookup: {
           from: LookupSchemasEnum.teams,
@@ -512,16 +523,10 @@ export class UserRepository extends BaseRepository<User> {
           as: 'team',
         },
       },
-      { $unwind: '$team' },
       {
-        $addFields: {
-          directManager: {
-            $cond: {
-              if: { $eq: [{ $size: '$directManager' }, 1] },
-              then: { $arrayElemAt: ['$directManager', 0] },
-              else: {},
-            },
-          },
+        $unwind: {
+          path: '$team',
+          preserveNullAndEmptyArrays: true,
         },
       },
       { $sort: { createdAt: -1 } },
