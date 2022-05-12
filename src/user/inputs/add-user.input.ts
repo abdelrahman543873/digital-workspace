@@ -219,8 +219,12 @@ export class AddUserInput {
   gender: string;
 
   @IsOptional()
-  @IsIn(WIDGETS)
-  widgets?: string;
+  @ArrayUnique()
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsIn(WIDGETS, { each: true })
+  @ApiProperty({ type: 'array', items: { type: 'string', enum: WIDGETS } })
+  widgets?: string[];
 
   @IsOptional()
   @Transform(mongoIdTransform)
