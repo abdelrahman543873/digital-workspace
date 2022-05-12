@@ -75,7 +75,7 @@ export class LeaveRepository extends BaseRepository<Leave> {
         },
       },
       { $unwind: '$type' },
-      { $sort: { createdAt: -1 } },
+      { $sort: { status: 1 } },
     ]);
     return this.leaveSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,

@@ -12,8 +12,16 @@ describe('get user list suite case', () => {
       url: GET_USER_LIST,
       token: user.token,
     });
-    expect(res.body.docs[0].team).toHaveProperty('_id');
-    expect(res.body.docs[0].title).toHaveProperty('_id');
+    expect(
+      res.body.docs.map((user) => {
+        if (user.team) return user.team._id;
+      }),
+    ).toContainEqual(user.team);
+    expect(
+      res.body.docs.map((user) => {
+        if (user.title) return user.title._id;
+      }),
+    ).toContainEqual(user.title);
     expect(res.body.totalDocs).toBeGreaterThanOrEqual(1);
   });
 
@@ -37,7 +45,11 @@ describe('get user list suite case', () => {
       url: GET_USER_LIST,
       token: addUserRes.body.token,
     });
-    expect(res.body.docs[0].title._id).toBe(params.title.toString());
+    expect(
+      res.body.docs.map((user) => {
+        if (user.title) return user.title._id;
+      }),
+    ).toContainEqual(params.title.toString());
     expect(res.body.totalDocs).toBeGreaterThanOrEqual(1);
   });
 });
