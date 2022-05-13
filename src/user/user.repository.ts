@@ -529,7 +529,7 @@ export class UserRepository extends BaseRepository<User> {
           preserveNullAndEmptyArrays: true,
         },
       },
-      { $sort: { status: -1 } },
+      { $sort: { createdAt: -1 } },
     ]);
     return await this.userSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,
