@@ -15,6 +15,7 @@ import { User } from '../user/schema/user.schema';
 import { ObjectId } from 'mongoose';
 import { LEAVE_STATUS } from './leave.enum';
 import { CancelLeaveInput } from './inputs/cancel-leave.input';
+import { GetLeavesListInput } from './inputs/get-leaves-list.input';
 
 @Injectable()
 export class LeaveService {
@@ -49,7 +50,7 @@ export class LeaveService {
     return await this.leaveRepository.manageLeave(input);
   }
 
-  getLeavesList(input: Pagination) {
+  getLeavesList(input: GetLeavesListInput) {
     return this.leaveRepository.getLeavesList(
       input,
       this.request.currentUser._id,

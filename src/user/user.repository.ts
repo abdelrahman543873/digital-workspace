@@ -33,6 +33,7 @@ import fs from 'fs';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
+import { GetUserListInput } from './inputs/get-user-list.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -484,9 +485,13 @@ export class UserRepository extends BaseRepository<User> {
     });
   }
 
-  async getUserList(input: Pagination) {
+  async getUserList(input: GetUserListInput) {
     const aggregation = this.userSchema.aggregate([
-      { $match: {} },
+      {
+        $match: {
+          ...(input.status && { status: input.status }),
+        },
+      },
       {
         $lookup: {
           from: LookupSchemasEnum.users,
@@ -529,7 +534,7 @@ export class UserRepository extends BaseRepository<User> {
           preserveNullAndEmptyArrays: true,
         },
       },
-      { $sort: { status: -1 } },
+      { $sort: { createdAt: -1 } },
     ]);
     return await this.userSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,

@@ -15,6 +15,7 @@ import { ManageLeaveInput } from './inputs/manage-leave.input';
 import { CancelLeaveInput } from './inputs/cancel-leave.input';
 import { LEAVE_STATUS } from './leave.enum';
 import { LookupSchemasEnum } from '../app.const';
+import { GetLeavesListInput } from './inputs/get-leaves-list.input';
 
 @Injectable()
 export class LeaveRepository extends BaseRepository<Leave> {
@@ -59,11 +60,12 @@ export class LeaveRepository extends BaseRepository<Leave> {
     );
   }
 
-  getLeavesList(input: Pagination, employee: ObjectId) {
+  getLeavesList(input: GetLeavesListInput, employee: ObjectId) {
     const aggregation = this.leaveSchema.aggregate([
       {
         $match: {
           employee,
+          ...(input.status && { status: input.status }),
         },
       },
       {
@@ -75,7 +77,7 @@ export class LeaveRepository extends BaseRepository<Leave> {
         },
       },
       { $unwind: '$type' },
-      { $sort: { status: 1 } },
+      { $sort: { createdAt: -1 } },
     ]);
     return this.leaveSchema.aggregatePaginate(aggregation, {
       offset: input.offset * input.limit,

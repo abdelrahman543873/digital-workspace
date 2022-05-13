@@ -24,6 +24,7 @@ import { AcquireMicrosoftTokenInput } from './inputs/acquire-microsoft-token.inp
 import { STATUS } from './user.enum';
 import { JwtService } from '@nestjs/jwt';
 import { AuthenticationResult } from '@azure/msal-node';
+import { GetUserListInput } from './inputs/get-user-list.input';
 
 @Injectable()
 export class UserService {
@@ -108,7 +109,7 @@ export class UserService {
     return await this.userRepo.getUserById(input);
   }
 
-  async getUserList(input: Pagination) {
+  async getUserList(input: GetUserListInput) {
     return await this.userRepo.getUserList(input);
   }
 

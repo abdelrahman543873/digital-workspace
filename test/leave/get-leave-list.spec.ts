@@ -16,7 +16,7 @@ describe('get leaves list case', () => {
     expect(res.body.docs[0].comment).toBe(leave.comment);
   });
 
-  it('should get leaves list sorted by status', async () => {
+  it('should get leaves list filtered by status', async () => {
     const user = await userFactory();
     const leave = await leaveFactory({
       employee: user._id,
@@ -28,10 +28,9 @@ describe('get leaves list case', () => {
     });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: LEAVES_LIST,
+      url: `${LEAVES_LIST}?status=${LEAVE_STATUS.APPROVED}`,
       token: user.token,
     });
-    expect(res.body.docs[0]._id).toBe(secondLeave._id.toString());
-    expect(res.body.docs[1]._id).toBe(leave._id.toString());
+    expect(res.body.totalDocs).toBe(1);
   });
 });
