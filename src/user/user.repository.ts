@@ -534,6 +534,20 @@ export class UserRepository extends BaseRepository<User> {
           preserveNullAndEmptyArrays: true,
         },
       },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.roles,
+          localField: 'role',
+          foreignField: '_id',
+          as: 'role',
+        },
+      },
+      {
+        $unwind: {
+          path: '$role',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       { $sort: { createdAt: -1 } },
     ]);
     return await this.userSchema.aggregatePaginate(aggregation, {

@@ -12,20 +12,15 @@ describe('get user list suite case', () => {
       url: GET_USER_LIST,
       token: user.token,
     });
-    expect(
-      res.body.docs
-        .map((user) => {
-          if (user?.team?._id) return user.team._id;
-        })
-        .includes(user.team.toString()),
-    ).toBe(true);
-    expect(
-      res.body.docs
-        .map((user) => {
-          if (user?.title?._id) return user.title._id;
-        })
-        .includes(user.title.toString()),
-    ).toBe(true);
+    const idsArray = [];
+    res.body.docs.forEach((user) => {
+      if (user?.title?._id) idsArray.push(user.title._id);
+      if (user?.team?._id) idsArray.push(user.team._id);
+      if (user?.role?._id) idsArray.push(user.role._id);
+    });
+    expect(idsArray.includes(user.role.toString())).toBe(true);
+    expect(idsArray.includes(user.title.toString())).toBe(true);
+    expect(idsArray.includes(user.team.toString())).toBe(true);
     expect(res.body.totalDocs).toBeGreaterThanOrEqual(1);
   });
 
@@ -63,13 +58,11 @@ describe('get user list suite case', () => {
       url: GET_USER_LIST,
       token: addUserRes.body.token,
     });
-    expect(
-      res.body.docs
-        .map((user) => {
-          if (user?.title?._id) return user.title._id;
-        })
-        .includes(params.title.toString()),
-    ).toBe(true);
+    const idsArray = [];
+    res.body.docs.forEach((user) => {
+      if (user?.title?._id) idsArray.push(user.title._id);
+    });
+    expect(idsArray.includes(params.title.toString())).toBe(true);
     expect(res.body.totalDocs).toBeGreaterThanOrEqual(1);
   });
 });
