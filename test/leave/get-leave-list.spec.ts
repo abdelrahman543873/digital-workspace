@@ -13,6 +13,7 @@ describe('get leaves list case', () => {
       url: LEAVES_LIST,
       token: user.token,
     });
+    expect(res.body.docs[0].replacement).toHaveProperty('_id');
     expect(res.body.docs[0].comment).toBe(leave.comment);
   });
 
