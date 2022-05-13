@@ -13,16 +13,34 @@ describe('get user list suite case', () => {
       token: user.token,
     });
     expect(
-      res.body.docs.map((user) => {
-        if (user.team) return user.team._id;
-      }),
-    ).toContainEqual(user.team);
+      res.body.docs
+        .map((user) => {
+          if (user?.team?._id) return user.team._id;
+        })
+        .includes(user.team.toString()),
+    ).toBe(true);
     expect(
-      res.body.docs.map((user) => {
-        if (user.title) return user.title._id;
-      }),
-    ).toContainEqual(user.title);
+      res.body.docs
+        .map((user) => {
+          if (user?.title?._id) return user.title._id;
+        })
+        .includes(user.title.toString()),
+    ).toBe(true);
     expect(res.body.totalDocs).toBeGreaterThanOrEqual(1);
+  });
+
+  it('should get user list filtered by status', async () => {
+    const user = await userFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_USER_LIST}?status=${user.status}`,
+      token: user.token,
+    });
+    expect(
+      res.body.docs.filter((userEl) => {
+        if (userEl.status !== user.status) return userEl;
+      }).length,
+    ).toBe(0);
   });
 
   it('should get user list after adding a user', async () => {
@@ -46,10 +64,12 @@ describe('get user list suite case', () => {
       token: addUserRes.body.token,
     });
     expect(
-      res.body.docs.map((user) => {
-        if (user.title) return user.title._id;
-      }),
-    ).toContainEqual(params.title.toString());
+      res.body.docs
+        .map((user) => {
+          if (user?.title?._id) return user.title._id;
+        })
+        .includes(params.title.toString()),
+    ).toBe(true);
     expect(res.body.totalDocs).toBeGreaterThanOrEqual(1);
   });
 });

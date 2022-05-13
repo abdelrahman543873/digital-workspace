@@ -19,7 +19,6 @@ import {
 import { AddUserInput } from './inputs/add-user.input';
 import {
   ApiBearerAuth,
-  ApiBody,
   ApiConsumes,
   ApiResponse,
   ApiTags,
@@ -45,6 +44,7 @@ import { Response } from 'express';
 import { AcquireMicrosoftTokenInput } from './inputs/acquire-microsoft-token.input';
 import { MicrosoftLogin } from './swagger/microsoft-login.swagger';
 import { RequestInBodyInterceptor } from '../shared/interceptors/request-in-body.interceptor';
+import { GetUserListInput } from './inputs/get-user-list.input';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
@@ -148,7 +148,7 @@ export class UserController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard, ActiveUserGuard)
   @Get('list')
-  async getUserList(@Query() input: Pagination) {
+  async getUserList(@Query() input: GetUserListInput) {
     return await this.userService.getUserList(input);
   }
 

@@ -22,6 +22,7 @@ import { UpdateLeaveInput } from './inputs/update-leave.input';
 import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 import { ManageLeaveInput } from './inputs/manage-leave.input';
 import { CancelLeaveInput } from './inputs/cancel-leave.input';
+import { GetLeavesListInput } from './inputs/get-leaves-list.input';
 
 @UseGuards(ActiveUserGuard)
 @ApiTags('leave')
@@ -65,7 +66,7 @@ export class LeaveController {
 
   @UseGuards(AuthGuard)
   @Get('list')
-  async getLeavesList(@Query() input: Pagination) {
+  async getLeavesList(@Query() input: GetLeavesListInput) {
     return await this.leaveService.getLeavesList(input);
   }
 
