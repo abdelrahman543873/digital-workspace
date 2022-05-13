@@ -224,6 +224,7 @@ export class AddUserInput {
   @ArrayNotEmpty()
   @IsIn(WIDGETS, { each: true })
   @ApiProperty({ type: 'array', items: { type: 'string', enum: WIDGETS } })
+  @Transform(jsonArrayTransform)
   widgets?: string[];
 
   @IsOptional()

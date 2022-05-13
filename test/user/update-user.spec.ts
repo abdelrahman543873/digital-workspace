@@ -5,19 +5,39 @@ import { userFactory } from '../../src/user/user.factory';
 import { postFactory } from '../../src/post/post.factory';
 import { buildUserParams } from '../../src/user/user.seed';
 import { random } from 'faker';
+import { WIDGETS } from '../../src/app.const';
 describe('update user case', () => {
-  it('should update user cover pic', async () => {
+  it('should update user cover pic and his widgets', async () => {
     const user = await userFactory();
+    const testFiles = process.cwd();
+    const filePath = `${testFiles}/test/test-files/test-duck.jpeg`;
+    const widgets = random.arrayElements(WIDGETS);
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: UPDATE_USER,
+      token: user.token,
+      variables: { widgets },
+      filePath,
+      fileParam: 'coverPic',
+    });
+    expect(res.body.widgets).toEqual(widgets);
+    expect(user.coverPic).not.toBe(res.body.coverPic);
+  });
+
+  it('should throw error when user enters password only', async () => {
+    const params = await buildUserParams();
+    const user = await userFactory(params);
     const testFiles = process.cwd();
     const filePath = `${testFiles}/test/test-files/test-duck.jpeg`;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_USER,
       token: user.token,
+      variables: { password: params.password },
       filePath,
       fileParam: 'coverPic',
     });
-    expect(user.coverPic).not.toBe(res.body.coverPic);
+    expect(res.body.statusCode).toBe(400);
   });
 
   it('should update user username', async () => {
