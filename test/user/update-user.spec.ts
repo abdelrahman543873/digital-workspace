@@ -20,6 +20,22 @@ describe('update user case', () => {
     expect(user.coverPic).not.toBe(res.body.coverPic);
   });
 
+  it('should throw error when user enters password only', async () => {
+    const params = await buildUserParams();
+    const user = await userFactory(params);
+    const testFiles = process.cwd();
+    const filePath = `${testFiles}/test/test-files/test-duck.jpeg`;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: UPDATE_USER,
+      token: user.token,
+      variables: { password: params.password },
+      filePath,
+      fileParam: 'coverPic',
+    });
+    expect(res.body.statusCode).toBe(400);
+  });
+
   it('should update user username', async () => {
     const user = await userFactory();
     const res = await testRequest({
