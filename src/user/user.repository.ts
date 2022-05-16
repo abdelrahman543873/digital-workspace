@@ -56,7 +56,7 @@ export class UserRepository extends BaseRepository<User> {
     return (
       await this.userSchema.create({
         ...input,
-        password: await hashPass(input.password),
+        ...(input.password && { password: await hashPass(input.password) }),
         ...(files?.coverPic && {
           coverPic: `${process.env.HOST}${files.coverPic[0].filename}`,
         }),

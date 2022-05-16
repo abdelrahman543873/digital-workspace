@@ -44,11 +44,12 @@ export class AddUserInput {
   @IsEmail()
   email: string;
 
+  @IsOptional()
   @ApiProperty()
   @IsString()
   @MinLength(8)
   @MaxLength(256)
-  password: string;
+  password?: string;
 
   @IsOptional()
   @IsString()
