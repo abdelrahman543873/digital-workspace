@@ -5,7 +5,7 @@ import { WinstonModule } from 'nest-winston';
 import { format, transports } from 'winston';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { BaseHttpExceptionFilter } from './shared/exceptions/base-http-exception-filter';
+import { BaseHttpExceptionFilter } from './shared/exceptions/base-http-exception.filter';
 import compression from 'compression';
 import { MongooseExceptionFilter } from './shared/exceptions/mongo-exception-filter';
 import { Cluster } from './cluster';
@@ -13,6 +13,7 @@ import morganBody from 'morgan-body';
 import correlationId from 'express-correlation-id';
 import { logTransform } from './shared/utils/transformer.print';
 import { useContainer } from 'class-validator';
+import { GlobalExceptionFilter } from './shared/exceptions/global-excpetion.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -99,6 +100,7 @@ async function bootstrap() {
     }),
   );
   app.useGlobalFilters(
+    new GlobalExceptionFilter(),
     new BaseHttpExceptionFilter(),
     new MongooseExceptionFilter(),
   );
