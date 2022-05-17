@@ -108,6 +108,38 @@ export class LeaveRepository extends BaseRepository<Leave> {
           },
         },
       },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.leaveTypes,
+          localField: 'type',
+          foreignField: '_id',
+          as: 'type',
+        },
+      },
+      { $unwind: '$type' },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          localField: 'employee',
+          foreignField: '_id',
+          as: 'employee',
+        },
+      },
+      { $unwind: '$employee' },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          localField: 'replacement',
+          foreignField: '_id',
+          as: 'replacement',
+        },
+      },
+      {
+        $unwind: {
+          path: '$replacement',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       { $sort: { createdAt: -1 } },
     ]);
     return this.leaveSchema.aggregatePaginate(aggregation, {

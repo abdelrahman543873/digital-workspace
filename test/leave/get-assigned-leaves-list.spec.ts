@@ -14,5 +14,8 @@ describe('get assigned leaves list case', () => {
       token: manager.token,
     });
     expect(res.body.docs[0].comment).toBe(leave.comment);
+    expect(res.body.docs[0].type).toHaveProperty('_id');
+    expect(res.body.docs[0].employee).toHaveProperty('_id');
+    expect(res.body.docs[0].replacement).toHaveProperty('_id');
   });
 });
