@@ -591,19 +591,6 @@ export class UserRepository extends BaseRepository<User> {
     return users;
   }
 
-  async subtractLeaveDays(
-    _id: ObjectId,
-    leaveDays: number,
-  ): Promise<QueryWithHelpers<UpdateWriteOpResult, User>> {
-    return await this.userSchema.updateOne({ _id }, [
-      {
-        $set: {
-          leaveBalance: { $subtract: ['$leaveBalance', leaveDays] },
-        },
-      },
-    ]);
-  }
-
   async getLevelUsers(level: ObjectId) {
     return await this.userSchema.find({ level }).count();
   }
