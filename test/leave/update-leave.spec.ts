@@ -1,7 +1,7 @@
 import { userFactory } from '../../src/user/user.factory';
 import { testRequest } from '../request';
 import { HTTP_METHODS_ENUM } from '../request.methods.enum';
-import { leaveFactory } from './leave.factory';
+import { leaveFactory } from './factories/leave.factory';
 import { LEAVE } from '../endpoints/leave.endpoints';
 describe('update leave case', () => {
   it('should update leave', async () => {

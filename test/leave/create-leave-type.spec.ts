@@ -1,6 +1,6 @@
 import { HTTP_METHODS_ENUM } from './../request.methods.enum';
 import { testRequest } from './../request';
-import { buildLeaveTypeParams } from './leave-type.factory';
+import { buildLeaveTypeParams } from './factories/leave-type.factory';
 import { userFactory } from '../../src/user/user.factory';
 import { LEAVE_TYPE } from '../endpoints/leave.endpoints';
 describe('create leave type case', () => {

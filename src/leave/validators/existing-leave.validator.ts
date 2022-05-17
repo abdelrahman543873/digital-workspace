@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LeaveRepository } from '../leave.repository';
+import { LeaveRepository } from '../repositories/leave.repository';
 import { ObjectId } from 'mongoose';
 import {
   registerDecorator,

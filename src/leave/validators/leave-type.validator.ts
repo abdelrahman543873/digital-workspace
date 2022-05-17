@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LeaveTypeRepository } from '../leave-type.repository';
+import { LeaveTypeRepository } from '../repositories/leave-type.repository';
 import {
   ValidatorConstraint,
   ValidatorConstraintInterface,

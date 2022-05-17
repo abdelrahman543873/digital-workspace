@@ -1,4 +1,4 @@
-import { LeaveRepository } from './leave.repository';
+import { LeaveRepository } from './repositories/leave.repository';
 import { Module } from '@nestjs/common';
 import { LeaveController } from './leave.controller';
 import { LeaveService } from './leave.service';
@@ -6,7 +6,7 @@ import { LeaveBalanceValidator } from './validators/leave-balance.validator';
 import { filename } from '../shared/utils/multer-file-name';
 import { diskStorage } from 'multer';
 import { MulterModule } from '@nestjs/platform-express';
-import { LeaveTypeRepository } from './leave-type.repository';
+import { LeaveTypeRepository } from './repositories/leave-type.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Leave, LeaveSchema } from './schema/leave.schema';
 import { LeaveType, LeaveTypeSchema } from './schema/leave-type.schema';
@@ -15,6 +15,11 @@ import { UserModule } from '../user/user.module';
 import { ValidLeaveCancellationValidator } from './validators/valid-leave-cancellation.validator';
 import { ExistingLeaveConstraint } from './validators/existing-leave.validator';
 import { IsDirectManagerOrHRConstraint } from './validators/employee-is-direct-manager-hr.validator';
+import { RejectionReasonRepository } from './repositories/rejection-reason.repository';
+import {
+  RejectionReason,
+  RejectionReasonSchema,
+} from './schema/rejection-reason.schema';
 
 @Module({
   imports: [
@@ -28,6 +33,7 @@ import { IsDirectManagerOrHRConstraint } from './validators/employee-is-direct-m
     MongooseModule.forFeature([
       { name: Leave.name, schema: LeaveSchema },
       { name: LeaveType.name, schema: LeaveTypeSchema },
+      { name: RejectionReason.name, schema: RejectionReasonSchema },
     ]),
     UserModule,
   ],
@@ -38,6 +44,7 @@ import { IsDirectManagerOrHRConstraint } from './validators/employee-is-direct-m
     LeaveRepository,
     LeaveTypeRepository,
     LeaveTypeValidator,
+    RejectionReasonRepository,
     IsDirectManagerOrHRConstraint,
     ExistingLeaveConstraint,
     ValidLeaveCancellationValidator,

@@ -15,9 +15,10 @@ import { DepartmentRepository } from '../src/department/department.repository';
 import { SkillRepository } from '../src/skill/skill.repository';
 import { TitleRepository } from '../src/title/title.repository';
 import { InterestRepository } from '../src/interest/interest.repository';
-import { LeaveRepository } from '../src/leave/leave.repository';
-import { LeaveTypeRepository } from '../src/leave/leave-type.repository';
+import { LeaveRepository } from '../src/leave/repositories/leave.repository';
+import { LeaveTypeRepository } from '../src/leave/repositories/leave-type.repository';
 import { RoleRepository } from '../src/role/role.repository';
+import { RejectionReasonRepository } from '../src/leave/repositories/rejection-reason.repository';
 
 class MongoEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -55,6 +56,9 @@ class MongoEnvironment extends NodeEnvironment {
     this.global.leaveTypeRepository =
       app.get<LeaveTypeRepository>(LeaveTypeRepository);
     this.global.roleRepository = app.get<RoleRepository>(RoleRepository);
+    this.global.rejectionReasonRepository = app.get<RejectionReasonRepository>(
+      RejectionReasonRepository,
+    );
   }
 
   async teardown() {

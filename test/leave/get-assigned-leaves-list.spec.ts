@@ -1,7 +1,7 @@
 import { HTTP_METHODS_ENUM } from '../request.methods.enum';
 import { ASSIGNED_LEAVES_LIST } from '../endpoints/leave.endpoints';
 import { testRequest } from '../request';
-import { leaveFactory } from './leave.factory';
+import { leaveFactory } from './factories/leave.factory';
 import { userFactory } from '../../src/user/user.factory';
 import { LEAVE_STATUS } from '../../src/leave/leave.enum';
 describe('get assigned leaves list case', () => {

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { BaseRepository } from '../shared/generics/repository.abstract';
-import { LeaveReasonDocument, LeaveType } from './schema/leave-type.schema';
+import { BaseRepository } from '../../shared/generics/repository.abstract';
+import { LeaveReasonDocument, LeaveType } from '../schema/leave-type.schema';
 import { AggregatePaginateModel } from 'mongoose';
-import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
-import { Pagination } from '../shared/utils/pagination.input';
-import { DeleteLeaveTypeInput } from './inputs/delete-levae-type.input';
-import { UpdateLeaveTypeInput } from './inputs/update-leave-type.input';
+import { CreateLeaveTypeInput } from '../inputs/create-leave-type.input';
+import { Pagination } from '../../shared/utils/pagination.input';
+import { DeleteLeaveTypeInput } from '../inputs/delete-levae-type.input';
+import { UpdateLeaveTypeInput } from '../inputs/update-leave-type.input';
 
 @Injectable()
 export class LeaveTypeRepository extends BaseRepository<LeaveType> {

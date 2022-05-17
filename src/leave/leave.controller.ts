@@ -24,6 +24,7 @@ import { ManageLeaveInput } from './inputs/manage-leave.input';
 import { CancelLeaveInput } from './inputs/cancel-leave.input';
 import { GetLeavesListInput } from './inputs/get-leaves-list.input';
 import { GetLeavesAssignedListInput } from './inputs/get-leaves-assigned-list.input';
+import { AddRejectionReasonInput } from './inputs/add-rejection-reason.input';
 
 @UseGuards(ActiveUserGuard)
 @ApiTags('leave')
@@ -106,5 +107,17 @@ export class LeaveController {
   @Post('cancel')
   async cancelLeave(@Body() input: CancelLeaveInput) {
     return await this.leaveService.cancelLeave(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('rejection-reason')
+  async addRejectionReason(@Body() input: AddRejectionReasonInput) {
+    return await this.leaveService.addRejectionReason(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('rejection-reasons/list')
+  async getRejectionReasonsList(@Query() input: Pagination) {
+    return await this.leaveService.getRejectionReasonsList(input);
   }
 }

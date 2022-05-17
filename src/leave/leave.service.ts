@@ -1,9 +1,9 @@
 import { RequestContext } from './../shared/request.interface';
 import { Inject, Injectable } from '@nestjs/common';
-import { LeaveRepository } from './leave.repository';
+import { LeaveRepository } from './repositories/leave.repository';
 import { CreateLeaveInput } from './inputs/create-leave.input';
 import { REQUEST } from '@nestjs/core';
-import { LeaveTypeRepository } from './leave-type.repository';
+import { LeaveTypeRepository } from './repositories/leave-type.repository';
 import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { DeleteLeaveTypeInput } from './inputs/delete-levae-type.input';
@@ -17,6 +17,8 @@ import { LEAVE_STATUS } from './leave.enum';
 import { CancelLeaveInput } from './inputs/cancel-leave.input';
 import { GetLeavesListInput } from './inputs/get-leaves-list.input';
 import { GetLeavesAssignedListInput } from './inputs/get-leaves-assigned-list.input';
+import { RejectionReasonRepository } from './repositories/rejection-reason.repository';
+import { AddRejectionReasonInput } from './inputs/add-rejection-reason.input';
 
 @Injectable()
 export class LeaveService {
@@ -25,6 +27,7 @@ export class LeaveService {
     @Inject(REQUEST) private readonly request: RequestContext,
     private readonly leaveTypeRepository: LeaveTypeRepository,
     private readonly userRepository: UserRepository,
+    private readonly rejectionReasonRepository: RejectionReasonRepository,
   ) {}
 
   createLeave(
@@ -101,5 +104,13 @@ export class LeaveService {
         this.request.currentUser._id,
       );
     return updatedLeave;
+  }
+
+  addRejectionReason(input: AddRejectionReasonInput) {
+    return this.rejectionReasonRepository.addRejectionReason(input);
+  }
+
+  getRejectionReasonsList(input: Pagination) {
+    return this.rejectionReasonRepository.getRejectionReasonsList(input);
   }
 }

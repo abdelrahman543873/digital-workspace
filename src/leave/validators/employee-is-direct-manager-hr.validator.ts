@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../../user/user.repository';
-import { LeaveRepository } from '../leave.repository';
+import { LeaveRepository } from '../repositories/leave.repository';
 import { ObjectId } from 'mongoose';
 import { User } from '../../user/schema/user.schema';
 import {
