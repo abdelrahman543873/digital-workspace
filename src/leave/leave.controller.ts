@@ -23,6 +23,7 @@ import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 import { ManageLeaveInput } from './inputs/manage-leave.input';
 import { CancelLeaveInput } from './inputs/cancel-leave.input';
 import { GetLeavesListInput } from './inputs/get-leaves-list.input';
+import { GetLeavesAssignedListInput } from './inputs/get-leaves-assigned-list.input';
 
 @UseGuards(ActiveUserGuard)
 @ApiTags('leave')
@@ -72,7 +73,7 @@ export class LeaveController {
 
   @UseGuards(AuthGuard)
   @Get('assigned-list')
-  async getAssignedLeavesList(@Query() input: Pagination) {
+  async getAssignedLeavesList(@Query() input: GetLeavesAssignedListInput) {
     return await this.leaveService.getAssignedLeavesList(input);
   }
 
