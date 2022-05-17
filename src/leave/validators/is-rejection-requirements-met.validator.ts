@@ -32,6 +32,12 @@ export class IsLeaveRequirementsMetConstraint
       this.error =
         "you can't enter rejection justification or rejection reason id when leave isn't rejected";
       return false;
+    } else if (
+      status === LEAVE_STATUS.ADDITIONAL_INFO &&
+      !validationArguments.object['comment']
+    ) {
+      this.error = 'you must add a comment when status is additional info';
+      return false;
     }
     return true;
   }

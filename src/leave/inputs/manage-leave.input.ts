@@ -46,6 +46,12 @@ export class ManageLeaveInput {
   @ApiProperty({ type: 'string' })
   rejectionReason?: ObjectId;
 
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
+  @MinLength(5)
+  comment?: string;
+
   @ApiProperty({ readOnly: true })
   @Allow()
   currentUser?: User;
