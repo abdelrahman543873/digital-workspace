@@ -15,6 +15,7 @@ interface LeaveType {
   attachments?: string[];
   replacement?: ObjectId;
   status?: string;
+  rejectionJustification?: string;
 }
 
 export const buildLeaveParams = async (
@@ -30,6 +31,7 @@ export const buildLeaveParams = async (
     attachments: obj.attachments || [`${process.env.HOST}/defaults/avatar.jpg`],
     replacement: obj.replacement || user._id,
     status: obj.status || LEAVE_STATUS.PENDING,
+    rejectionJustification: obj.rejectionJustification || random.words(5),
   };
 };
 

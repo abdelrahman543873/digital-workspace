@@ -26,6 +26,9 @@ export class Leave {
   @Prop()
   reason: string;
 
+  @Prop()
+  rejectionJustification: string;
+
   @Prop({ default: LEAVE_STATUS.PENDING })
   status: string;
 

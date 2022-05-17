@@ -27,6 +27,58 @@ describe('manage leave case', () => {
     expect(res.body.status).toBe(LEAVE_STATUS.MANAGER_APPROVED);
   });
 
+  it("should throw error if there is a justification reason and the status isn't rejected", async () => {
+    const manager = await userFactory();
+    const employee = await userFactory({ directManagerId: manager._id });
+    const leave = await leaveFactory({ employee: employee._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: MANAGE_LEAVE,
+      variables: {
+        id: leave._id.toString(),
+        status: LEAVE_STATUS.MANAGER_APPROVED,
+        rejectionJustification: leave.rejectionJustification,
+      },
+      token: manager.token,
+    });
+    expect(res.body.statusCode).toBe(400);
+    expect(res.body.message.length).toBe(1);
+  });
+
+  it('should throw error if there is a rejection without justification reason', async () => {
+    const manager = await userFactory();
+    const employee = await userFactory({ directManagerId: manager._id });
+    const leave = await leaveFactory({ employee: employee._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: MANAGE_LEAVE,
+      variables: {
+        id: leave._id.toString(),
+        status: LEAVE_STATUS.REJECTED,
+      },
+      token: manager.token,
+    });
+    expect(res.body.statusCode).toBe(400);
+    expect(res.body.message.length).toBe(1);
+  });
+
+  it('should reject leave', async () => {
+    const manager = await userFactory();
+    const employee = await userFactory({ directManagerId: manager._id });
+    const leave = await leaveFactory({ employee: employee._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: MANAGE_LEAVE,
+      variables: {
+        id: leave._id.toString(),
+        status: LEAVE_STATUS.REJECTED,
+        rejectionJustification: leave.rejectionJustification,
+      },
+      token: manager.token,
+    });
+    expect(res.body.rejectionJustification).toBe(leave.rejectionJustification);
+  });
+
   it('should manage leave as an HR employee', async () => {
     const department = await departmentFactory({ name: 'HR' });
     const HR = await userFactory({ department: department._id });
@@ -47,7 +99,7 @@ describe('manage leave case', () => {
     expect(res.body.status).toBe(LEAVE_STATUS.APPROVED);
     expect(leaveBalance).toBeLessThan(leaveBalanceBeforeApproval);
   });
-  it("should throw error when approval isn't from manager and not the hr department", async () => {
+  it("should throw error when management isn't from manager and not the hr department", async () => {
     const manager = await userFactory();
     const employee = await userFactory();
     const leave = await leaveFactory({ employee: employee._id });
@@ -56,7 +108,7 @@ describe('manage leave case', () => {
       url: MANAGE_LEAVE,
       variables: {
         id: leave._id.toString(),
-        status: LEAVE_STATUS.REJECTED,
+        status: LEAVE_STATUS.PENDING,
       },
       token: manager.token,
     });
