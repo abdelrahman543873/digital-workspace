@@ -5,6 +5,7 @@ import { userFactory } from '../../../src/user/user.factory';
 import { Leave } from '../../../src/leave/schema/leave.schema';
 import { leaveTypeFactory } from './leave-type.factory';
 import { LEAVE_STATUS } from '../../../src/leave/leave.enum';
+import { rejectionReasonFactory } from './rejection-reason.factory';
 
 interface LeaveType {
   employee?: ObjectId;
@@ -16,6 +17,7 @@ interface LeaveType {
   replacement?: ObjectId;
   status?: string;
   rejectionJustification?: string;
+  rejectionReason?: ObjectId;
 }
 
 export const buildLeaveParams = async (
@@ -32,6 +34,8 @@ export const buildLeaveParams = async (
     replacement: obj.replacement || user._id,
     status: obj.status || LEAVE_STATUS.PENDING,
     rejectionJustification: obj.rejectionJustification || random.words(5),
+    rejectionReason:
+      obj.rejectionReason || (await rejectionReasonFactory())._id,
   };
 };
 

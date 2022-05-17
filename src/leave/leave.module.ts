@@ -20,6 +20,7 @@ import {
   RejectionReason,
   RejectionReasonSchema,
 } from './schema/rejection-reason.schema';
+import { ExistingRejectionReasonConstraint } from './validators/is-existing-rejection-reason.validator';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import {
     IsDirectManagerOrHRConstraint,
     ExistingLeaveConstraint,
     ValidLeaveCancellationValidator,
+    ExistingRejectionReasonConstraint,
   ],
 })
 export class LeaveModule {}

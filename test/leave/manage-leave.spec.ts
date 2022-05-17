@@ -73,10 +73,29 @@ describe('manage leave case', () => {
         id: leave._id.toString(),
         status: LEAVE_STATUS.REJECTED,
         rejectionJustification: leave.rejectionJustification,
+        rejectionReason: leave.rejectionReason.toString(),
       },
       token: manager.token,
     });
     expect(res.body.rejectionJustification).toBe(leave.rejectionJustification);
+  });
+
+  it("should throw error when rejection reason isn't added", async () => {
+    const manager = await userFactory();
+    const employee = await userFactory({ directManagerId: manager._id });
+    const leave = await leaveFactory({ employee: employee._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: MANAGE_LEAVE,
+      variables: {
+        id: leave._id.toString(),
+        status: LEAVE_STATUS.REJECTED,
+        rejectionJustification: leave.rejectionJustification,
+      },
+      token: manager.token,
+    });
+    expect(res.body.statusCode).toBe(400);
+    expect(res.body.message.length).toBe(1);
   });
 
   it('should manage leave as an HR employee', async () => {

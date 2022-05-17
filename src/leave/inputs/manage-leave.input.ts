@@ -3,12 +3,10 @@ import {
   Allow,
   IsDefined,
   IsIn,
-  IsNotEmpty,
   IsOptional,
   IsString,
-  MinLength,
   Validate,
-  ValidateIf,
+  MinLength,
 } from 'class-validator';
 import { ObjectId } from 'mongoose';
 import { mongoIdTransform } from '../../shared/utils/mongo-id.transform';
@@ -19,7 +17,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { LeaveStatusValidator } from '../../department/validators/leave-status.validator';
 import { IsExistingLeave } from '../validators/existing-leave.validator';
 import { IsDirectManagerOrHR } from '../validators/employee-is-direct-manager-hr.validator';
-import { IsLeaveRejected } from '../validators/is-leave-rejected.validator';
+import { IsExistingRejectionReason } from '../validators/is-existing-rejection-reason.validator';
+import { MaxLength } from 'class-validator';
+import { IsLeaveRequirementsMet } from '../validators/is-rejection-requirements-met.validator';
 
 export class ManageLeaveInput {
   @Transform(mongoIdTransform)
@@ -31,11 +31,20 @@ export class ManageLeaveInput {
 
   @Validate(LeaveStatusValidator)
   @IsIn(getValuesFromEnum(LEAVE_STATUS))
+  @IsLeaveRequirementsMet()
   status: string;
 
-  @Allow()
-  @IsLeaveRejected()
+  @IsOptional()
+  @IsString()
+  @MinLength(5)
+  @MaxLength(255)
   rejectionJustification?: string;
+
+  @IsOptional()
+  @IsExistingRejectionReason()
+  @Transform(mongoIdTransform)
+  @ApiProperty({ type: 'string' })
+  rejectionReason?: ObjectId;
 
   @ApiProperty({ readOnly: true })
   @Allow()
