@@ -3,7 +3,7 @@ import { testRequest } from '../request';
 import { HTTP_METHODS_ENUM } from '../request.methods.enum';
 import { ADD_USER } from '../endpoints/user.endpoints';
 import { skillFactory } from '../../src/skill/skill.factory';
-import { GENDER } from '../../src/app.const';
+import { GENDER, WIDGETS } from '../../src/app.const';
 import { countryFactory } from '../../src/country/country.factory';
 import { userFactory } from '../../src/user/user.factory';
 import { levelFactory } from '../../src/level/level.factory';
@@ -36,6 +36,7 @@ describe('register user suite case', () => {
         education: params.education,
         interests: params.interests,
         role: params.role.toString(),
+        widgets: [WIDGETS[0], WIDGETS[1]],
       },
       filePath,
       fileParam: 'coverPic',

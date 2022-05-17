@@ -20,11 +20,17 @@ export class Leave {
   @Prop({ type: Types.ObjectId, ref: 'LeaveType' })
   type: ObjectId;
 
+  @Prop({ type: Types.ObjectId, ref: 'RejectionReason' })
+  rejectionReason: ObjectId;
+
   @Prop()
   comment: string;
 
   @Prop()
   reason: string;
+
+  @Prop()
+  rejectionJustification: string;
 
   @Prop({ default: LEAVE_STATUS.PENDING })
   status: string;

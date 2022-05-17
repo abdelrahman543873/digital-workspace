@@ -2,7 +2,7 @@ import { HTTP_METHODS_ENUM } from './../request.methods.enum';
 import { testRequest } from './../request';
 import { userFactory } from '../../src/user/user.factory';
 import { CANCEL_LEAVE } from '../endpoints/leave.endpoints';
-import { leaveFactory } from './leave.factory';
+import { leaveFactory } from './factories/leave.factory';
 import { LEAVE_STATUS } from '../../src/leave/leave.enum';
 import { UserRepo } from '../user/user-test-repo';
 import { date } from 'faker';

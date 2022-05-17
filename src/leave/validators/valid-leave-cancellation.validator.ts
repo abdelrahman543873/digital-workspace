@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LeaveRepository } from '../leave.repository';
+import { LeaveRepository } from '../repositories/leave.repository';
 import { LEAVE_STATUS } from '../leave.enum';
 import { User } from '../../user/schema/user.schema';
 import {

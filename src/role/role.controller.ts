@@ -2,10 +2,11 @@ import { Body, Controller, Post, UseGuards, Get, Query } from '@nestjs/common';
 import { AddRoleInput } from './inputs/add-role.input';
 import { RoleService } from './role.service';
 import { AuthGuard } from '../shared/guards/auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { Pagination } from '../shared/utils/pagination.input';
 
 @ApiTags('role')
+@ApiBearerAuth()
 @Controller('role')
 @UseGuards(AuthGuard)
 export class RoleController {

@@ -33,6 +33,7 @@ import fs from 'fs';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { BaseHttpException } from '../shared/exceptions/base-http-exception';
+import { GetUserListInput } from './inputs/get-user-list.input';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(
@@ -55,7 +56,7 @@ export class UserRepository extends BaseRepository<User> {
     return (
       await this.userSchema.create({
         ...input,
-        password: await hashPass(input.password),
+        ...(input.password && { password: await hashPass(input.password) }),
         ...(files?.coverPic && {
           coverPic: `${process.env.HOST}${files.coverPic[0].filename}`,
         }),
@@ -484,15 +485,25 @@ export class UserRepository extends BaseRepository<User> {
     });
   }
 
-  async getUserList(input: Pagination) {
+  async getUserList(input: GetUserListInput) {
     const aggregation = this.userSchema.aggregate([
-      { $match: {} },
+      {
+        $match: {
+          ...(input.status && { status: input.status }),
+        },
+      },
       {
         $lookup: {
           from: LookupSchemasEnum.users,
           foreignField: '_id',
           localField: 'directManagerId',
           as: 'directManager',
+        },
+      },
+      {
+        $unwind: {
+          path: '$directManager',
+          preserveNullAndEmptyArrays: true,
         },
       },
       {
@@ -503,7 +514,12 @@ export class UserRepository extends BaseRepository<User> {
           as: 'title',
         },
       },
-      { $unwind: '$title' },
+      {
+        $unwind: {
+          path: '$title',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       {
         $lookup: {
           from: LookupSchemasEnum.teams,
@@ -512,16 +528,24 @@ export class UserRepository extends BaseRepository<User> {
           as: 'team',
         },
       },
-      { $unwind: '$team' },
       {
-        $addFields: {
-          directManager: {
-            $cond: {
-              if: { $eq: [{ $size: '$directManager' }, 1] },
-              then: { $arrayElemAt: ['$directManager', 0] },
-              else: {},
-            },
-          },
+        $unwind: {
+          path: '$team',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.roles,
+          localField: 'role',
+          foreignField: '_id',
+          as: 'role',
+        },
+      },
+      {
+        $unwind: {
+          path: '$role',
+          preserveNullAndEmptyArrays: true,
         },
       },
       { $sort: { createdAt: -1 } },
@@ -565,19 +589,6 @@ export class UserRepository extends BaseRepository<User> {
       );
     }
     return users;
-  }
-
-  async subtractLeaveDays(
-    _id: ObjectId,
-    leaveDays: number,
-  ): Promise<QueryWithHelpers<UpdateWriteOpResult, User>> {
-    return await this.userSchema.updateOne({ _id }, [
-      {
-        $set: {
-          leaveBalance: { $subtract: ['$leaveBalance', leaveDays] },
-        },
-      },
-    ]);
   }
 
   async getLevelUsers(level: ObjectId) {

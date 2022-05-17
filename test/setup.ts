@@ -1,9 +1,9 @@
+import { GlobalExceptionFilter } from './../src/shared/exceptions/global-excpetion.filter';
 import fs from 'fs';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Test } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
-import { APP_FILTER } from '@nestjs/core';
-import { BaseHttpExceptionFilter } from '../src/shared/exceptions/base-http-exception-filter';
+import { BaseHttpExceptionFilter } from '../src/shared/exceptions/base-http-exception.filter';
 import { MongooseExceptionFilter } from '../src/shared/exceptions/mongo-exception-filter';
 import { FileCloudUploadInterceptor } from '../src/shared/interceptors/file-cloud-upload.interceptor';
 import { SeedUsersServices } from '../src/shared/services/seed-users.service';
@@ -37,16 +37,6 @@ module.exports = async (): Promise<void> => {
   };
   const module = await Test.createTestingModule({
     imports: [AppModule],
-    providers: [
-      {
-        provide: APP_FILTER,
-        useClass: BaseHttpExceptionFilter,
-      },
-      {
-        provide: APP_FILTER,
-        useClass: MongooseExceptionFilter,
-      },
-    ],
   })
     .overrideProvider(SeedUsersServices)
     .useValue(seedUsersServices)
@@ -64,6 +54,11 @@ module.exports = async (): Promise<void> => {
       stopAtFirstError: true,
       forbidNonWhitelisted: true,
     }),
+  );
+  app.useGlobalFilters(
+    new GlobalExceptionFilter(),
+    new BaseHttpExceptionFilter(),
+    new MongooseExceptionFilter(),
   );
   await app.init();
   global.app = app;

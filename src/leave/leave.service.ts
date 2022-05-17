@@ -1,9 +1,9 @@
 import { RequestContext } from './../shared/request.interface';
 import { Inject, Injectable } from '@nestjs/common';
-import { LeaveRepository } from './leave.repository';
+import { LeaveRepository } from './repositories/leave.repository';
 import { CreateLeaveInput } from './inputs/create-leave.input';
 import { REQUEST } from '@nestjs/core';
-import { LeaveTypeRepository } from './leave-type.repository';
+import { LeaveTypeRepository } from './repositories/leave-type.repository';
 import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
 import { Pagination } from '../shared/utils/pagination.input';
 import { DeleteLeaveTypeInput } from './inputs/delete-levae-type.input';
@@ -15,6 +15,10 @@ import { User } from '../user/schema/user.schema';
 import { ObjectId } from 'mongoose';
 import { LEAVE_STATUS } from './leave.enum';
 import { CancelLeaveInput } from './inputs/cancel-leave.input';
+import { GetLeavesListInput } from './inputs/get-leaves-list.input';
+import { GetLeavesAssignedListInput } from './inputs/get-leaves-assigned-list.input';
+import { RejectionReasonRepository } from './repositories/rejection-reason.repository';
+import { AddRejectionReasonInput } from './inputs/add-rejection-reason.input';
 
 @Injectable()
 export class LeaveService {
@@ -23,6 +27,7 @@ export class LeaveService {
     @Inject(REQUEST) private readonly request: RequestContext,
     private readonly leaveTypeRepository: LeaveTypeRepository,
     private readonly userRepository: UserRepository,
+    private readonly rejectionReasonRepository: RejectionReasonRepository,
   ) {}
 
   createLeave(
@@ -49,14 +54,14 @@ export class LeaveService {
     return await this.leaveRepository.manageLeave(input);
   }
 
-  getLeavesList(input: Pagination) {
+  getLeavesList(input: GetLeavesListInput) {
     return this.leaveRepository.getLeavesList(
       input,
       this.request.currentUser._id,
     );
   }
 
-  async getAssignedLeavesList(input: Pagination) {
+  async getAssignedLeavesList(input: GetLeavesAssignedListInput) {
     const managedEmployees: User[] =
       await this.userRepository.getUserSubordinates(
         this.request.currentUser._id,
@@ -99,5 +104,13 @@ export class LeaveService {
         this.request.currentUser._id,
       );
     return updatedLeave;
+  }
+
+  addRejectionReason(input: AddRejectionReasonInput) {
+    return this.rejectionReasonRepository.addRejectionReason(input);
+  }
+
+  getRejectionReasonsList(input: Pagination) {
+    return this.rejectionReasonRepository.getRejectionReasonsList(input);
   }
 }

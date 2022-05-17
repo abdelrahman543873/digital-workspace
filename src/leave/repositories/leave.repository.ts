@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '../shared/generics/repository.abstract';
-import { Leave, LeaveDocument } from './schema/leave.schema';
+import { BaseRepository } from '../../shared/generics/repository.abstract';
+import { Leave, LeaveDocument } from '../schema/leave.schema';
 import {
   AggregatePaginateModel,
   ObjectId,
@@ -8,13 +8,15 @@ import {
   UpdateWriteOpResult,
 } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateLeaveInput } from './inputs/create-leave.input';
-import { UpdateLeaveInput } from './inputs/update-leave.input';
-import { Pagination } from '../shared/utils/pagination.input';
-import { ManageLeaveInput } from './inputs/manage-leave.input';
-import { CancelLeaveInput } from './inputs/cancel-leave.input';
-import { LEAVE_STATUS } from './leave.enum';
-import { LookupSchemasEnum } from '../app.const';
+import { CreateLeaveInput } from '../inputs/create-leave.input';
+import { UpdateLeaveInput } from '../inputs/update-leave.input';
+import { Pagination } from '../../shared/utils/pagination.input';
+import { ManageLeaveInput } from '../inputs/manage-leave.input';
+import { CancelLeaveInput } from '../inputs/cancel-leave.input';
+import { LEAVE_STATUS } from '../leave.enum';
+import { LookupSchemasEnum } from '../../app.const';
+import { GetLeavesListInput } from '../inputs/get-leaves-list.input';
+import { GetLeavesAssignedListInput } from '../inputs/get-leaves-assigned-list.input';
 
 @Injectable()
 export class LeaveRepository extends BaseRepository<Leave> {
@@ -59,11 +61,12 @@ export class LeaveRepository extends BaseRepository<Leave> {
     );
   }
 
-  getLeavesList(input: Pagination, employee: ObjectId) {
+  getLeavesList(input: GetLeavesListInput, employee: ObjectId) {
     const aggregation = this.leaveSchema.aggregate([
       {
         $match: {
           employee,
+          ...(input.status && { status: input.status }),
         },
       },
       {
@@ -75,6 +78,20 @@ export class LeaveRepository extends BaseRepository<Leave> {
         },
       },
       { $unwind: '$type' },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          localField: 'replacement',
+          foreignField: '_id',
+          as: 'replacement',
+        },
+      },
+      {
+        $unwind: {
+          path: '$replacement',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       { $sort: { createdAt: -1 } },
     ]);
     return this.leaveSchema.aggregatePaginate(aggregation, {
@@ -83,13 +100,49 @@ export class LeaveRepository extends BaseRepository<Leave> {
     });
   }
 
-  getAssignedLeavesList(input: Pagination, employees: ObjectId[]) {
+  getAssignedLeavesList(
+    input: GetLeavesAssignedListInput,
+    employees: ObjectId[],
+  ) {
     const aggregation = this.leaveSchema.aggregate([
       {
         $match: {
+          ...(input.status && { status: input.status }),
           $expr: {
             $in: ['$employee', employees],
           },
+        },
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.leaveTypes,
+          localField: 'type',
+          foreignField: '_id',
+          as: 'type',
+        },
+      },
+      { $unwind: '$type' },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          localField: 'employee',
+          foreignField: '_id',
+          as: 'employee',
+        },
+      },
+      { $unwind: '$employee' },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          localField: 'replacement',
+          foreignField: '_id',
+          as: 'replacement',
+        },
+      },
+      {
+        $unwind: {
+          path: '$replacement',
+          preserveNullAndEmptyArrays: true,
         },
       },
       { $sort: { createdAt: -1 } },

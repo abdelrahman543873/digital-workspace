@@ -44,11 +44,12 @@ export class AddUserInput {
   @IsEmail()
   email: string;
 
+  @IsOptional()
   @ApiProperty()
   @IsString()
   @MinLength(8)
   @MaxLength(256)
-  password: string;
+  password?: string;
 
   @IsOptional()
   @IsString()
@@ -219,8 +220,13 @@ export class AddUserInput {
   gender: string;
 
   @IsOptional()
-  @IsIn(WIDGETS)
-  widgets?: string;
+  @ArrayUnique()
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsIn(WIDGETS, { each: true })
+  @ApiProperty({ type: 'array', items: { type: 'string', enum: WIDGETS } })
+  @Transform(jsonArrayTransform)
+  widgets?: string[];
 
   @IsOptional()
   @Transform(mongoIdTransform)

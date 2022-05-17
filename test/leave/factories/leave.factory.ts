@@ -1,10 +1,11 @@
-import { leaveTestRepo } from './leave-test-repo';
+import { leaveTestRepo } from '../test-repos/leave-test-repo';
 import { date, random } from 'faker';
 import { ObjectId } from 'mongoose';
-import { userFactory } from '../../src/user/user.factory';
-import { Leave } from '../../src/leave/schema/leave.schema';
+import { userFactory } from '../../../src/user/user.factory';
+import { Leave } from '../../../src/leave/schema/leave.schema';
 import { leaveTypeFactory } from './leave-type.factory';
-import { LEAVE_STATUS } from '../../src/leave/leave.enum';
+import { LEAVE_STATUS } from '../../../src/leave/leave.enum';
+import { rejectionReasonFactory } from './rejection-reason.factory';
 
 interface LeaveType {
   employee?: ObjectId;
@@ -15,6 +16,8 @@ interface LeaveType {
   attachments?: string[];
   replacement?: ObjectId;
   status?: string;
+  rejectionJustification?: string;
+  rejectionReason?: ObjectId;
 }
 
 export const buildLeaveParams = async (
@@ -30,6 +33,9 @@ export const buildLeaveParams = async (
     attachments: obj.attachments || [`${process.env.HOST}/defaults/avatar.jpg`],
     replacement: obj.replacement || user._id,
     status: obj.status || LEAVE_STATUS.PENDING,
+    rejectionJustification: obj.rejectionJustification || random.words(5),
+    rejectionReason:
+      obj.rejectionReason || (await rejectionReasonFactory())._id,
   };
 };
 

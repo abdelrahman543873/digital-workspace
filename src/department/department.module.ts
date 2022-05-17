@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Department, DepartmentSchema } from './schema/department.schema';
 import { UniqueDepartmentName } from './validators/unique-department-name.validator';
 import { ExistingDepartmentId } from './validators/existing-department-id.validator';
+import { LeaveStatusValidator } from './validators/leave-status.validator';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ExistingDepartmentId } from './validators/existing-department-id.valida
     DepartmentRepository,
     UniqueDepartmentName,
     ExistingDepartmentId,
+    LeaveStatusValidator,
   ],
 })
 export class DepartmentModule {}

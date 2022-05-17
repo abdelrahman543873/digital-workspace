@@ -27,8 +27,6 @@ import { UpdateTaskInput } from './inputs/update-task.input';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CreateTaskSwagger } from './swagger/create-task.swagger';
 import { GetTaskByIdInput } from './inputs/get-task-by-id.input';
-import { ApplyForLeaveInput } from './inputs/apply-for-leave.input';
-import { ManageLeaveInput } from './inputs/manage-leave.input';
 
 @UseGuards(ActiveUserGuard)
 @Controller('task')
@@ -89,33 +87,5 @@ export class TaskController {
   @Put('update')
   async updateTask(@Body() input: UpdateTaskInput) {
     return await this.taskService.updateTask(input);
-  }
-
-  @ApiExcludeEndpoint()
-  @ApiBearerAuth()
-  @ApiTags('task')
-  @UseGuards(AuthGuard)
-  @Put('manageLeave')
-  async manageLeave(@Body() input: ManageLeaveInput) {
-    return await this.taskService.manageLeave(input);
-  }
-
-  @ApiExcludeEndpoint()
-  @ApiBearerAuth()
-  @ApiTags('task')
-  @UseGuards(AuthGuard)
-  @Post('applyForLeave')
-  @UseInterceptors(FileCloudUploadInterceptor)
-  @UseInterceptors(
-    FileFieldsInterceptor([{ name: 'attachments', maxCount: 10 }]),
-  )
-  async applyForLeave(
-    @Body() input: ApplyForLeaveInput,
-    @UploadedFiles()
-    files: {
-      attachments?: Express.Multer.File[];
-    },
-  ) {
-    return await this.taskService.applyForLeave(input, files);
   }
 }

@@ -8,8 +8,6 @@ import { CreateTaskInput } from './inputs/create-task.input';
 import { GetTasksInput } from './inputs/get-tasks.input';
 import { UpdateTaskInput } from './inputs/update-task.input';
 import { GetTaskByIdInput } from './inputs/get-task-by-id.input';
-import { ApplyForLeaveInput } from './inputs/apply-for-leave.input';
-import { ManageLeaveInput } from './inputs/manage-leave.input';
 
 @Injectable()
 export class TaskRepository extends BaseRepository<Task> {
@@ -104,19 +102,6 @@ export class TaskRepository extends BaseRepository<Task> {
       {
         ...filteredInput,
         ...(assignee && { assignee: new SchemaTypes.ObjectId(taskId) }),
-      },
-      { new: true },
-    );
-  }
-
-  async manageLeave(userId: ObjectId, input: ManageLeaveInput): Promise<Task> {
-    return await this.taskSchema.findOneAndUpdate(
-      {
-        assignee: userId,
-        _id: new Types.ObjectId(input.taskId),
-      },
-      {
-        status: input.status,
       },
       { new: true },
     );
@@ -227,25 +212,5 @@ export class TaskRepository extends BaseRepository<Task> {
         },
       ])
     )[0];
-  }
-
-  async applyForLeave(
-    @Body() input: ApplyForLeaveInput,
-    directManagerId: ObjectId,
-    files: {
-      attachments?: Express.Multer.File[];
-    },
-  ) {
-    return await this.taskSchema.create({
-      ...input,
-      assignee: directManagerId,
-      title: 'leave request',
-      logo: `${process.env.WEBSITE_HOST}defaults/logo.png`,
-      ...(files?.attachments && {
-        attachments: files.attachments.map((file) => {
-          return `${process.env.HOST}${file.filename}`;
-        }),
-      }),
-    });
   }
 }

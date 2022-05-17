@@ -1,6 +1,6 @@
 import { name, date, datatype } from 'faker';
-import { LeaveType } from '../../src/leave/schema/leave-type.schema';
-import { leaveTypeTestRepo } from './leave-type-test-repo';
+import { LeaveType } from '../../../src/leave/schema/leave-type.schema';
+import { leaveTypeTestRepo } from '../test-repos/leave-type-test-repo';
 
 interface LeavenTypeType {
   name?: string;

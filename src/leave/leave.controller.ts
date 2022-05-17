@@ -22,6 +22,9 @@ import { UpdateLeaveInput } from './inputs/update-leave.input';
 import { ActiveUserGuard } from '../shared/guards/active-user.guard';
 import { ManageLeaveInput } from './inputs/manage-leave.input';
 import { CancelLeaveInput } from './inputs/cancel-leave.input';
+import { GetLeavesListInput } from './inputs/get-leaves-list.input';
+import { GetLeavesAssignedListInput } from './inputs/get-leaves-assigned-list.input';
+import { AddRejectionReasonInput } from './inputs/add-rejection-reason.input';
 
 @UseGuards(ActiveUserGuard)
 @ApiTags('leave')
@@ -46,6 +49,7 @@ export class LeaveController {
   @ApiConsumes('multipart/form-data')
   @UseGuards(AuthGuard)
   @UseInterceptors(FileCloudUploadInterceptor)
+  @UseInterceptors(RequestInBodyInterceptor)
   @UseInterceptors(FilesInterceptor('attachments'))
   @Put()
   async updateLeave(
@@ -64,13 +68,13 @@ export class LeaveController {
 
   @UseGuards(AuthGuard)
   @Get('list')
-  async getLeavesList(@Query() input: Pagination) {
+  async getLeavesList(@Query() input: GetLeavesListInput) {
     return await this.leaveService.getLeavesList(input);
   }
 
   @UseGuards(AuthGuard)
   @Get('assigned-list')
-  async getAssignedLeavesList(@Query() input: Pagination) {
+  async getAssignedLeavesList(@Query() input: GetLeavesAssignedListInput) {
     return await this.leaveService.getAssignedLeavesList(input);
   }
 
@@ -103,5 +107,17 @@ export class LeaveController {
   @Post('cancel')
   async cancelLeave(@Body() input: CancelLeaveInput) {
     return await this.leaveService.cancelLeave(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('rejection-reason')
+  async addRejectionReason(@Body() input: AddRejectionReasonInput) {
+    return await this.leaveService.addRejectionReason(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('rejection-reasons/list')
+  async getRejectionReasonsList(@Query() input: Pagination) {
+    return await this.leaveService.getRejectionReasonsList(input);
   }
 }
