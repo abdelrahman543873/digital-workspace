@@ -1,16 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { LeaveRepository } from '../leave.repository';
+import { ObjectId } from 'mongoose';
 import {
+  registerDecorator,
+  ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
 
-@ValidatorConstraint({ name: 'ExistingLeaveValidator', async: true })
+@ValidatorConstraint({ async: true })
 @Injectable()
-export class ExistingLeaveValidator implements ValidatorConstraintInterface {
+export class ExistingLeaveConstraint implements ValidatorConstraintInterface {
   constructor(private leaveRepository: LeaveRepository) {}
-  async validate(text: string): Promise<boolean> {
-    const leave = await this.leaveRepository.findOne({ _id: text });
+  async validate(_id: ObjectId): Promise<boolean> {
+    const leave = await this.leaveRepository.findOne({ _id });
     if (!leave) return false;
     return true;
   }
@@ -18,4 +21,16 @@ export class ExistingLeaveValidator implements ValidatorConstraintInterface {
   defaultMessage() {
     return "this leave request doesn't exist";
   }
+}
+
+export function IsExistingLeave(validationOptions?: ValidationOptions) {
+  return function (object, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [],
+      validator: ExistingLeaveConstraint,
+    });
+  };
 }

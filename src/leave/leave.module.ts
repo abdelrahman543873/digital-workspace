@@ -11,10 +11,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Leave, LeaveSchema } from './schema/leave.schema';
 import { LeaveType, LeaveTypeSchema } from './schema/leave-type.schema';
 import { LeaveTypeValidator } from './validators/leave-type.validator';
-import { ExistingLeaveValidator } from './validators/existing-leave.validator';
-import { EmployeeIsDirectManagerValidator } from './validators/employee-is-direct-manager.validator';
 import { UserModule } from '../user/user.module';
 import { ValidLeaveCancellationValidator } from './validators/valid-leave-cancellation.validator';
+import { ExistingLeaveConstraint } from './validators/existing-leave.validator';
+import { IsDirectManagerOrHRConstraint } from './validators/employee-is-direct-manager-hr.validator';
 
 @Module({
   imports: [
@@ -38,8 +38,8 @@ import { ValidLeaveCancellationValidator } from './validators/valid-leave-cancel
     LeaveRepository,
     LeaveTypeRepository,
     LeaveTypeValidator,
-    EmployeeIsDirectManagerValidator,
-    ExistingLeaveValidator,
+    IsDirectManagerOrHRConstraint,
+    ExistingLeaveConstraint,
     ValidLeaveCancellationValidator,
   ],
 })
