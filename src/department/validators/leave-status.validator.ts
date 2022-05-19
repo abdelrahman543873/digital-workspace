@@ -25,12 +25,18 @@ export class LeaveStatusValidator implements ValidatorConstraintInterface {
     const department = await this.departmentRepository.findOne({
       _id: currentUser.department,
     });
-    if (department.name === 'HR' && status === LEAVE_STATUS.MANAGER_APPROVED) {
+    if (
+      department.name === 'Human Resources' &&
+      status === LEAVE_STATUS.MANAGER_APPROVED
+    ) {
       this.error =
         'this status is only allowed for the manager of this employee';
       return false;
     }
-    if (department.name !== 'HR' && status === LEAVE_STATUS.APPROVED) {
+    if (
+      department.name !== 'Human Resources' &&
+      status === LEAVE_STATUS.APPROVED
+    ) {
       this.error =
         'this status is only allowed for the human resources department';
       return false;
