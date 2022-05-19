@@ -133,6 +133,20 @@ export class LeaveRepository extends BaseRepository<Leave> {
       { $unwind: '$employee' },
       {
         $lookup: {
+          from: LookupSchemasEnum.departments,
+          localField: 'employee.department',
+          foreignField: '_id',
+          as: 'employee.department',
+        },
+      },
+      {
+        $unwind: {
+          path: '$employee.department',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
           from: LookupSchemasEnum.users,
           localField: 'replacement',
           foreignField: '_id',
