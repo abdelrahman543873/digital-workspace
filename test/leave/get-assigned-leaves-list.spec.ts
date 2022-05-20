@@ -14,6 +14,7 @@ describe('get assigned leaves list case', () => {
       url: ASSIGNED_LEAVES_LIST,
       token: manager.token,
     });
+    expect(res.body.docs[0].employee.department).toHaveProperty('_id');
     expect(res.body.docs[0].comment).toBe(leave.comment);
     expect(res.body.docs[0].type).toHaveProperty('_id');
     expect(res.body.docs[0].employee).toHaveProperty('_id');
