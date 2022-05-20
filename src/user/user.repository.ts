@@ -596,7 +596,9 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   getUserByEmail(email) {
-    return this.userSchema.findOne({ email }, {}, { lean: true });
+    return this.userSchema
+      .findOne({ email }, {}, { lean: true })
+      .populate('department');
   }
 
   getUserSubordinates(_id: ObjectId) {
@@ -609,5 +611,13 @@ export class UserRepository extends BaseRepository<User> {
 
   incrementUserLeave(_id: ObjectId): QueryWithHelpers<any, any> {
     return this.userSchema.updateOne({ _id }, { $inc: { leaveBalance: +1 } });
+  }
+
+  updateAndGetUser(email: string, microsoftToken: string) {
+    return this.userSchema.findOneAndUpdate(
+      { email: email.toLowerCase() },
+      { microsoftToken },
+      { new: true, populate: 'department' },
+    );
   }
 }
