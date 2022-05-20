@@ -7,3 +7,4 @@ export const ASSIGNED_LEAVES_LIST = '/leave/assigned-list';
 export const CANCEL_LEAVE = '/leave/cancel';
 export const REJECTION_REASON = '/leave/rejection-reason';
 export const REJECTION_REASONS_LIST = '/leave/rejection-reasons/list';
+export const LEAVES_HR_LIST = '/leave/hr/list';

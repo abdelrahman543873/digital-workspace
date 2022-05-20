@@ -61,6 +61,10 @@ export class LeaveService {
     );
   }
 
+  getHrLeavesList(input: GetLeavesListInput) {
+    return this.leaveRepository.getHrLeavesList(input);
+  }
+
   async getAssignedLeavesList(input: GetLeavesAssignedListInput) {
     const managedEmployees: User[] =
       await this.userRepository.getUserSubordinates(

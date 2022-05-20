@@ -167,6 +167,67 @@ export class LeaveRepository extends BaseRepository<Leave> {
     });
   }
 
+  getHrLeavesList(input: GetLeavesAssignedListInput) {
+    const aggregation = this.leaveSchema.aggregate([
+      {
+        $match: {
+          ...(input.status && { status: input.status }),
+        },
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.leaveTypes,
+          localField: 'type',
+          foreignField: '_id',
+          as: 'type',
+        },
+      },
+      { $unwind: '$type' },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          localField: 'employee',
+          foreignField: '_id',
+          as: 'employee',
+        },
+      },
+      { $unwind: '$employee' },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.departments,
+          localField: 'employee.department',
+          foreignField: '_id',
+          as: 'employee.department',
+        },
+      },
+      {
+        $unwind: {
+          path: '$employee.department',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.users,
+          localField: 'replacement',
+          foreignField: '_id',
+          as: 'replacement',
+        },
+      },
+      {
+        $unwind: {
+          path: '$replacement',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
+    return this.leaveSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
+    });
+  }
+
   manageLeave(input: ManageLeaveInput) {
     return this.leaveSchema.findOneAndUpdate(
       { _id: input.id },

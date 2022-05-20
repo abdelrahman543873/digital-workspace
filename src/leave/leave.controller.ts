@@ -73,6 +73,12 @@ export class LeaveController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('hr/list')
+  async getHrLeavesList(@Query() input: GetLeavesListInput) {
+    return await this.leaveService.getHrLeavesList(input);
+  }
+
+  @UseGuards(AuthGuard)
   @Get('assigned-list')
   async getAssignedLeavesList(@Query() input: GetLeavesAssignedListInput) {
     return await this.leaveService.getAssignedLeavesList(input);
