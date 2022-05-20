@@ -133,7 +133,7 @@ describe('manage leave case', () => {
   });
 
   it('should manage leave as an HR employee', async () => {
-    const department = await departmentFactory({ name: 'HR' });
+    const department = await departmentFactory({ name: 'Human Resources' });
     const HR = await userFactory({ department: department._id });
     const employee = await userFactory({ directManagerId: HR._id });
     const leaveBalanceBeforeApproval = employee.leaveBalance;
@@ -188,7 +188,7 @@ describe('manage leave case', () => {
   });
 
   it('should throw error when manager approval is from HR', async () => {
-    const department = await departmentFactory({ name: 'HR' });
+    const department = await departmentFactory({ name: 'Human Resources' });
     const HR = await userFactory({ department: department._id });
     const leave = await leaveFactory();
     const res = await testRequest({
