@@ -308,6 +308,7 @@ export class UserRepository extends BaseRepository<User> {
         ...(files?.profilePic && {
           profilePic: `${process.env.HOST}${files.profilePic[0].filename}`,
         }),
+        ...(input.newPassword && { password: hashPassSync(input.newPassword) }),
       },
       { new: true },
     );
