@@ -11,7 +11,7 @@ import { leaveTypeFactory } from './leave-type.factory';
 import { leaveCriteriaRepo } from '../test-repos/leave-criteria.repo';
 
 interface LeaveCriteriaType {
-  leaveTypeId?: ObjectId;
+  leaveType?: ObjectId;
   accrual?: string;
   startingMonth?: number;
   maximumDays?: number;
@@ -31,7 +31,7 @@ export const buildLeaveCriteriaParams = async (
   obj: LeaveCriteriaType = {},
 ): Promise<LeaveCriteriaType> => {
   return {
-    leaveTypeId: obj.leaveTypeId || (await leaveTypeFactory())._id,
+    leaveType: obj.leaveType || (await leaveTypeFactory())._id,
     accrual:
       obj.accrual || random.arrayElement(getValuesFromEnum(ACCRUAL_ENUM)),
     startingMonth: obj.startingMonth || datatype.number(12),

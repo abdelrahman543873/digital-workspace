@@ -10,7 +10,7 @@ export class LeaveCriteria {
   _id?: ObjectId;
 
   @Prop({ unique: true, type: Types.ObjectId, ref: 'LeaveType' })
-  leaveTypeId: ObjectId;
+  leaveType: ObjectId;
 
   @Prop({ enum: ACCRUAL_ENUM })
   accrual: string;

@@ -124,4 +124,10 @@ export class LeaveService {
   createLeaveCriteria(input: CreateLeaveCriteriaInput) {
     return this.leaveCriteriaRepository.createLeaveCriteria(input);
   }
+
+  getLeaveBalance() {
+    return this.leaveCriteriaRepository.getLeaveBalance(
+      this.request.currentUser,
+    );
+  }
 }

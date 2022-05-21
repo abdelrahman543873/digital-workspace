@@ -8,13 +8,10 @@ import {
   MaxLength,
   IsNumber,
   IsDateString,
-  MinDate,
   IsIn,
   Min,
   IsBoolean,
   Max,
-  MaxDate,
-  IsDate,
 } from 'class-validator';
 import { ObjectId } from 'mongoose';
 import { Transform } from 'class-transformer';
@@ -31,7 +28,7 @@ import { GENDER } from '../../app.const';
 export class CreateLeaveCriteriaInput {
   @IsExistingLeaveType()
   @Transform(mongoIdTransform)
-  leaveTypeId: ObjectId;
+  leaveType: ObjectId;
 
   @IsOptional()
   @IsString()
@@ -47,9 +44,8 @@ export class CreateLeaveCriteriaInput {
   @Max(12)
   startingMonth?: number;
 
-  @IsOptional()
   @IsNumber()
-  maximumDays?: number;
+  maximumDays: number;
 
   @IsOptional()
   @IsDateString()

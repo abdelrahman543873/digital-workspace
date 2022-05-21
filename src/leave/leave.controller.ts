@@ -133,4 +133,10 @@ export class LeaveController {
   async createLeaveCriteria(@Body() input: CreateLeaveCriteriaInput) {
     return await this.leaveService.createLeaveCriteria(input);
   }
+
+  @UseGuards(AuthGuard)
+  @Get('balance')
+  async getLeaveBalance() {
+    return await this.leaveService.getLeaveBalance();
+  }
 }
