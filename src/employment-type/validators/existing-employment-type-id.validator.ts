@@ -4,6 +4,8 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
   ValidationArguments,
+  registerDecorator,
+  ValidationOptions,
 } from 'class-validator';
 
 @Injectable()
@@ -23,4 +25,18 @@ export class ExistingEmploymentTypeId implements ValidatorConstraintInterface {
   defaultMessage(args: ValidationArguments) {
     return `employment type id ${args.value} doesn't exist`;
   }
+}
+
+export function IsExistingEmploymentType(
+  validationOptions?: ValidationOptions,
+) {
+  return function (object, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [],
+      validator: ExistingEmploymentTypeId,
+    });
+  };
 }

@@ -19,6 +19,8 @@ import { GetLeavesListInput } from './inputs/get-leaves-list.input';
 import { GetLeavesAssignedListInput } from './inputs/get-leaves-assigned-list.input';
 import { RejectionReasonRepository } from './repositories/rejection-reason.repository';
 import { AddRejectionReasonInput } from './inputs/add-rejection-reason.input';
+import { LeaveCriteriaRepository } from './repositories/leave-criteria.repository';
+import { CreateLeaveCriteriaInput } from './inputs/create-leave-criteria.input';
 
 @Injectable()
 export class LeaveService {
@@ -28,6 +30,7 @@ export class LeaveService {
     private readonly leaveTypeRepository: LeaveTypeRepository,
     private readonly userRepository: UserRepository,
     private readonly rejectionReasonRepository: RejectionReasonRepository,
+    private readonly leaveCriteriaRepository: LeaveCriteriaRepository,
   ) {}
 
   createLeave(
@@ -116,5 +119,9 @@ export class LeaveService {
 
   getRejectionReasonsList(input: Pagination) {
     return this.rejectionReasonRepository.getRejectionReasonsList(input);
+  }
+
+  createLeaveCriteria(input: CreateLeaveCriteriaInput) {
+    return this.leaveCriteriaRepository.createLeaveCriteria(input);
   }
 }

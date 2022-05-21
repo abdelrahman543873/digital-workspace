@@ -11,16 +11,7 @@ export class LeaveType {
   name: string;
 
   @Prop()
-  accrual: string;
-
-  @Prop()
-  startingMonth: number;
-
-  @Prop()
-  maximumDays: number;
-
-  @Prop({ type: Date })
-  effectiveDate: Date;
+  description: string;
 }
 
 export const LeaveTypeSchema = SchemaFactory.createForClass(LeaveType);

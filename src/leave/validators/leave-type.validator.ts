@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { LeaveTypeRepository } from '../repositories/leave-type.repository';
 import {
+  registerDecorator,
+  ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
@@ -18,4 +20,15 @@ export class LeaveTypeValidator implements ValidatorConstraintInterface {
   defaultMessage() {
     return "this leave type doesn't exist";
   }
+}
+export function IsExistingLeaveType(validationOptions?: ValidationOptions) {
+  return function (object, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [],
+      validator: LeaveTypeValidator,
+    });
+  };
 }

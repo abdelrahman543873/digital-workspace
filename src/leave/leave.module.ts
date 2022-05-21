@@ -21,6 +21,11 @@ import {
   RejectionReasonSchema,
 } from './schema/rejection-reason.schema';
 import { ExistingRejectionReasonConstraint } from './validators/is-existing-rejection-reason.validator';
+import { LeaveCriteriaRepository } from './repositories/leave-criteria.repository';
+import {
+  LeaveCriteria,
+  LeaveCriteriaSchema,
+} from './schema/leave-criteria.schema';
 
 @Module({
   imports: [
@@ -35,6 +40,7 @@ import { ExistingRejectionReasonConstraint } from './validators/is-existing-reje
       { name: Leave.name, schema: LeaveSchema },
       { name: LeaveType.name, schema: LeaveTypeSchema },
       { name: RejectionReason.name, schema: RejectionReasonSchema },
+      { name: LeaveCriteria.name, schema: LeaveCriteriaSchema },
     ]),
     UserModule,
   ],
@@ -50,6 +56,7 @@ import { ExistingRejectionReasonConstraint } from './validators/is-existing-reje
     ExistingLeaveConstraint,
     ValidLeaveCancellationValidator,
     ExistingRejectionReasonConstraint,
+    LeaveCriteriaRepository,
   ],
 })
 export class LeaveModule {}

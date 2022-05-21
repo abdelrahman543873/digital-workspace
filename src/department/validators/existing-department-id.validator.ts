@@ -4,6 +4,8 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
   ValidationArguments,
+  registerDecorator,
+  ValidationOptions,
 } from 'class-validator';
 
 @Injectable()
@@ -22,4 +24,16 @@ export class ExistingDepartmentId implements ValidatorConstraintInterface {
   defaultMessage(args: ValidationArguments) {
     return `department id ${args.value} doesn't exist`;
   }
+}
+
+export function IsExistingDepartment(validationOptions?: ValidationOptions) {
+  return function (object, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [],
+      validator: ExistingDepartmentId,
+    });
+  };
 }

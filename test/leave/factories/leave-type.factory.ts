@@ -1,13 +1,10 @@
-import { name, date, datatype } from 'faker';
+import { name } from 'faker';
 import { LeaveType } from '../../../src/leave/schema/leave-type.schema';
 import { leaveTypeTestRepo } from '../test-repos/leave-type-test-repo';
 
 interface LeavenTypeType {
   name?: string;
-  accrual?: string;
-  startingMonth?: number;
-  maximumDays?: number;
-  effectiveDate?: Date;
+  description?: string;
 }
 
 export const buildLeaveTypeParams = (
@@ -15,10 +12,7 @@ export const buildLeaveTypeParams = (
 ): LeavenTypeType => {
   return {
     name: obj.name || name.title(),
-    accrual: obj.accrual || name.jobTitle(),
-    startingMonth: obj.startingMonth || datatype.number(12),
-    maximumDays: obj.maximumDays || datatype.number(),
-    effectiveDate: obj.effectiveDate || date.future(),
+    description: obj.description || name.jobTitle(),
   };
 };
 
