@@ -26,6 +26,7 @@ import { GetLeavesListInput } from './inputs/get-leaves-list.input';
 import { GetLeavesAssignedListInput } from './inputs/get-leaves-assigned-list.input';
 import { AddRejectionReasonInput } from './inputs/add-rejection-reason.input';
 import { CreateLeaveCriteriaInput } from './inputs/create-leave-criteria.input';
+import { DeleteLeaveCriteriaInput } from './inputs/delete-leave-criteria.input';
 
 @UseGuards(ActiveUserGuard)
 @ApiTags('leave')
@@ -132,6 +133,12 @@ export class LeaveController {
   @Post('criteria')
   async createLeaveCriteria(@Body() input: CreateLeaveCriteriaInput) {
     return await this.leaveService.createLeaveCriteria(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('criteria')
+  async deleteLeaveCriteria(@Body() input: DeleteLeaveCriteriaInput) {
+    return await this.leaveService.deleteLeaveCriteria(input);
   }
 
   @UseGuards(AuthGuard)

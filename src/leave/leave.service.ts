@@ -21,6 +21,7 @@ import { RejectionReasonRepository } from './repositories/rejection-reason.repos
 import { AddRejectionReasonInput } from './inputs/add-rejection-reason.input';
 import { LeaveCriteriaRepository } from './repositories/leave-criteria.repository';
 import { CreateLeaveCriteriaInput } from './inputs/create-leave-criteria.input';
+import { DeleteLeaveCriteriaInput } from './inputs/delete-leave-criteria.input';
 
 @Injectable()
 export class LeaveService {
@@ -123,6 +124,10 @@ export class LeaveService {
 
   createLeaveCriteria(input: CreateLeaveCriteriaInput) {
     return this.leaveCriteriaRepository.createLeaveCriteria(input);
+  }
+
+  deleteLeaveCriteria(input: DeleteLeaveCriteriaInput) {
+    return this.leaveCriteriaRepository.deleteOne({ input });
   }
 
   getLeaveBalance() {

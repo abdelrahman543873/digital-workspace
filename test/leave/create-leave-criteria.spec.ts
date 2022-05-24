@@ -13,6 +13,6 @@ describe('create leave criteria', () => {
       variables: leaveCriteria,
       token: user.token,
     });
-    expect(res.body.leaveTypeId).toBe(leaveCriteria.leaveTypeId.toString());
+    expect(res.body.leaveTypeId).toBe(leaveCriteria.leaveType.toString());
   });
 });
