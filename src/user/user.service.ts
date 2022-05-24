@@ -82,7 +82,7 @@ export class UserService {
   }
 
   getMyProfile() {
-    return this.request.currentUser;
+    return this.userRepo.getUserByEmail(this.request.currentUser.email);
   }
 
   async searchUser(input: SearchUserInput) {

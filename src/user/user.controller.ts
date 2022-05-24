@@ -128,7 +128,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Get('myProfile')
   async getMyProfile() {
-    return this.userService.getMyProfile();
+    return await this.userService.getMyProfile();
   }
 
   @ApiBearerAuth()

@@ -10,6 +10,7 @@ describe('get my profile suite case', () => {
       url: GET_MY_PROFILE,
       token: user.token,
     });
+    expect(res.body.department).toHaveProperty('_id');
     expect(res.body._id.toString()).toBe(user._id.toString());
   });
 });
