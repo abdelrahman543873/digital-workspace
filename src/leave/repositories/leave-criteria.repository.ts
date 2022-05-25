@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { AggregatePaginateModel } from 'mongoose';
 import { CreateLeaveCriteriaInput } from '../inputs/create-leave-criteria.input';
 import { User } from '../../user/schema/user.schema';
+import { UpdateLeaveCriteriaInput } from '../inputs/update-leave-criteria.input';
 
 @Injectable()
 export class LeaveCriteriaRepository extends BaseRepository<LeaveCriteria> {
@@ -20,6 +21,14 @@ export class LeaveCriteriaRepository extends BaseRepository<LeaveCriteria> {
 
   createLeaveCriteria(input: CreateLeaveCriteriaInput) {
     return this.leaveCriteriaSchema.create(input);
+  }
+
+  updateLeaveCriteria(input: UpdateLeaveCriteriaInput) {
+    return this.leaveCriteriaSchema.findOneAndUpdate(
+      { _id: input._id },
+      input,
+      { new: true },
+    );
   }
 
   getLeaveBalance(currentUser: User) {

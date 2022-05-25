@@ -22,6 +22,7 @@ import { AddRejectionReasonInput } from './inputs/add-rejection-reason.input';
 import { LeaveCriteriaRepository } from './repositories/leave-criteria.repository';
 import { CreateLeaveCriteriaInput } from './inputs/create-leave-criteria.input';
 import { DeleteLeaveCriteriaInput } from './inputs/delete-leave-criteria.input';
+import { UpdateLeaveCriteriaInput } from './inputs/update-leave-criteria.input';
 
 @Injectable()
 export class LeaveService {
@@ -124,6 +125,10 @@ export class LeaveService {
 
   createLeaveCriteria(input: CreateLeaveCriteriaInput) {
     return this.leaveCriteriaRepository.createLeaveCriteria(input);
+  }
+
+  updateLeaveCriteria(input: UpdateLeaveCriteriaInput) {
+    return this.leaveCriteriaRepository.updateLeaveCriteria(input);
   }
 
   deleteLeaveCriteria(input: DeleteLeaveCriteriaInput) {
