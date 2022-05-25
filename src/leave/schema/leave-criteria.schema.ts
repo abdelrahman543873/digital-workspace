@@ -9,7 +9,7 @@ export type LeaveCriteriaDocument = LeaveCriteria & Document;
 export class LeaveCriteria {
   _id?: ObjectId;
 
-  @Prop({ unique: true, type: Types.ObjectId, ref: 'LeaveType' })
+  @Prop({ type: Types.ObjectId, ref: 'LeaveType' })
   leaveType: ObjectId;
 
   @Prop({ enum: ACCRUAL_ENUM })

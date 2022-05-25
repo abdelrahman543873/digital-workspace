@@ -1,22 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/generics/repository.abstract';
 import { Leave, LeaveDocument } from '../schema/leave.schema';
-import {
-  AggregatePaginateModel,
-  ObjectId,
-  QueryWithHelpers,
-  UpdateWriteOpResult,
-} from 'mongoose';
+import { AggregatePaginateModel, ObjectId, QueryWithHelpers } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateLeaveInput } from '../inputs/create-leave.input';
-import { UpdateLeaveInput } from '../inputs/update-leave.input';
-import { Pagination } from '../../shared/utils/pagination.input';
 import { ManageLeaveInput } from '../inputs/manage-leave.input';
 import { CancelLeaveInput } from '../inputs/cancel-leave.input';
 import { LEAVE_STATUS } from '../leave.enum';
 import { LookupSchemasEnum } from '../../app.const';
 import { GetLeavesListInput } from '../inputs/get-leaves-list.input';
 import { GetLeavesAssignedListInput } from '../inputs/get-leaves-assigned-list.input';
+import { UpdateLeaveInput } from '../inputs/update-leave.input';
 
 @Injectable()
 export class LeaveRepository extends BaseRepository<Leave> {

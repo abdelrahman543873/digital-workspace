@@ -127,6 +127,10 @@ export class LeaveService {
     return this.leaveCriteriaRepository.createLeaveCriteria(input);
   }
 
+  getLeaveCriteriaList(input: Pagination) {
+    return this.leaveCriteriaRepository.getLeaveCriteriaList(input);
+  }
+
   updateLeaveCriteria(input: UpdateLeaveCriteriaInput) {
     return this.leaveCriteriaRepository.updateLeaveCriteria(input);
   }

@@ -10,3 +10,4 @@ export const REJECTION_REASONS_LIST = '/leave/rejection-reasons/list';
 export const LEAVES_HR_LIST = '/leave/hr/list';
 export const LEAVE_CRITERIA = '/leave/criteria';
 export const LEAVE_BALANCE = '/leave/balance';
+export const LEAVE_CRITERIA_LIST = '/leave/criteria/list';

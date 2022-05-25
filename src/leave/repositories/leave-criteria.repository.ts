@@ -9,6 +9,8 @@ import { AggregatePaginateModel } from 'mongoose';
 import { CreateLeaveCriteriaInput } from '../inputs/create-leave-criteria.input';
 import { User } from '../../user/schema/user.schema';
 import { UpdateLeaveCriteriaInput } from '../inputs/update-leave-criteria.input';
+import { Pagination } from '../../shared/utils/pagination.input';
+import { LookupSchemasEnum } from '../../app.const';
 
 @Injectable()
 export class LeaveCriteriaRepository extends BaseRepository<LeaveCriteria> {
@@ -21,6 +23,33 @@ export class LeaveCriteriaRepository extends BaseRepository<LeaveCriteria> {
 
   createLeaveCriteria(input: CreateLeaveCriteriaInput) {
     return this.leaveCriteriaSchema.create(input);
+  }
+
+  getLeaveCriteriaList(input: Pagination) {
+    const aggregation = this.leaveCriteriaSchema.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.leaveTypes,
+          as: 'leaveType',
+          foreignField: '_id',
+          localField: 'leaveType',
+        },
+      },
+      {
+        $unwind: {
+          path: '$leaveType',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
+    return this.leaveCriteriaSchema.aggregatePaginate(aggregation, {
+      offset: input.offset * input.limit,
+      limit: input.limit,
+    });
   }
 
   updateLeaveCriteria(input: UpdateLeaveCriteriaInput) {
