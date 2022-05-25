@@ -53,11 +53,9 @@ export class LeaveCriteriaRepository extends BaseRepository<LeaveCriteria> {
   }
 
   updateLeaveCriteria(input: UpdateLeaveCriteriaInput) {
-    return this.leaveCriteriaSchema.findOneAndUpdate(
-      { _id: input._id },
-      input,
-      { new: true },
-    );
+    return this.leaveCriteriaSchema
+      .findOneAndUpdate({ _id: input._id }, input, { new: true })
+      .populate('leaveType');
   }
 
   getLeaveBalance(currentUser: User) {
