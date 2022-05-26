@@ -19,12 +19,12 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateLeaveInput {
   @ApiProperty()
   @IsDateString()
-  @Validate(LeaveBalanceValidator)
+  // @Validate(LeaveBalanceValidator)
   startDate: string;
 
   @ApiProperty()
   @IsDateString()
-  @Validate(LeaveBalanceValidator)
+  // @Validate(LeaveBalanceValidator)
   endDate: string;
 
   @ApiProperty()
