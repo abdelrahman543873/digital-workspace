@@ -19,10 +19,11 @@ export class LeaveBalanceValidator implements ValidatorConstraintInterface {
     const diffTime = Math.ceil(
       Math.abs(endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
     );
-    if (currentUser.leaveBalance < diffTime) {
-      this.error = "You don't have enough balance to complete this request";
-      return false;
-    } else if (startDate >= endDate) {
+    // if (currentUser.leaveBalance < diffTime) {
+    //   this.error = "You don't have enough balance to complete this request";
+    //   return false;
+    // } else
+    if (startDate >= endDate) {
       this.error = "start date can't be bigger than or equal to end date";
       return false;
     }
