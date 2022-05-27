@@ -18,7 +18,7 @@ export const mongoIdArrayTransform = (params: TransformFnParams) => {
         ? JSON.parse(params.value)
         : params.value;
     const convertedArray = [];
-    if (!isArray(array) || !array.length)
+    if (!isArray(array))
       throw new BadRequestException(
         `value of ${params.key} should be an array with mongoIds`,
       );
