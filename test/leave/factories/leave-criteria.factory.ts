@@ -37,17 +37,17 @@ export const buildLeaveCriteriaParams = async (
     startingMonth: obj.startingMonth || datatype.number(12),
     maximumDays: obj.maximumDays || datatype.number(),
     effectiveDate: obj.effectiveDate || date.future(),
-    countries: obj.countries || [(await countryFactory())._id],
-    departments: obj.departments || [(await departmentFactory())._id],
-    employmentTypes: obj.employmentTypes || [
+    countries: obj.countries ?? [(await countryFactory())._id],
+    departments: obj.departments ?? [(await departmentFactory())._id],
+    employmentTypes: obj.employmentTypes ?? [
       (await EmploymentTypeFactory())._id,
     ],
-    gender: obj.gender || random.arrayElement(GENDER),
-    isCarriedOver: obj.isCarriedOver || null,
-    isHolidaysIncluded: obj.isHolidaysIncluded || null,
-    isContinuousAllowed: obj.isContinuousAllowed || null,
-    isNegativeBalanceAllowed: obj.isNegativeBalanceAllowed || null,
-    isAttachmentAllowed: obj.isAttachmentAllowed || null,
+    gender: obj.gender ?? random.arrayElement(GENDER),
+    isCarriedOver: obj.isCarriedOver ?? null,
+    isHolidaysIncluded: obj.isHolidaysIncluded ?? null,
+    isContinuousAllowed: obj.isContinuousAllowed ?? null,
+    isNegativeBalanceAllowed: obj.isNegativeBalanceAllowed ?? null,
+    isAttachmentAllowed: obj.isAttachmentAllowed ?? null,
   };
 };
 

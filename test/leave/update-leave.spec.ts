@@ -6,7 +6,7 @@ import { LEAVE } from '../endpoints/leave.endpoints';
 describe('update leave case', () => {
   it('should update leave', async () => {
     const leave = await leaveFactory();
-    const user = await userFactory({ leaveBalance: 1000 });
+    const user = await userFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: LEAVE,
@@ -21,7 +21,7 @@ describe('update leave case', () => {
 
   it("shouldn't update leave if start date and end date are equal", async () => {
     const leave = await leaveFactory();
-    const user = await userFactory({ leaveBalance: 1000 });
+    const user = await userFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: LEAVE,

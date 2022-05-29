@@ -56,7 +56,7 @@ module.exports = async (): Promise<void> => {
     }),
   );
   app.useGlobalFilters(
-    new GlobalExceptionFilter(),
+    // new GlobalExceptionFilter(),
     new BaseHttpExceptionFilter(),
     new MongooseExceptionFilter(),
   );

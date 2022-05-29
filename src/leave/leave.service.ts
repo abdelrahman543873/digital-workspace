@@ -23,6 +23,7 @@ import { LeaveCriteriaRepository } from './repositories/leave-criteria.repositor
 import { CreateLeaveCriteriaInput } from './inputs/create-leave-criteria.input';
 import { DeleteLeaveCriteriaInput } from './inputs/delete-leave-criteria.input';
 import { UpdateLeaveCriteriaInput } from './inputs/update-leave-criteria.input';
+import { LeaveUserRepository } from './repositories/leave-user.repository';
 
 @Injectable()
 export class LeaveService {
@@ -33,6 +34,7 @@ export class LeaveService {
     private readonly userRepository: UserRepository,
     private readonly rejectionReasonRepository: RejectionReasonRepository,
     private readonly leaveCriteriaRepository: LeaveCriteriaRepository,
+    private readonly leaveUserRepository: LeaveUserRepository,
   ) {}
 
   createLeave(
@@ -54,8 +56,17 @@ export class LeaveService {
 
   async manageLeave(input: ManageLeaveInput) {
     const leave = await this.leaveRepository.findOne({ _id: input.id });
-    if (input.status === LEAVE_STATUS.APPROVED)
-      await this.userRepository.decrementUserLeave(leave.employee);
+    if (input.status === LEAVE_STATUS.APPROVED) {
+      await this.leaveUserRepository.addUserLeave({
+        user: leave.employee,
+        leaveType: leave.type,
+        // getting the number of days requested for the vacation
+        numberOfDays: Math.ceil(
+          (leave.endDate.getTime() - leave.startDate.getTime()) /
+            (1000 * 3600 * 24),
+        ),
+      });
+    }
     return await this.leaveRepository.manageLeave(input);
   }
 
@@ -105,13 +116,11 @@ export class LeaveService {
   async cancelLeave(input: CancelLeaveInput) {
     const leave = await this.leaveRepository.findOne({ _id: input.id });
     const updatedLeave = await this.leaveRepository.cancelLeave(input);
-    if (
-      leave.status === LEAVE_STATUS.MANAGER_APPROVED ||
-      leave.status === LEAVE_STATUS.APPROVED
-    )
-      await this.userRepository.incrementUserLeave(
-        this.request.currentUser._id,
-      );
+    if (leave.status === LEAVE_STATUS.APPROVED)
+      await this.leaveUserRepository.removeLatestUserLeave({
+        user: leave.employee,
+        leaveType: leave.type,
+      });
     return updatedLeave;
   }
 

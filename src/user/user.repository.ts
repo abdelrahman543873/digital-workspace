@@ -606,14 +606,6 @@ export class UserRepository extends BaseRepository<User> {
     return this.userSchema.find({ directManagerId: _id });
   }
 
-  decrementUserLeave(_id: ObjectId): QueryWithHelpers<any, any> {
-    return this.userSchema.updateOne({ _id }, { $inc: { leaveBalance: -1 } });
-  }
-
-  incrementUserLeave(_id: ObjectId): QueryWithHelpers<any, any> {
-    return this.userSchema.updateOne({ _id }, { $inc: { leaveBalance: +1 } });
-  }
-
   updateAndGetUser(email: string, microsoftToken: string) {
     return this.userSchema.findOneAndUpdate(
       { email: email.toLowerCase() },

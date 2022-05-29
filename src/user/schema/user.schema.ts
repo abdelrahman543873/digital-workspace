@@ -167,8 +167,6 @@ export class User {
   isAdmin?: boolean;
 
   @Prop()
-  leaveBalance?: number;
-
   @Prop()
   emergencyContactNumber?: string;
 

@@ -54,7 +54,6 @@ export interface UserType {
   twitter?: string;
   linkedin?: string;
   microsoftToken?: string;
-  leaveBalance?: number;
   country?: ObjectId;
   level?: ObjectId;
   department?: ObjectId;
@@ -125,7 +124,6 @@ export const buildUserParams = async (
     linkedin: obj.linkedin || internet.url(),
     twitter: obj.twitter || internet.url(),
     microsoftToken: obj.microsoftToken || '',
-    leaveBalance: obj.leaveBalance || datatype.number(25),
     country: obj.country || (await countryFactory())._id,
     level: obj.level || (await levelFactory())._id,
     department: obj.department || (await departmentFactory())._id,

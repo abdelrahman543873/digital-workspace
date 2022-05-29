@@ -20,6 +20,7 @@ import { LeaveTypeRepository } from '../src/leave/repositories/leave-type.reposi
 import { RoleRepository } from '../src/role/role.repository';
 import { RejectionReasonRepository } from '../src/leave/repositories/rejection-reason.repository';
 import { LeaveCriteriaRepository } from '../src/leave/repositories/leave-criteria.repository';
+import { LeaveUserRepository } from '../src/leave/repositories/leave-user.repository';
 
 class MongoEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -63,6 +64,8 @@ class MongoEnvironment extends NodeEnvironment {
     this.global.leaveCriteriaRepository = app.get<LeaveCriteriaRepository>(
       LeaveCriteriaRepository,
     );
+    this.global.leaveUserRepository =
+      app.get<LeaveUserRepository>(LeaveUserRepository);
   }
 
   async teardown() {
