@@ -59,38 +59,85 @@ export class LeaveCriteriaRepository extends BaseRepository<LeaveCriteria> {
   }
 
   getLeaveBalance(currentUser: User) {
-    return this.leaveCriteriaSchema
-      .find({
-        $and: [
-          {
-            $or: [
-              {
-                departments: { $in: [currentUser.department] },
+    return this.leaveCriteriaSchema.aggregate([
+      // matching the criteria of the user stage
+      {
+        $match: {
+          $or: [
+            {
+              departments: { $in: [currentUser.department] },
+            },
+            { departments: [] },
+            {
+              countries: { $in: [currentUser.country] },
+            },
+            { countries: [] },
+            {
+              employmentTypes: { $in: [currentUser.employmentType] },
+            },
+            { employmentTypes: [] },
+          ],
+          gender: currentUser.gender,
+        },
+      },
+      // calculating the number of days taken for by the user per leave type
+      {
+        $lookup: {
+          from: LookupSchemasEnum.leaveUsers,
+          as: 'acquiredLeaveDays',
+          let: { leaveType: '$leaveType' },
+          pipeline: [
+            {
+              $match: {
+                user: currentUser._id,
+                $expr: {
+                  $eq: ['$$leaveType', '$leaveType'],
+                },
               },
-              { departments: [] },
-            ],
-          },
-          {
-            $or: [
-              {
-                countries: { $in: [currentUser.country] },
+            },
+            {
+              $group: {
+                _id: null,
+                totalAcquiredDays: { $sum: '$numberOfDays' },
               },
-              { countries: [] },
-            ],
-          },
-          {
-            $or: [
-              {
-                employmentTypes: { $in: [currentUser.employmentType] },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.leaveTypes,
+          localField: 'leaveType',
+          foreignField: '_id',
+          as: 'leaveType',
+        },
+      },
+      { $unwind: '$leaveType' },
+      // subtracting the number of user days from the max number of allowed days
+      // for each leave type
+      {
+        $addFields: {
+          acquiredLeaveDays: {
+            $cond: {
+              if: { $gte: [{ $size: '$acquiredLeaveDays' }, 1] },
+              then: {
+                $arrayElemAt: ['$acquiredLeaveDays', 0],
               },
-              { employmentTypes: [] },
-            ],
+              else: 0,
+            },
           },
-          {
-            gender: currentUser.gender,
+        },
+      },
+      {
+        $addFields: {
+          maximumDays: {
+            $subtract: ['$maximumDays', '$acquiredLeaveDays.totalAcquiredDays'],
           },
-        ],
-      })
-      .populate('leaveType');
+        },
+      },
+      {
+        $project: { acquiredLeaveDays: 0 },
+      },
+    ]);
   }
 }
