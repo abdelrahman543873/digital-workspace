@@ -30,16 +30,10 @@ export class ValidLeaveCancellationValidator
     if (!leave) {
       this.error = "this leave request doesn't exist";
       return false;
-    }
-    if (
-      leave.status !== LEAVE_STATUS.PENDING &&
-      leave.status !== LEAVE_STATUS.MANAGER_APPROVED
+    } else if (
+      leave.status === LEAVE_STATUS.APPROVED &&
+      leave.startDate < new Date()
     ) {
-      if (
-        leave.status === LEAVE_STATUS.APPROVED &&
-        leave.startDate > new Date()
-      )
-        return true;
       this.error = "you can't cancel this leave request now";
       return false;
     }

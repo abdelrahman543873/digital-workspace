@@ -1,6 +1,7 @@
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   Allow,
+  IsDate,
   IsDateString,
   IsDefined,
   IsNotEmpty,
@@ -11,27 +12,36 @@ import {
 } from 'class-validator';
 import { MinLength } from 'class-validator';
 import { LeaveBalanceValidator } from '../validators/leave-balance.validator';
-import { LeaveTypeValidator } from '../validators/leave-type.validator';
+import {
+  IsExistingLeaveType,
+  LeaveTypeValidator,
+} from '../validators/leave-type.validator';
 import { mongoIdTransform } from '../../shared/utils/mongo-id.transform';
 import { User } from '../../user/schema/user.schema';
 import { ApiProperty } from '@nestjs/swagger';
+import { ObjectId } from 'mongoose';
+import { IsUserFittingCriteria } from '../validators/is-user-fitting-criteria.validator';
 
 export class CreateLeaveInput {
   @ApiProperty()
-  @IsDateString()
+  @IsDate()
   @Validate(LeaveBalanceValidator)
-  startDate: string;
+  @Type(() => Date)
+  startDate: Date;
 
   @ApiProperty()
-  @IsDateString()
+  @IsDate()
   @Validate(LeaveBalanceValidator)
-  endDate: string;
+  @Type(() => Date)
+  endDate: Date;
 
   @ApiProperty()
   @IsDefined()
-  @Validate(LeaveTypeValidator)
+  @IsUserFittingCriteria()
+  @IsExistingLeaveType()
   @Transform(mongoIdTransform)
-  type: string;
+  @ApiProperty({ type: 'string' })
+  type: ObjectId;
 
   @IsOptional()
   @IsString()
