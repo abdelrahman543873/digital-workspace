@@ -25,10 +25,10 @@ describe('should get leave balance', () => {
       url: LEAVE_BALANCE,
       token: user.token,
     });
-    expect(res.body[0].maximumDays).toBe(
+    expect(res.body[0].remainingBalance).toBe(
       leaveCriteria.maximumDays - userLeaveRequest.numberOfDays,
     );
-    expect(res.body[0].maximumDays).toBeGreaterThanOrEqual(0);
+    expect(res.body[0].remainingBalance).toBeGreaterThanOrEqual(0);
     expect(res.body.length).toBe(1);
     expect(res.body[0].startingMonth).toBe(leaveCriteria.startingMonth);
     expect(res.body[0].leaveType).toHaveProperty('_id');

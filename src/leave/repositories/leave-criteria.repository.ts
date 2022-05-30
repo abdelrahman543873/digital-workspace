@@ -130,7 +130,7 @@ export class LeaveCriteriaRepository extends BaseRepository<LeaveCriteria> {
       },
       {
         $addFields: {
-          maximumDays: {
+          remainingBalance: {
             $subtract: ['$maximumDays', '$acquiredLeaveDays.totalAcquiredDays'],
           },
         },
