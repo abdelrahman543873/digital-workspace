@@ -86,6 +86,20 @@ export class LeaveRepository extends BaseRepository<Leave> {
           preserveNullAndEmptyArrays: true,
         },
       },
+      {
+        $lookup: {
+          from: LookupSchemasEnum.rejectionReasons,
+          foreignField: '_id',
+          localField: 'rejectionReason',
+          as: 'rejectionReason',
+        },
+      },
+      {
+        $unwind: {
+          path: '$rejectionReason',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       { $sort: { createdAt: -1 } },
     ]);
     return this.leaveSchema.aggregatePaginate(aggregation, {

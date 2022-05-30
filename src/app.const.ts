@@ -36,6 +36,8 @@ export enum LookupSchemasEnum {
   titles = 'titles',
   teams = 'teams',
   roles = 'roles',
+  leaveUsers = 'leaveusers',
+  rejectionReasons = 'rejectionreasons',
 }
 
 export const PRIORITIES = ['low', 'medium', 'high'];
