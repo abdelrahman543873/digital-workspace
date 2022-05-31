@@ -5,7 +5,7 @@ import {
 } from '../schema/leave-criteria.schema';
 import { BaseRepository } from '../../shared/generics/repository.abstract';
 import { InjectModel } from '@nestjs/mongoose';
-import { AggregatePaginateModel } from 'mongoose';
+import { AggregatePaginateModel, ObjectId, Types } from 'mongoose';
 import { CreateLeaveCriteriaInput } from '../inputs/create-leave-criteria.input';
 import { User } from '../../user/schema/user.schema';
 import { UpdateLeaveCriteriaInput } from '../inputs/update-leave-criteria.input';
@@ -58,26 +58,49 @@ export class LeaveCriteriaRepository extends BaseRepository<LeaveCriteria> {
       .populate('leaveType');
   }
 
-  getLeaveBalance(currentUser: User) {
+  getLeaveBalance(currentUser) {
     return this.leaveCriteriaSchema.aggregate([
       // matching the criteria of the user stage
       {
         $match: {
-          $or: [
+          $and: [
             {
-              departments: { $in: [currentUser.department] },
+              $or: [
+                {
+                  departments: {
+                    $in: [new Types.ObjectId(currentUser.department)],
+                  },
+                },
+                { departments: [] },
+              ],
             },
-            { departments: [] },
             {
-              countries: { $in: [currentUser.country] },
+              $or: [
+                {
+                  countries: { $in: [new Types.ObjectId(currentUser.country)] },
+                },
+                { countries: [] },
+              ],
             },
-            { countries: [] },
             {
-              employmentTypes: { $in: [currentUser.employmentType] },
+              $or: [
+                {
+                  employmentTypes: {
+                    $in: [new Types.ObjectId(currentUser.employmentType)],
+                  },
+                },
+                { employmentTypes: [] },
+              ],
             },
-            { employmentTypes: [] },
+            {
+              $or: [
+                {
+                  gender: { $exists: false },
+                },
+                { gender: currentUser.gender },
+              ],
+            },
           ],
-          gender: currentUser.gender,
         },
       },
       // calculating the number of days taken for by the user per leave type
@@ -137,6 +160,55 @@ export class LeaveCriteriaRepository extends BaseRepository<LeaveCriteria> {
       },
       {
         $project: { acquiredLeaveDays: 0 },
+      },
+    ]);
+  }
+
+  getFittingCriteria(currentUser, leaveType: ObjectId) {
+    return this.leaveCriteriaSchema.aggregate([
+      // matching the criteria of the user stage
+      {
+        $match: {
+          leaveType,
+          $and: [
+            {
+              $or: [
+                {
+                  departments: {
+                    $in: [new Types.ObjectId(currentUser.department)],
+                  },
+                },
+                { departments: [] },
+              ],
+            },
+            {
+              $or: [
+                {
+                  countries: { $in: [new Types.ObjectId(currentUser.country)] },
+                },
+                { countries: [] },
+              ],
+            },
+            {
+              $or: [
+                {
+                  employmentTypes: {
+                    $in: [new Types.ObjectId(currentUser.employmentType)],
+                  },
+                },
+                { employmentTypes: [] },
+              ],
+            },
+            {
+              $or: [
+                {
+                  gender: { $exists: false },
+                },
+                { gender: currentUser.gender },
+              ],
+            },
+          ],
+        },
       },
     ]);
   }

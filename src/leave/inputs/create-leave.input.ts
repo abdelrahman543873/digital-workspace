@@ -12,10 +12,7 @@ import {
 } from 'class-validator';
 import { MinLength } from 'class-validator';
 import { LeaveBalanceValidator } from '../validators/leave-balance.validator';
-import {
-  IsExistingLeaveType,
-  LeaveTypeValidator,
-} from '../validators/leave-type.validator';
+import { IsExistingLeaveType } from '../validators/leave-type.validator';
 import { mongoIdTransform } from '../../shared/utils/mongo-id.transform';
 import { User } from '../../user/schema/user.schema';
 import { ApiProperty } from '@nestjs/swagger';
