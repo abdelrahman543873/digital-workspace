@@ -237,13 +237,9 @@ export class LeaveRepository extends BaseRepository<Leave> {
   }
 
   manageLeave(input: ManageLeaveInput) {
-    return this.leaveSchema.findOneAndUpdate(
-      { _id: input.id },
-      {
-        status: input.status,
-      },
-      { new: true },
-    );
+    return this.leaveSchema.findOneAndUpdate({ _id: input.id }, input, {
+      new: true,
+    });
   }
 
   cancelLeave(input: CancelLeaveInput): QueryWithHelpers<any, Leave> {
