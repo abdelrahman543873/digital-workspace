@@ -30,7 +30,7 @@ export class UpdateUserInput extends PartialType(
   @IsString()
   @MinLength(8)
   @MaxLength(256)
-  @Validate(CorrectPassValidator)
+  // @Validate(CorrectPassValidator)
   password?: string;
 
   @IsOptional()

@@ -4,14 +4,24 @@ import { userFactory } from '../../src/user/user.factory';
 import { CANCEL_LEAVE } from '../endpoints/leave.endpoints';
 import { leaveFactory } from './factories/leave.factory';
 import { LEAVE_STATUS } from '../../src/leave/leave.enum';
-import { UserRepo } from '../user/user-test-repo';
 import { date } from 'faker';
+import { leaveUserFactory } from './factories/leave-user.factory';
+import { leaveUserTestRepo } from './test-repos/leave-user-test-repo';
 describe('cancel leave case', () => {
-  it('should cancel leave and return the subtracted days to the balance if the user has manager approved request', async () => {
+  it('should cancel leave and delete last approved leave request from leave user model with the same leave type', async () => {
     const user = await userFactory();
     const leave = await leaveFactory({
       employee: user._id,
-      status: LEAVE_STATUS.MANAGER_APPROVED,
+      status: LEAVE_STATUS.APPROVED,
+      startDate: date.future(),
+    });
+    const oldUserLeaveRequest = await leaveUserFactory({
+      user: user._id,
+      leaveType: leave.type,
+    });
+    const lastUserLeaveRequest = await leaveUserFactory({
+      user: user._id,
+      leaveType: leave.type,
     });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
@@ -21,11 +31,13 @@ describe('cancel leave case', () => {
       },
       token: user.token,
     });
-    const leaveBalanceAfterCancellation = (
-      await UserRepo().findOne({ _id: user._id })
-    ).leaveBalance;
+    expect(
+      await leaveUserTestRepo().findOne({ _id: oldUserLeaveRequest._id }),
+    ).toBeTruthy();
+    expect(
+      await leaveUserTestRepo().findOne({ _id: lastUserLeaveRequest._id }),
+    ).toBeFalsy();
     expect(res.body._id).toBe(leave._id.toString());
-    expect(user.leaveBalance).toBeLessThan(leaveBalanceAfterCancellation);
   });
 
   it('should cancel leave if approved but not effective yet', async () => {
@@ -43,11 +55,7 @@ describe('cancel leave case', () => {
       },
       token: user.token,
     });
-    const leaveBalanceAfterCancellation = (
-      await UserRepo().findOne({ _id: user._id })
-    ).leaveBalance;
     expect(res.body._id).toBe(leave._id.toString());
-    expect(user.leaveBalance).toBeLessThan(leaveBalanceAfterCancellation);
   });
 
   it("shouldn't cancel leave if approved and effective", async () => {
@@ -65,5 +73,6 @@ describe('cancel leave case', () => {
       token: user.token,
     });
     expect(res.body.statusCode).toBe(400);
+    expect(res.body.message.length).toBe(1);
   });
 });

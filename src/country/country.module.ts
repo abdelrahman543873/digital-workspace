@@ -7,6 +7,7 @@ import { Country, CountrySchema } from './schema/country.schema';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { filename } from '../shared/utils/multer-file-name';
+import { ExistingCountryConstraint } from './validators/isExistingCountry.validator';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { filename } from '../shared/utils/multer-file-name';
     MongooseModule.forFeature([{ name: Country.name, schema: CountrySchema }]),
   ],
   controllers: [CountryController],
-  providers: [CountryService, CountryRepository],
+  providers: [CountryService, CountryRepository, ExistingCountryConstraint],
 })
 export class CountryModule {}

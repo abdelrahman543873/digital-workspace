@@ -43,14 +43,14 @@ export class IsDirectManagerOrHRConstraint
       .populate('department');
     if (
       `${leave.employee['directManagerId']}` !== `${currentUser._id}` &&
-      currentUser.department['name'] !== 'HR'
+      currentUser.department['name'] !== 'Human Resources'
     )
       return false;
     return true;
   }
 
   defaultMessage() {
-    return 'only the direct manager of the employee or HR department is allowed for this action';
+    return 'only the direct manager of the employee or Human Resources department is allowed for this action';
   }
 }
 

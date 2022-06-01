@@ -82,7 +82,7 @@ export class UserService {
   }
 
   getMyProfile() {
-    return this.request.currentUser;
+    return this.userRepo.getUserByEmail(this.request.currentUser.email);
   }
 
   async searchUser(input: SearchUserInput) {
@@ -180,9 +180,9 @@ export class UserService {
       createdUser.token = this.jwtService.sign({ _id: user._id });
       return createdUser;
     } else {
-      await this.userRepo.updateOne(
-        { email: token.account.username },
-        { microsoftToken: token.accessToken },
+      await this.userRepo.updateAndGetUser(
+        token.account.username,
+        token.accessToken,
       );
       user.token = this.jwtService.sign({ _id: user._id });
       return user;

@@ -14,7 +14,7 @@ import { FileCloudUploadInterceptor } from '../shared/interceptors/file-cloud-up
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { RequestInBodyInterceptor } from '../shared/interceptors/request-in-body.interceptor';
 import { CreateLeaveTypeInput } from './inputs/create-leave-type.input';
-import { Get, Query, Delete, Put } from '@nestjs/common';
+import { Get, Query, Delete, Put, Param } from '@nestjs/common';
 import { Pagination } from '../shared/utils/pagination.input';
 import { DeleteLeaveTypeInput } from './inputs/delete-levae-type.input';
 import { UpdateLeaveTypeInput } from './inputs/update-leave-type.input';
@@ -25,6 +25,9 @@ import { CancelLeaveInput } from './inputs/cancel-leave.input';
 import { GetLeavesListInput } from './inputs/get-leaves-list.input';
 import { GetLeavesAssignedListInput } from './inputs/get-leaves-assigned-list.input';
 import { AddRejectionReasonInput } from './inputs/add-rejection-reason.input';
+import { CreateLeaveCriteriaInput } from './inputs/create-leave-criteria.input';
+import { DeleteLeaveCriteriaInput } from './inputs/delete-leave-criteria.input';
+import { UpdateLeaveCriteriaInput } from './inputs/update-leave-criteria.input';
 
 @UseGuards(ActiveUserGuard)
 @ApiTags('leave')
@@ -70,6 +73,12 @@ export class LeaveController {
   @Get('list')
   async getLeavesList(@Query() input: GetLeavesListInput) {
     return await this.leaveService.getLeavesList(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('hr/list')
+  async getHrLeavesList(@Query() input: GetLeavesListInput) {
+    return await this.leaveService.getHrLeavesList(input);
   }
 
   @UseGuards(AuthGuard)
@@ -119,5 +128,35 @@ export class LeaveController {
   @Get('rejection-reasons/list')
   async getRejectionReasonsList(@Query() input: Pagination) {
     return await this.leaveService.getRejectionReasonsList(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('criteria')
+  async createLeaveCriteria(@Body() input: CreateLeaveCriteriaInput) {
+    return await this.leaveService.createLeaveCriteria(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('criteria/list')
+  async getLeaveCriteriaList(@Param() input: Pagination) {
+    return await this.leaveService.getLeaveCriteriaList(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put('criteria')
+  async updateLeaveCriteria(@Body() input: UpdateLeaveCriteriaInput) {
+    return await this.leaveService.updateLeaveCriteria(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('criteria')
+  async deleteLeaveCriteria(@Body() input: DeleteLeaveCriteriaInput) {
+    return await this.leaveService.deleteLeaveCriteria(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('balance')
+  async getLeaveBalance() {
+    return await this.leaveService.getLeaveBalance();
   }
 }

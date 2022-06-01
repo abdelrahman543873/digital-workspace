@@ -12,6 +12,7 @@ describe('create leave type case', () => {
       url: LEAVE_TYPE,
       variables: {
         name: leaveType.name,
+        description: leaveType.description,
       },
       token: user.token,
     });

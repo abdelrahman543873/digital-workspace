@@ -1,17 +1,17 @@
 import { HTTP_METHODS_ENUM } from '../request.methods.enum';
-import { ASSIGNED_LEAVES_LIST } from '../endpoints/leave.endpoints';
+import { LEAVES_HR_LIST } from '../endpoints/leave.endpoints';
 import { testRequest } from '../request';
 import { leaveFactory } from './factories/leave.factory';
 import { userFactory } from '../../src/user/user.factory';
 import { LEAVE_STATUS } from '../../src/leave/leave.enum';
-describe('get assigned leaves list case', () => {
+describe('get hr leaves list case', () => {
   it('should get assigned leaves list', async () => {
     const manager = await userFactory();
     const user = await userFactory({ directManagerId: manager._id });
     const leave = await leaveFactory({ employee: user._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: ASSIGNED_LEAVES_LIST,
+      url: LEAVES_HR_LIST,
       token: manager.token,
     });
     expect(res.body.docs[0].employee.department).toHaveProperty('_id');
@@ -34,7 +34,7 @@ describe('get assigned leaves list case', () => {
     });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${ASSIGNED_LEAVES_LIST}?status=${leave.status}`,
+      url: `${LEAVES_HR_LIST}?status=${leave.status}`,
       token: manager.token,
     });
     expect(res.body.docs[0].employee.department).toHaveProperty('_id');

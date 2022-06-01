@@ -1,4 +1,12 @@
-import { IsDefined, IsOptional, Validate } from 'class-validator';
+import {
+  IsDefined,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+  Validate,
+} from 'class-validator';
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { AddUserInput } from './add-user.input';
 import { Transform } from 'class-transformer';
@@ -21,4 +29,18 @@ export class UpdateUserByIdInput extends PartialType(
   @Transform(mongoIdTransform)
   @ApiProperty({ type: 'string' })
   directManagerId?: ObjectId;
+
+  @IsOptional()
+  @ApiProperty()
+  @IsString()
+  @MinLength(8)
+  @MaxLength(256)
+  // @Validate(CorrectPassValidator)
+  password?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(8)
+  newPassword?: string;
 }

@@ -4,9 +4,9 @@ import { userFactory } from '../../src/user/user.factory';
 import { leaveFactory } from './factories/leave.factory';
 import { testRequest } from '../request';
 import { LEAVE_STATUS } from '../../src/leave/leave.enum';
-import { UserRepo } from '../user/user-test-repo';
 import { departmentFactory } from '../department/department.factory';
 import { DepartmentTestRepo } from '../department/department-test-repo';
+import { leaveUserTestRepo } from './test-repos/leave-user-test-repo';
 describe('manage leave case', () => {
   afterEach(async () => {
     await DepartmentTestRepo().rawDelete();
@@ -133,10 +133,9 @@ describe('manage leave case', () => {
   });
 
   it('should manage leave as an HR employee', async () => {
-    const department = await departmentFactory({ name: 'HR' });
+    const department = await departmentFactory({ name: 'Human Resources' });
     const HR = await userFactory({ department: department._id });
     const employee = await userFactory({ directManagerId: HR._id });
-    const leaveBalanceBeforeApproval = employee.leaveBalance;
     const leave = await leaveFactory({ employee: employee._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
@@ -147,10 +146,13 @@ describe('manage leave case', () => {
       },
       token: HR.token,
     });
-    const leaveBalance = (await UserRepo().findOne({ _id: employee._id }))
-      .leaveBalance;
+    expect(
+      await leaveUserTestRepo().findOne({
+        user: employee._id,
+        leaveType: leave.type,
+      }),
+    ).toBeTruthy();
     expect(res.body.status).toBe(LEAVE_STATUS.APPROVED);
-    expect(leaveBalance).toBeLessThan(leaveBalanceBeforeApproval);
   });
 
   it("should throw error when management isn't from manager and not the hr department", async () => {
@@ -188,7 +190,7 @@ describe('manage leave case', () => {
   });
 
   it('should throw error when manager approval is from HR', async () => {
-    const department = await departmentFactory({ name: 'HR' });
+    const department = await departmentFactory({ name: 'Human Resources' });
     const HR = await userFactory({ department: department._id });
     const leave = await leaveFactory();
     const res = await testRequest({

@@ -308,6 +308,7 @@ export class UserRepository extends BaseRepository<User> {
         ...(files?.profilePic && {
           profilePic: `${process.env.HOST}${files.profilePic[0].filename}`,
         }),
+        ...(input.newPassword && { password: hashPassSync(input.newPassword) }),
       },
       { new: true },
     );
@@ -596,18 +597,20 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   getUserByEmail(email) {
-    return this.userSchema.findOne({ email }, {}, { lean: true });
+    return this.userSchema
+      .findOne({ email }, {}, { lean: true })
+      .populate('department');
   }
 
   getUserSubordinates(_id: ObjectId) {
     return this.userSchema.find({ directManagerId: _id });
   }
 
-  decrementUserLeave(_id: ObjectId): QueryWithHelpers<any, any> {
-    return this.userSchema.updateOne({ _id }, { $inc: { leaveBalance: -1 } });
-  }
-
-  incrementUserLeave(_id: ObjectId): QueryWithHelpers<any, any> {
-    return this.userSchema.updateOne({ _id }, { $inc: { leaveBalance: +1 } });
+  updateAndGetUser(email: string, microsoftToken: string) {
+    return this.userSchema.findOneAndUpdate(
+      { email: email.toLowerCase() },
+      { microsoftToken },
+      { new: true, populate: 'department' },
+    );
   }
 }
